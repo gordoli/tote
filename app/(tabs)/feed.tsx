@@ -6,12 +6,7 @@ import { ScrollView } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 
 const Feed = () => {
-  const [feed, setFeed] = useState<FeedItem[]>([
-    ...DUMMY_FEED_ITEMS,
-    ...DUMMY_FEED_ITEMS,
-    ...DUMMY_FEED_ITEMS,
-    ...DUMMY_FEED_ITEMS,
-  ]);
+  const [feed, setFeed] = useState<FeedItem[]>(DUMMY_FEED_ITEMS);
 
   return (
     <ScrollView className="h-screen">
