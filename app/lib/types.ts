@@ -64,56 +64,56 @@ export type Brand = {
   logo: string;
 };
 
-const DUMMY_BRANDS: Brand[] = [
+export const DUMMY_BRANDS: Brand[] = [
   {
     id: "1",
     name: "Nike",
-    logo: "https://picsum.photos/150",
+    logo: require('@/assets/images/brands/nike.png'),
   },
   {
     id: "2",
     name: "Adidas",
-    logo: "https://picsum.photos/150",
+    logo: require('@/assets/images/brands/adidas.png'),
   },
   {
     id: "3",
     name: "Uniqlo",
-    logo: "https://picsum.photos/150",
+    logo: require('@/assets/images/brands/uniqlo.png'),
   },
   {
     id: "4",
     name: "Zara",
-    logo: "https://picsum.photos/150",
+    logo: require('@/assets/images/brands/zara.png'),
   },
   {
     id: "5",
     name: "H&M",
-    logo: "https://picsum.photos/150",
+    logo: require('@/assets/images/brands/handm.png'),
   },
   {
     id: "6",
     name: "Lululemon",
-    logo: "https://picsum.photos/150",
+    logo: require('@/assets/images/brands/lululemon.png'),
   },
   {
     id: "7",
     name: "Vuori",
-    logo: "https://picsum.photos/150",
+    logo: require('@/assets/images/brands/vuori.png'),
   },
   {
     id: "8",
     name: "AllBirds",
-    logo: "https://picsum.photos/150",
+    logo: require('@/assets/images/brands/allbirds.png'),
   },
   {
     id: "9",
     name: "Patagonia",
-    logo: "https://picsum.photos/150",
+    logo: require('@/assets/images/brands/patagonia.png'),
   },
   {
     id: "10",
     name: "Arc'teryx",
-    logo: "https://picsum.photos/150",
+    logo: require('@/assets/images/brands/arcteryx.png'),
   },
 ];
 
