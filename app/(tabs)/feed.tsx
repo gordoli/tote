@@ -2,8 +2,12 @@ import { useState } from "react";
 import { View, Text } from "@/app/components/Themed";
 import Avatar from "@/app/components/Avatar";
 import { DUMMY_FEED_ITEMS, FeedItem } from "@/app/lib/types";
-import { ScrollView } from "react-native";
+import { Image, ScrollView, StyleSheet } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
+import ToteTitle from "@/app/components/ToteTitle";
+import ProductView from "@/app/components/ProductView";
+import RatingCircle from "../components/RatingCircle";
+import formatRelativeDate from "../lib/helpers";
 
 const Feed = () => {
   const [feed, setFeed] = useState<FeedItem[]>(DUMMY_FEED_ITEMS);
@@ -21,20 +25,28 @@ export default Feed;
 
 const FeedItemCard = ({ item }: { item: FeedItem }) => {
   return (
-    <View className="space-y-4 p-6 border-b border-gray-200">
-      <View className="flex-row items-center w-full space-x-2">
+    <View className="p-6 space-y-4 border-b border-gray-200">
+      <View className="flex-row items-center w-full mb-4">
         <Avatar src={item.user.avatar} />
 
-        <View className="flex-row items-center space-x-1">
-          <Text className="font-bold">{item.user.name}</Text>
-          <Text>{item.content}</Text>
-          <Text className="font-bold">{item.brand.name}</Text>
+        <View className="ml-2">
+          <View className="flex-row items-center space-x-1">
+            <Text className="font-bold">{item.user.name}</Text>
+            <Text>{item.content}</Text>
+            <Text className="font-bold">{item.product.brand.name}</Text>
+          </View>
+
+          <Text className="text-sm text-muted">
+            {formatRelativeDate(item.createdTime)}
+          </Text>
         </View>
 
-        <View className="flex-row items-center justify-center w-10 h-10 !ml-auto bg-blue-500 rounded-full">
-          <Text>8.5</Text>
+        <View className="ml-auto">
+          <RatingCircle rating={item.product.rating} />
         </View>
       </View>
+
+      <ProductView product={item.product} />
 
       <View className="flex-row items-center w-full space-x-2">
         <FontAwesome name="heart-o" size={20} />
@@ -42,5 +54,24 @@ const FeedItemCard = ({ item }: { item: FeedItem }) => {
         <FontAwesome name="bookmark-o" size={20} />
       </View>
     </View>
+  );
+};
+
+export const FeedScreenHeader = ({ side }: { side: string }) => {
+  return (
+    <>
+      {side === "left" && (
+        <View className="flex-row items-center px-4">
+          <ToteTitle />
+        </View>
+      )}
+
+      {side === "right" && (
+        <View className="flex-row items-center px-4 space-x-2">
+          <FontAwesome name="search" size={20} />
+          <FontAwesome name="bell-o" size={20} />
+        </View>
+      )}
+    </>
   );
 };
