@@ -3,7 +3,9 @@ import { CURRENT_USER, UserStats } from "../lib/types";
 import ToteTitle from "../components/ToteTitle";
 import { FontAwesome } from "@expo/vector-icons";
 import Avatar from "../components/Avatar";
-import { TouchableOpacity } from "react-native";
+import { TouchableOpacity, useWindowDimensions } from "react-native";
+import { SceneMap, TabBar, TabView } from "react-native-tab-view";
+import { useState } from "react";
 
 const Profile = () => {
   return (
@@ -35,6 +37,8 @@ const Profile = () => {
           <Text className="text-sm">Share profile</Text>
         </TouchableOpacity>
       </View>
+
+      <ProfileTabs />
     </View>
   );
 };
@@ -57,6 +61,59 @@ const ProfileStats = ({ stats }: { stats: UserStats }) => {
         <Text className="text-sm text-muted">products</Text>
       </View>
     </View>
+  );
+};
+
+// Profile Tabs
+const FirstRoute = () => {
+  return (
+    <View className="flex-1 p-4 bg-white">
+      <Text>Hi</Text>
+    </View>
+  );
+};
+
+const SecondRoute = () => {
+  return (
+    <View className="flex-1 p-4 bg-white">
+      <Text>Hello 2</Text>
+    </View>
+  );
+};
+
+const renderTabBar = (props: any) => (
+  <TabBar
+    {...props}
+    indicatorStyle={{ backgroundColor: "black" }}
+    style={{ backgroundColor: "white" }}
+    renderLabel={({ route, focused, color }) => (
+      <Text style={{ color: "black", margin: 8 }}>{route.title}</Text>
+    )}
+  />
+);
+
+const renderScene = SceneMap({
+  activity: FirstRoute,
+  owned: SecondRoute,
+});
+
+const ProfileTabs = () => {
+  const layout = useWindowDimensions();
+
+  const [index, setIndex] = useState(0);
+  const [routes] = useState([
+    { key: "activity", title: "Recent Activity" },
+    { key: "owned", title: "Owned" },
+  ]);
+
+  return (
+    <TabView
+      navigationState={{ index, routes }}
+      renderScene={renderScene}
+      onIndexChange={setIndex}
+      initialLayout={{ width: layout.width }}
+      renderTabBar={renderTabBar}
+    />
   );
 };
 
