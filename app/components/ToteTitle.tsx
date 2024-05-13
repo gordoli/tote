@@ -6,16 +6,12 @@ const ToteTitle = ({customStyles = {}}) => {
     baseText: {
       fontFamily: "Georgia",
       fontSize: 24,
-      fontWeight: "bold",
-      ...customStyles,
+      fontWeight: "normal",
+      ...customStyles,  
     },
   });
 
-  return (
-    <Text style={styles.baseText} className="text-lightBlue">
-      tote
-    </Text>
-  );
+  return <Text style={styles.baseText}>tote</Text>;
 };
 
 export default ToteTitle;

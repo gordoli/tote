@@ -9,6 +9,7 @@ import { FeedScreenHeader } from "./feed";
 import Avatar from "@/app/components/Avatar";
 import { ProfileScreenHeader } from "./profile";
 import { CURRENT_USER } from "../lib/types";
+import { ToteScreenHeader } from "./tote";
 
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 function TabBarIcon(props: {
@@ -46,6 +47,9 @@ export default function TabLayout() {
         name="tote"
         options={{
           title: "Tote",
+          headerLeft: () => <ToteScreenHeader side="left" />,
+          headerTitle: () => <ToteScreenHeader side="center" />,
+          headerRight: () => <ToteScreenHeader side="right" />,
           headerShadowVisible: false,
           tabBarIcon: ({ color }) => (
             <TabBarIcon name="shopping-bag" color={color} />
