@@ -2,18 +2,27 @@ import { useState } from "react";
 import { View, Text } from "@/app/components/Themed";
 import Avatar from "@/app/components/Avatar";
 import { DUMMY_FEED_ITEMS, FeedItem } from "@/app/lib/types";
-import { Image, ScrollView, StyleSheet } from "react-native";
+import { ScrollView } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import ToteTitle from "@/app/components/ToteTitle";
 import ProductView from "@/app/components/ProductView";
 import RatingCircle from "../components/RatingCircle";
 import formatRelativeDate from "../lib/helpers";
+import FilterPill from "../components/FilterPill";
 
 const Feed = () => {
   const [feed, setFeed] = useState<FeedItem[]>(DUMMY_FEED_ITEMS);
 
   return (
     <ScrollView className="h-screen">
+      <View className="flex-row items-center space-y-2">
+        <FilterPill isActive={true} onClick={() => {}}>
+          <Text>Following</Text>
+        </FilterPill>
+        <FilterPill isActive={false} onClick={() => {}}>
+          <Text>Popular</Text>
+        </FilterPill>
+      </View>
       {feed.map((item, i: number) => (
         <FeedItemCard key={i} item={item} />
       ))}

@@ -1,9 +1,9 @@
 export enum CATEGORY {
-  "Sneakers",
-  "Tops",
-  "Bottoms",
-  "Accessories",
-  "Jeans",
-  "Jackets",
-  "Sweatshirts",
+  Sneakers = "Sneakers",
+  Tops = "Tops",
+  Bottoms = "Bottoms",
+  Accessories = "Accessories",
+  Jeans = "Jeans",
+  Jackets = "Jackets",
+  Sweatshirts = "Sweatshirts",
 }
