@@ -120,6 +120,7 @@ export type Brand = {
   name: string;
   logo: string;
   cover: string;
+  account: string;
 };
 
 export const DUMMY_BRANDS: Brand[] = [
@@ -128,48 +129,56 @@ export const DUMMY_BRANDS: Brand[] = [
     name: "Nike",
     logo: "https://i.ibb.co/qFqn12c/nike-logo.png",
     cover: "https://picsum.photos/150",
+    account: "@nikesportswear",
   },
   {
     id: "2",
     name: "Adidas",
     logo: "https://i.ibb.co/Db2mTpb/adidas-logo.png",
     cover: "https://picsum.photos/150",
+    account: "@adidassportswear",
   },
   {
     id: "3",
     name: "Hoka",
     logo: "https://i.ibb.co/n7WBXMN/hoka-logo.png",
     cover: "https://picsum.photos/150",
+    account: "@hokasportswear",
   },
   {
     id: "4",
     name: "Alo Yoga",
     logo: "https://i.ibb.co/my8mbdx/alo-logo.png",
     cover: "https://picsum.photos/150",
+    account: "@aloyogasportswear",
   },
   {
     id: "5",
     name: "All Birds",
     logo: "https://i.ibb.co/qJLFsQK/allbirds-logo.png",
     cover: "https://picsum.photos/150",
+    account: "@allbirdssportswear",
   },
   {
     id: "6",
     name: "Everlane",
     logo: "https://i.ibb.co/t2STCPc/everlane-logo.png",
     cover: "https://picsum.photos/150",
+    account: "@everlanesportswear",
   },
   {
     id: "7",
     name: "Levis",
     logo: "https://i.ibb.co/1LqQ51T/levis-logo.png",
     cover: "https://picsum.photos/150",
+    account: "@levissportswear",
   },
   {
     id: "8",
     name: "Patagonia",
     logo: "https://i.ibb.co/D8B6dbv/patagonia-logo.png",
     cover: "https://picsum.photos/150",
+    account: "@patagoniasportswear",
   },
 ];
 
