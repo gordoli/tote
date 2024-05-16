@@ -78,7 +78,7 @@ const Step1 = ({
           <View className="flex-wrap flex-row justify-start">
             {DUMMY_BRANDS.map((item) => (
               <TouchableOpacity
-                id={item.id}
+                key={item.id}
                 className="border-2 border-gray-300 mr-3 mb-3 p-2 rounded-lg"
               >
                 <Text className="text-sm text-gray-500 font-semibold">{item.name}</Text>
@@ -89,7 +89,7 @@ const Step1 = ({
       </View>
       <TouchableOpacity
         className="items-center content-center p-2 rounded-lg"
-        style={{backgroundColor: '#0C66E4'}}
+        style={{backgroundColor: '#0065FF'}}
         onPress={() => nextStep(2)}
       >
         <Text className="text-white text-sm font-semibold">Next</Text>
@@ -140,7 +140,7 @@ const Step2 = ({
       </View>
       <TouchableOpacity
         className="items-center content-center p-2 rounded-lg mt-5"
-        style={{backgroundColor: '#0C66E4'}}
+        style={{backgroundColor: '#0065FF'}}
         onPress={() => nextStep(2)}
       >
         <Text className="text-white text-sm font-semibold">Next</Text>
@@ -196,7 +196,7 @@ const Step3 = ({
       </View>
       <TouchableOpacity
         className="items-center content-center p-2 rounded-lg mt-5"
-        style={{backgroundColor: '#0C66E4'}}
+        style={{backgroundColor: '#0065FF'}}
         onPress={() => nextStep(2)}
       >
         <Text className="text-white text-sm font-semibold">Next</Text>
@@ -336,7 +336,7 @@ const styles = StyleSheet.create({
     padding: 7,
   },
   shuffleButton: {
-    backgroundColor: '#0C66E4',
+    backgroundColor: '#0065FF',
     width: "65%",
   },
 });

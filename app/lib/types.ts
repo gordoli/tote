@@ -1,114 +1,5 @@
 import { CATEGORY } from "./const";
 
-export type User = {
-  id: string;
-  avatar: string;
-  name: string;
-  username: string;
-  email: string;
-  stats: UserStats;
-};
-
-const DUMMY_USER: User[] = [
-  {
-    id: "1",
-    avatar: "https://i.pravatar.cc/150?img=67",
-    name: "John Doe",
-    username: "johndoe",
-    email: "john@gmail.com",
-    stats: {
-      followers: 123,
-      following: 456,
-      products: 10,
-    },
-  },
-  {
-    id: "2",
-    avatar: "https://i.pravatar.cc/150?img=47",
-    name: "Jane Doe",
-    username: "janedoe",
-    email: "jane@gmail.com",
-    stats: {
-      followers: 123,
-      following: 456,
-      products: 10,
-    },
-  },
-  {
-    id: "3",
-    avatar: "https://i.pravatar.cc/150?img=43",
-    name: "Alice Smith",
-    username: "alicesmith",
-    email: "alice@gmail.com",
-    stats: {
-      followers: 123,
-      following: 456,
-      products: 10,
-    },
-  },
-  {
-    id: "4",
-    avatar: "https://i.pravatar.cc/150?img=53",
-    name: "Bob Johnson",
-    username: "bobjohnson",
-    email: "bob@gmail.com",
-    stats: {
-      followers: 123,
-      following: 456,
-      products: 10,
-    },
-  },
-  {
-    id: "5",
-    avatar: "https://i.pravatar.cc/150?img=38",
-    name: "Emma Davis",
-    username: "emmadavis",
-    email: "emma@gmail.com",
-    stats: {
-      followers: 123,
-      following: 456,
-      products: 10,
-    },
-  },
-  {
-    id: "6",
-    avatar: "https://i.pravatar.cc/150?img=33",
-    name: "James Wilson",
-    username: "jameswilson",
-    email: "james@gmail.com",
-    stats: {
-      followers: 123,
-      following: 456,
-      products: 10,
-    },
-  },
-  {
-    id: "7",
-    avatar: "https://i.pravatar.cc/150?img=24",
-    name: "Olivia Brown",
-    username: "oliviabrown",
-    email: "olivia@gmail.com",
-    stats: {
-      followers: 123,
-      following: 456,
-      products: 10,
-    },
-  },
-];
-
-export const CURRENT_USER: User = {
-  id: "8",
-  avatar: "https://i.pravatar.cc/150?img=26",
-  name: "Lavender Haze",
-  username: "lavenderhaze",
-  email: "lavender@gmail.com",
-  stats: {
-    followers: 123,
-    following: 456,
-    products: 10,
-  },
-};
-
 export type UserStats = {
   followers: number;
   following: number;
@@ -121,6 +12,8 @@ export type Brand = {
   logo: string;
   cover: string;
   account: string;
+  overallRating: number;
+  friendsRating: number;
 };
 
 export const DUMMY_BRANDS: Brand[] = [
@@ -130,6 +23,8 @@ export const DUMMY_BRANDS: Brand[] = [
     logo: "https://i.ibb.co/qFqn12c/nike-logo.png",
     cover: "https://picsum.photos/150",
     account: "@nikesportswear",
+    overallRating: 8.2,
+    friendsRating: 7.7,
   },
   {
     id: "2",
@@ -137,6 +32,8 @@ export const DUMMY_BRANDS: Brand[] = [
     logo: "https://i.ibb.co/Db2mTpb/adidas-logo.png",
     cover: "https://picsum.photos/150",
     account: "@adidassportswear",
+    overallRating: 9.1,
+    friendsRating: 8.4,
   },
   {
     id: "3",
@@ -144,6 +41,8 @@ export const DUMMY_BRANDS: Brand[] = [
     logo: "https://i.ibb.co/n7WBXMN/hoka-logo.png",
     cover: "https://picsum.photos/150",
     account: "@hokasportswear",
+    overallRating: 8.1,
+    friendsRating: 7.2,
   },
   {
     id: "4",
@@ -151,6 +50,8 @@ export const DUMMY_BRANDS: Brand[] = [
     logo: "https://i.ibb.co/my8mbdx/alo-logo.png",
     cover: "https://picsum.photos/150",
     account: "@aloyogasportswear",
+    overallRating: 8.4,
+    friendsRating: 7.3,
   },
   {
     id: "5",
@@ -158,6 +59,8 @@ export const DUMMY_BRANDS: Brand[] = [
     logo: "https://i.ibb.co/qJLFsQK/allbirds-logo.png",
     cover: "https://picsum.photos/150",
     account: "@allbirdssportswear",
+    overallRating: 8.8,
+    friendsRating: 6.5,
   },
   {
     id: "6",
@@ -165,6 +68,8 @@ export const DUMMY_BRANDS: Brand[] = [
     logo: "https://i.ibb.co/t2STCPc/everlane-logo.png",
     cover: "https://picsum.photos/150",
     account: "@everlanesportswear",
+    overallRating: 7.8,
+    friendsRating: 6.8,
   },
   {
     id: "7",
@@ -172,6 +77,8 @@ export const DUMMY_BRANDS: Brand[] = [
     logo: "https://i.ibb.co/1LqQ51T/levis-logo.png",
     cover: "https://picsum.photos/150",
     account: "@levissportswear",
+    overallRating: 8.2,
+    friendsRating: 7.7,
   },
   {
     id: "8",
@@ -179,6 +86,8 @@ export const DUMMY_BRANDS: Brand[] = [
     logo: "https://i.ibb.co/D8B6dbv/patagonia-logo.png",
     cover: "https://picsum.photos/150",
     account: "@patagoniasportswear",
+    overallRating: 8.8,
+    friendsRating: 6.5,
   },
 ];
 
@@ -266,6 +175,124 @@ export const DUMMY_PRODUCTS: Product[] = [
   },
 ];
 
+export type User = {
+  id: string;
+  avatar: string;
+  name: string;
+  username: string;
+  email: string;
+  stats: UserStats;
+  products: Product[];
+};
+
+export const DUMMY_USER: User[] = [
+  {
+    id: "1",
+    avatar: "https://i.pravatar.cc/150?img=67",
+    name: "John Doe",
+    username: "johndoe",
+    email: "john@gmail.com",
+    stats: {
+      followers: 123,
+      following: 456,
+      products: 10,
+    },
+    products: [DUMMY_PRODUCTS[0], DUMMY_PRODUCTS[1]],
+  },
+  {
+    id: "2",
+    avatar: "https://i.pravatar.cc/150?img=47",
+    name: "Jane Doe",
+    username: "janedoe",
+    email: "jane@gmail.com",
+    stats: {
+      followers: 123,
+      following: 456,
+      products: 10,
+    },
+    products: [DUMMY_PRODUCTS[3], DUMMY_PRODUCTS[4]],
+  },
+  {
+    id: "3",
+    avatar: "https://i.pravatar.cc/150?img=43",
+    name: "Alice Smith",
+    username: "alicesmith",
+    email: "alice@gmail.com",
+    stats: {
+      followers: 123,
+      following: 456,
+      products: 10,
+    },
+    products: [DUMMY_PRODUCTS[5], DUMMY_PRODUCTS[6]],
+  },
+  {
+    id: "4",
+    avatar: "https://i.pravatar.cc/150?img=53",
+    name: "Bob Johnson",
+    username: "bobjohnson",
+    email: "bob@gmail.com",
+    stats: {
+      followers: 123,
+      following: 456,
+      products: 10,
+    },
+    products: [DUMMY_PRODUCTS[7], DUMMY_PRODUCTS[8]],
+  },
+  {
+    id: "5",
+    avatar: "https://i.pravatar.cc/150?img=38",
+    name: "Emma Davis",
+    username: "emmadavis",
+    email: "emma@gmail.com",
+    stats: {
+      followers: 123,
+      following: 456,
+      products: 10,
+    },
+    products: [DUMMY_PRODUCTS[8], DUMMY_PRODUCTS[1]],
+  },
+  {
+    id: "6",
+    avatar: "https://i.pravatar.cc/150?img=33",
+    name: "James Wilson",
+    username: "jameswilson",
+    email: "james@gmail.com",
+    stats: {
+      followers: 123,
+      following: 456,
+      products: 10,
+    },
+    products: [DUMMY_PRODUCTS[4], DUMMY_PRODUCTS[8]],
+  },
+  {
+    id: "7",
+    avatar: "https://i.pravatar.cc/150?img=24",
+    name: "Olivia Brown",
+    username: "oliviabrown",
+    email: "olivia@gmail.com",
+    stats: {
+      followers: 123,
+      following: 456,
+      products: 10,
+    },
+    products: [DUMMY_PRODUCTS[2], DUMMY_PRODUCTS[5]],
+  },
+];
+
+export const CURRENT_USER: User = {
+  id: "8",
+  avatar: "https://i.pravatar.cc/150?img=26",
+  name: "Lavender Haze",
+  username: "lavenderhaze",
+  email: "lavender@gmail.com",
+  stats: {
+    followers: 123,
+    following: 456,
+    products: 10,
+  },
+  products: [DUMMY_PRODUCTS[0], DUMMY_PRODUCTS[1]],
+};
+
 export type FeedItem = {
   id: number;
   user: User;
@@ -342,3 +369,10 @@ export const DUMMY_FEED_ITEMS: FeedItem[] = [
     createdTime: new Date(Date.now() - 21 * 24 * 60 * 60 * 1000),
   },
 ];
+
+export type Request = {
+  user: User;
+  brand: Brand | null;
+  note: string;
+  createdTime: Date;
+};

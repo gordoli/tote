@@ -32,7 +32,7 @@ const SecondRoute = () => {
       <View className="flex flex-row items-center justify-between my-3">
         <TouchableOpacity className="flex-row justify-center items-center" >
           <Text className="text-base font-semibold" style={styles.newListButton}>New List</Text>
-          <Entypo name="plus" size={22} color="#0C66E4" />
+          <Entypo name="plus" size={22} color="#0065FF" />
         </TouchableOpacity>
         <TouchableOpacity className="flex-row justify-center items-center rounded-lg py-2" >
           <Text className="text-base text-gray-600 font-semibold">Edit</Text>
@@ -87,18 +87,18 @@ const renderTabBar = (props: any) => (
         {route.key === "activity" ? (
           <MaterialCommunityIcons
             name="heart-circle-outline"
-            color={focused ? '#0C66E4' : "#787878"}
+            color={focused ? '#0065FF' : "#787878"}
             size={20}
           />
         ) : (
           <FontAwesome
             name="shopping-bag"
-            color={focused ? '#0C66E4' : "#787878"}
+            color={focused ? '#0065FF' : "#787878"}
             size={16}
           />
         )}
         <Text
-          style={{ color: focused ? '#0C66E4' : "#787878", margin: 8 }}
+          style={{ color: focused ? '#0065FF' : "#787878", margin: 8 }}
           className="text-base font-semibold"
         >
           {route.title}
@@ -219,7 +219,7 @@ export const ProfileScreenHeader = ({ side }: { side: string }) => {
 
 const styles = StyleSheet.create({
   newListButton: {
-    color: '#0C66E4',
+    color: '#0065FF',
   },
   toteItemContainer: {
     width: "47%",
