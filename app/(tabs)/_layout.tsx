@@ -10,6 +10,7 @@ import Avatar from "@/app/components/Avatar";
 import { ProfileScreenHeader } from "./profile";
 import { CURRENT_USER } from "../lib/types";
 import { ToteScreenHeader } from "./tote";
+import { ExplorerScreenHeader } from './explorer';
 
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 function TabBarIcon(props: {
@@ -70,6 +71,17 @@ export default function TabLayout() {
           title: "Discover",
           headerShadowVisible: false,
           tabBarIcon: ({ color }) => <TabBarIcon name="magic" color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="explorer"
+        options={{
+          title: "Explorer",
+          headerShadowVisible: false,
+          headerLeft: () => <ExplorerScreenHeader side="left" />,
+          headerTitle: () => <ExplorerScreenHeader side="center" />,
+          headerRight: () => <ExplorerScreenHeader side="right" />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="compass" color={color} />,
         }}
       />
       <Tabs.Screen

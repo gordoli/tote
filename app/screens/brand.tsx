@@ -50,18 +50,18 @@ const renderTabBar = (props: any) => (
         {route.key === "friends" ? (
           <MaterialCommunityIcons
             name="heart-circle-outline"
-            color={focused ? '#0C66E4' : "#787878"}
+            color={focused ? '#0065FF' : "#787878"}
             size={20}
           />
         ) : (
           <MaterialCommunityIcons
             name="fire"
-            color={focused ? '#0C66E4' : "#787878"}
+            color={focused ? '#0065FF' : "#787878"}
             size={22}
           />
         )}
         <Text
-          style={{ color: focused ? '#0C66E4' : "#787878", margin: 8 }}
+          style={{ color: focused ? '#0065FF' : "#787878", margin: 8 }}
           className="text-base font-semibold"
         >
           {route.title}
@@ -120,6 +120,7 @@ const BrandProfile = () => {
           headerTitle: () => <BrandProfileScreenHeader side="center" />,
           headerRight: () => <BrandProfileScreenHeader side="right" />,
           headerShadowVisible: false,
+          headerBackVisible: false,
         }}
       />
       {/* <ScrollView className="h-screen"> */}
@@ -261,6 +262,6 @@ const styles = StyleSheet.create({
   },
   rankButton: {
     width: "48%",
-    backgroundColor: '#0C66E4',
+    backgroundColor: '#0065FF',
   }
 });
