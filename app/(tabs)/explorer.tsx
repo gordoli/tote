@@ -2,7 +2,15 @@ import { useState, useRef } from "react";
 import { useRouter } from "expo-router";
 import { FontAwesome, Entypo, Octicons, Feather } from "@expo/vector-icons";
 import { TabView, SceneMap, TabBar } from "react-native-tab-view";
-import { FlatList, ViewStyle, TextInput, TouchableOpacity, Image, useWindowDimensions, Dimensions } from "react-native";
+import {
+  FlatList,
+  ViewStyle,
+  TextInput,
+  TouchableOpacity,
+  Image,
+  useWindowDimensions,
+  Dimensions,
+} from "react-native";
 
 import ToteTitle from "../components/ToteTitle";
 import { Brand, DUMMY_BRANDS, Request } from "../lib/types";
@@ -23,24 +31,32 @@ const BrandsTab = () => {
       params: brand,
     });
   };
-  
-  const renderItem = ({item} : {item: Brand}) => {
+
+  const renderItem = ({ item }: { item: Brand }) => {
     return (
       <TouchableOpacity
         onPress={() => onGoToBrandProfile(item)}
         style={styles.brandItemsContainer}
-        className="items-center bg-gray-100 border-gray-300 border rounded-lg p-5 mb-3"
+        className="items-center p-5 mb-3 bg-gray-100 border border-gray-300 rounded-lg"
       >
         <Image src={item.logo} className="w-10 h-10 rounded-lg" />
-        <Text className="text-base font-semibold py-2">{item.name}</Text>
+        <Text className="py-2 text-base font-semibold">{item.name}</Text>
         <View className="flex-row justify-around w-full bg-gray-100">
           <View className="bg-gray-100">
-            <RatingCircle rating={item.overallRating} radius={17} numberStyles={styles.ratingNumber} />
-            <Text className="text-xs text-gray-800 pt-1">Overall</Text>
+            <RatingCircle
+              rating={item.overallRating}
+              radius={17}
+              numberStyles={styles.ratingNumber}
+            />
+            <Text className="pt-1 text-xs text-gray-800">Overall</Text>
           </View>
           <View className="bg-gray-100">
-            <RatingCircle rating={item.friendsRating} radius={17} numberStyles={styles.ratingNumber} />
-            <Text className="text-xs text-gray-800 pt-1">Friends</Text>
+            <RatingCircle
+              rating={item.friendsRating}
+              radius={17}
+              numberStyles={styles.ratingNumber}
+            />
+            <Text className="pt-1 text-xs text-gray-800">Friends</Text>
           </View>
         </View>
       </TouchableOpacity>
@@ -56,13 +72,13 @@ const BrandsTab = () => {
         className="w-full h-10 p-2 bg-gray-200 rounded-lg"
         placeholderTextColor={"#787878"}
       />
-      <View className="pb-10 pt-5">
+      <View className="pt-5 pb-10">
         <FlatList
           data={DUMMY_BRANDS}
           keyExtractor={(item: Brand) => item.id}
           renderItem={renderItem}
           numColumns={2}
-          columnWrapperStyle={{justifyContent: 'space-between'}}
+          columnWrapperStyle={{ justifyContent: "space-between" }}
         />
       </View>
     </View>
@@ -105,12 +121,12 @@ const RequestsTab = () => {
             position: "relative",
             backgroundColor: focused ? "#0065ff1f" : "#091e4214",
           }}
-          className="p-2 px-3 rounded-2xl mt-3"
+          className="p-2 px-3 mt-3 rounded-2xl"
         >
           <Text
-            className="font-semibold text-sm"
+            className="text-sm font-semibold"
             style={{
-              color: focused ? "#0065FF" : "#5D6B82"
+              color: focused ? "#0065FF" : "#5D6B82",
             }}
           >
             {route.title}
@@ -120,14 +136,14 @@ const RequestsTab = () => {
               className="rounded-full w-7 h-7"
               style={styles.friendsRequestsNotifNum}
             >
-              <Text className="text-white font-semibold">3</Text>
+              <Text className="font-semibold text-white">3</Text>
             </View>
           )}
         </View>
       )}
     />
   );
-  
+
   const renderSceneRequests = SceneMap({
     myrequests: () => myRequestsTab(),
     friendsrequests: () => friendsRequestsTab(),
@@ -137,9 +153,12 @@ const RequestsTab = () => {
     setRequests([...requests, data]);
   };
 
-  const renderRequestItem = ({item} : {item: Request}) => {
+  const renderRequestItem = ({ item }: { item: Request }) => {
     return (
-      <View className="flex-row items-center justify-between bg-gray-200 px-4" style={styles.requestItemContainer}>
+      <View
+        className="flex-row items-center justify-between px-4 bg-gray-200"
+        style={styles.requestItemContainer}
+      >
         <TouchableOpacity
           style={styles.requestItemContent}
           className="bg-gray-200"
@@ -151,7 +170,10 @@ const RequestsTab = () => {
           </Text>
           <Text className="text-sm text-gray-600">{item.note}</Text>
         </TouchableOpacity>
-        <View className="flex-row items-center justify-between bg-gray-200" style={styles.requestItemActions}>
+        <View
+          className="flex-row items-center justify-between bg-gray-200"
+          style={styles.requestItemActions}
+        >
           <Octicons name="pencil" size={22} color="gray" />
           <Feather name="trash-2" size={22} color="gray" />
         </View>
@@ -163,14 +185,18 @@ const RequestsTab = () => {
     return (
       <View className="flex-1 py-4 bg-white">
         {requests.length === 0 ? (
-          <View className="flex-1 justify-center px-4">
-            <Text className="text-base text-gray-700 text-center pb-3">You don't have any requests yet</Text>
+          <View className="justify-center flex-1 px-4">
+            <Text className="pb-3 text-base text-center text-gray-700">
+              You don't have any requests yet
+            </Text>
             <TouchableOpacity
-              className="flex-row justify-center items-center rounded-lg py-2"
+              className="flex-row items-center justify-center py-2 rounded-lg"
               style={styles.createRequest}
               onPress={openCreateRequestModal}
             >
-              <Text className="text-base text-white font-semibold">Create Request</Text>
+              <Text className="text-base font-semibold text-white">
+                Create Request
+              </Text>
               <Entypo name="plus" size={22} color="white" />
             </TouchableOpacity>
           </View>
@@ -186,13 +212,11 @@ const RequestsTab = () => {
           modalizeRef={modalizeCreateRequestModal}
           onDoneRequest={onCreateNewRequest}
         />
-        <FriendsSuggestedModals
-          modalizeRef={modalizeShowFriendsModal}
-        />
+        <FriendsSuggestedModals modalizeRef={modalizeShowFriendsModal} />
       </View>
     );
   };
-  
+
   const friendsRequestsTab = () => {
     return (
       <View>
@@ -200,7 +224,7 @@ const RequestsTab = () => {
       </View>
     );
   };
-  
+
   return (
     <TabView
       navigationState={{ index, routes }}
@@ -219,9 +243,9 @@ const renderTabBar = (props: any) => (
     style={{ backgroundColor: "white" }}
     renderLabel={({ route, focused, color }) => (
       <Text
-        className="font-semibold text-sm"
+        className="text-sm font-semibold"
         style={{
-          color: focused ? "#0065FF" : "#5D6B82"
+          color: focused ? "#0065FF" : "#5D6B82",
         }}
       >
         {route.title}
@@ -293,8 +317,8 @@ const styles = {
     right: -15,
   } as ViewStyle,
   requestsTabbar: {
-    shadowOffset: { height: 0, width: 0 }, 
-    shadowColor: 'transparent',
+    shadowOffset: { height: 0, width: 0 },
+    shadowColor: "transparent",
     shadowOpacity: 0,
     elevation: 0,
     backgroundColor: "white",
@@ -303,7 +327,7 @@ const styles = {
   createRequest: {
     width: "45%",
     alignSelf: "center",
-    backgroundColor: '#0065FF',
+    backgroundColor: "#0065FF",
   } as ViewStyle,
   requestItemContent: {
     width: "80%",

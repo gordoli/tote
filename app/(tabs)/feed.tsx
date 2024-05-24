@@ -8,21 +8,13 @@ import ToteTitle from "@/app/components/ToteTitle";
 import ProductView from "@/app/components/ProductView";
 import RatingCircle from "../components/RatingCircle";
 import formatRelativeDate from "../lib/helpers";
-import FilterPill from "../components/FilterPill";
+import NotificationBell from "../components/NotificationBell";
 
 const Feed = () => {
   const [feed, setFeed] = useState<FeedItem[]>(DUMMY_FEED_ITEMS);
 
   return (
     <ScrollView className="h-screen">
-      <View className="flex-row items-center space-y-2">
-        <FilterPill isActive={true} onClick={() => {}}>
-          <Text>Following</Text>
-        </FilterPill>
-        <FilterPill isActive={false} onClick={() => {}}>
-          <Text>Popular</Text>
-        </FilterPill>
-      </View>
       {feed.map((item, i: number) => (
         <FeedItemCard key={i} item={item} />
       ))}
@@ -78,7 +70,7 @@ export const FeedScreenHeader = ({ side }: { side: string }) => {
       {side === "right" && (
         <View className="flex-row items-center px-4 space-x-2">
           <FontAwesome name="search" size={20} />
-          <FontAwesome name="bell-o" size={20} />
+          <NotificationBell />
         </View>
       )}
     </>

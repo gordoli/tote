@@ -376,3 +376,31 @@ export type Request = {
   note: string;
   createdTime: Date;
 };
+
+export type CustomList = {
+  id: string;
+  name: string;
+  userId: string;
+  products: Product[];
+};
+
+export const DUMMY_CUSTOM_LISTS: CustomList[] = [
+  {
+    id: "1",
+    name: "Summer Outfits",
+    userId: "8",
+    products: [DUMMY_PRODUCTS[0], DUMMY_PRODUCTS[1], DUMMY_PRODUCTS[2]],
+  },
+  {
+    id: "2",
+    name: "Ski Gear",
+    userId: "8",
+    products: [DUMMY_PRODUCTS[3], DUMMY_PRODUCTS[4], DUMMY_PRODUCTS[5]],
+  },
+  {
+    id: "3",
+    name: "Wedding Attire",
+    userId: "8",
+    products: [DUMMY_PRODUCTS[6], DUMMY_PRODUCTS[7], DUMMY_PRODUCTS[8]],
+  },
+];
