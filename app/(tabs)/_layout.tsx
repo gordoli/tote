@@ -10,7 +10,7 @@ import Avatar from "@/app/components/Avatar";
 import { ProfileScreenHeader } from "./profile";
 import { CURRENT_USER } from "../lib/types";
 import { ToteScreenHeader } from "./tote";
-import { ExplorerScreenHeader } from './explorer';
+import { ExplorerScreenHeader } from "../wip/explorer";
 
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 function TabBarIcon(props: {
@@ -21,8 +21,8 @@ function TabBarIcon(props: {
 }
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
-  // const colorScheme = "dark";
+  // const colorScheme = useColorScheme();
+  const colorScheme = "light";
 
   return (
     <Tabs
@@ -65,7 +65,7 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => <TabBarIcon name="search" color={color} />,
         }}
       />
-      <Tabs.Screen
+      {/* <Tabs.Screen
         name="discover"
         options={{
           title: "Discover",
@@ -81,9 +81,11 @@ export default function TabLayout() {
           headerLeft: () => <ExplorerScreenHeader side="left" />,
           headerTitle: () => <ExplorerScreenHeader side="center" />,
           headerRight: () => <ExplorerScreenHeader side="right" />,
-          tabBarIcon: ({ color }) => <TabBarIcon name="compass" color={color} />,
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="compass" color={color} />
+          ),
         }}
-      />
+      /> */}
       <Tabs.Screen
         name="profile"
         options={{
