@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import {Modalize} from 'react-native-modalize';
-import { TouchableOpacity, Text, View, TextInput, ScrollView, Image, StyleSheet, FlatList } from "react-native";
+import { TouchableOpacity, TextInput, ScrollView, Image, StyleSheet } from "react-native";
 import { FontAwesome, SimpleLineIcons, Entypo, FontAwesome6, MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 
+import { View, Text } from "@/app/components/Themed";
 import { DUMMY_PRODUCTS, Product, DUMMY_BRANDS } from "@/app/lib/types";
 
 const RankModals = ({

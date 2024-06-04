@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import {Modalize} from 'react-native-modalize';
-import { TouchableOpacity, Text, View, TextInput, ScrollView, StyleSheet } from "react-native";
+import { TouchableOpacity, TextInput, ScrollView, StyleSheet } from "react-native";
 
+import { View, Text } from "@/app/components/Themed";
 import { DUMMY_BRANDS, Brand, Request, DUMMY_USER } from "@/app/lib/types";
 
 const RequestModals = ({

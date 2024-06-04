@@ -37,4 +37,15 @@ export const formatRelativeDate = (date: Date) => {
   }
 };
 
+const regexEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+
+export const EmailValidation = (value: string) => {
+  if (!value.trim()) {
+    return "Email is required";
+  } else if (!regexEmail.test(value.trim())) {
+    return "Email format is wrong";
+  }
+  return "";
+};
+
 export default formatRelativeDate;
