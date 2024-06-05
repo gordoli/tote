@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import {Modalize} from 'react-native-modalize';
 import { FontAwesome } from "@expo/vector-icons";
 import Accordion from 'react-native-collapsible/Accordion';
-import { Image, Text, View, ViewStyle, StyleSheet } from "react-native";
+import { Image, ViewStyle, StyleSheet } from "react-native";
 
 import Avatar from "../components/Avatar";
 import RatingCircle from "../components/RatingCircle";
 import { DUMMY_USER, User } from "@/app/lib/types";
+import { View, Text } from "@/app/components/Themed";
 
 const FriendsSuggestedModals = ({
   modalizeRef,
