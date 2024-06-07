@@ -5,7 +5,6 @@ import {
   useWindowDimensions,
   ScrollView,
   Image,
-  StyleSheet,
 } from "react-native";
 import {
   FontAwesome,
@@ -18,24 +17,26 @@ import {
 import Avatar from "../components/Avatar";
 import ToteTitle from "../components/ToteTitle";
 import { View, Text } from "@/app/components/Themed";
-import ProductView from "@/app/components/ProductView";
-import RatingCircle from "../components/RatingCircle";
 import {
   DUMMY_FEED_ITEMS,
   FeedItem,
   CURRENT_USER,
   UserStats,
+  DUMMY_BRANDS,
+  Brand,
 } from "@/app/lib/types";
+import ProductCard from "../components/ProductCard";
+import { useRouter } from "expo-router";
 
 // Profile Tabs
-const FirstRoute = () => {
+const ActivityList = () => {
   const [feed] = useState<FeedItem[]>(DUMMY_FEED_ITEMS);
   return (
     <ScrollView className="h-screen">
       <View className="flex-1 bg-white">
         <View className="mt-2">
           {feed.map((item, i: number) => (
-            <BrandItemCard key={i} item={item} />
+            <ProductCard key={i} product={item.product} />
           ))}
         </View>
       </View>
@@ -43,76 +44,52 @@ const FirstRoute = () => {
   );
 };
 
-const SecondRoute = () => {
+const BrandsList = () => {
+  const router = useRouter();
+
+  const onGoToBrandProfile = (brand: Brand) => {
+    router.navigate({
+      pathname: "/screens/brand",
+      params: brand,
+    });
+  };
+
   return (
     <View className="flex-1 p-5 bg-white">
-      <View className="flex flex-row items-center justify-between my-3">
-        <TouchableOpacity className="flex-row items-center justify-center">
-          <Text
-            className="text-base font-semibold"
-            style={styles.newListButton}
+      {DUMMY_BRANDS.map((brand: Brand, i: number) => (
+        <View key={i} className="flex-row items-center py-2">
+          <TouchableOpacity
+            className="flex-row items-center"
+            onPress={() => onGoToBrandProfile(brand)}
           >
-            New List
-          </Text>
-          <Entypo name="plus" size={22} color="#0065FF" />
-        </TouchableOpacity>
-        <TouchableOpacity className="flex-row items-center justify-center py-2 rounded-lg">
-          <Text className="text-base font-semibold text-gray-600">Edit</Text>
-        </TouchableOpacity>
-      </View>
-      <View className="flex-row flex-wrap justify-between w-full">
-        <TouchableOpacity style={styles.toteItemContainer}>
-          <View className="p-2 bg-gray-300 rounded">
-            <MaterialCommunityIcons
-              name="ceiling-fan-light"
-              size={24}
-              color="gray"
-            />
+            <Image src={brand.logo} className="w-8 h-8 mr-2 rounded" />
+            <View>
+              <Text className="font-semibold">{brand.name}</Text>
+            </View>
+          </TouchableOpacity>
+          <View className="!ml-auto flex-row items-center items-end space-x-2">
+            <FontAwesome name="plus-circle" size={20} />
+            <FontAwesome name="bookmark-o" size={20} />
           </View>
-          <Text className="text-base font-semibold text-black">Ski Gear</Text>
-          <Text className="text-sm text-gray-500">8 items</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.toteItemContainer}>
-          <View className="p-2 bg-gray-300 rounded">
-            <FontAwesome name="user" size={24} color="gray" />
-          </View>
-          <Text className="text-base font-semibold text-black">Clothers</Text>
-          <Text className="text-sm text-gray-500">12 items</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.toteItemContainer}>
-          <View className="p-2 bg-gray-300 rounded">
-            <MaterialCommunityIcons name="television" size={24} color="gray" />
-          </View>
-          <Text className="text-base font-semibold text-black">
-            PC Equipment
-          </Text>
-          <Text className="text-sm text-gray-500">45 items</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.toteItemContainer}>
-          <View className="p-2 bg-gray-300 rounded">
-            <Ionicons name="game-controller" size={24} color="gray" />
-          </View>
-          <Text className="text-base font-semibold text-black">Gaming</Text>
-          <Text className="text-sm text-gray-500">64 items</Text>
-        </TouchableOpacity>
-      </View>
+        </View>
+      ))}
     </View>
   );
 };
 
 const renderScene = SceneMap({
-  activity: FirstRoute,
-  owned: SecondRoute,
+  activity: ActivityList,
+  brands: BrandsList,
 });
 
 const renderTabBar = (props: any) => (
   <TabBar
     {...props}
-    indicatorStyle={{ backgroundColor: "black" }}
+    indicatorStyle={{ backgroundColor: "#0065FF" }}
     style={{ backgroundColor: "white" }}
     renderLabel={({ route, focused, color }) => (
       <View className="flex-row items-center justify-between">
-        {route.key === "activity" ? (
+        {/* {route.key === "activity" ? (
           <MaterialCommunityIcons
             name="heart-circle-outline"
             color={focused ? "#0065FF" : "#787878"}
@@ -124,7 +101,7 @@ const renderTabBar = (props: any) => (
             color={focused ? "#0065FF" : "#787878"}
             size={16}
           />
-        )}
+        )} */}
         <Text
           style={{ color: focused ? "#0065FF" : "#787878", margin: 8 }}
           className="text-base font-semibold"
@@ -141,7 +118,7 @@ const Profile = () => {
   const [index, setIndex] = useState(0);
   const [routes] = useState([
     { key: "activity", title: "Activity" },
-    { key: "owned", title: "Totes" },
+    { key: "brands", title: "Top Brands" },
   ]);
 
   return (
@@ -208,26 +185,6 @@ const ProfileStats = ({ stats }: { stats: UserStats }) => {
   );
 };
 
-const BrandItemCard = ({ item }: { item: FeedItem }) => {
-  return (
-    <View className="p-6 space-y-4 border-b border-gray-200">
-      <View className="flex-row items-center w-full mb-4">
-        <Image src={item.product.brand.logo} className="w-10 h-10 rounded-lg" />
-        <View className="ml-2">
-          <Text className="font-bold">{item.product.name}</Text>
-          <Text className="text-sm text-zinc-500">
-            {item.product.brand.account}
-          </Text>
-        </View>
-        <View className="ml-auto">
-          <RatingCircle rating={item.product.rating} />
-        </View>
-      </View>
-      <ProductView product={item.product} />
-    </View>
-  );
-};
-
 export const ProfileScreenHeader = ({ side }: { side: string }) => {
   return (
     <>
@@ -245,17 +202,3 @@ export const ProfileScreenHeader = ({ side }: { side: string }) => {
     </>
   );
 };
-
-const styles = StyleSheet.create({
-  newListButton: {
-    color: "#0065FF",
-  },
-  toteItemContainer: {
-    width: "47%",
-    backgroundColor: "#E8E8E8",
-    marginBottom: 20,
-    padding: 20,
-    alignItems: "center",
-    borderRadius: 14,
-  },
-});

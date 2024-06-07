@@ -10,7 +10,7 @@ import Avatar from "@/app/components/Avatar";
 import { ProfileScreenHeader } from "./profile";
 import { CURRENT_USER } from "../lib/types";
 import { ToteScreenHeader } from "./tote";
-import { ExplorerScreenHeader } from "../wip/explorer";
+import BaseScreenHeader from "../components/BaseScreenHeader";
 
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 function TabBarIcon(props: {
@@ -37,9 +37,9 @@ export default function TabLayout() {
         name="feed"
         options={{
           title: "Tote",
-          headerLeft: () => <FeedScreenHeader side="left" />,
-          headerTitle: () => <FeedScreenHeader side="center" />,
-          headerRight: () => <FeedScreenHeader side="right" />,
+          headerLeft: () => <BaseScreenHeader side="left" />,
+          headerTitle: () => <BaseScreenHeader side="center" />,
+          headerRight: () => <BaseScreenHeader side="right" />,
           headerShadowVisible: false, // removes shadow and border from header
           tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
         }}
@@ -48,9 +48,9 @@ export default function TabLayout() {
         name="tote"
         options={{
           title: "Tote",
-          headerLeft: () => <ToteScreenHeader side="left" />,
-          headerTitle: () => <ToteScreenHeader side="center" />,
-          headerRight: () => <ToteScreenHeader side="right" />,
+          headerLeft: () => <BaseScreenHeader side="left" />,
+          headerTitle: () => <BaseScreenHeader side="center" />,
+          headerRight: () => <BaseScreenHeader side="right" />,
           headerShadowVisible: false,
           tabBarIcon: ({ color }) => (
             <TabBarIcon name="shopping-bag" color={color} />
@@ -61,6 +61,9 @@ export default function TabLayout() {
         name="search"
         options={{
           title: "Search",
+          headerLeft: () => <BaseScreenHeader side="left" />,
+          headerTitle: () => <BaseScreenHeader side="center" />,
+          headerRight: () => <BaseScreenHeader side="right" />,
           headerShadowVisible: false,
           tabBarIcon: ({ color }) => <TabBarIcon name="search" color={color} />,
         }}
@@ -91,9 +94,9 @@ export default function TabLayout() {
         options={{
           title: "Profile",
           headerShadowVisible: false,
-          headerLeft: () => <ProfileScreenHeader side="left" />,
-          headerTitle: () => <ProfileScreenHeader side="center" />,
-          headerRight: () => <ProfileScreenHeader side="right" />,
+          headerLeft: () => <BaseScreenHeader side="left" />,
+          headerTitle: () => <BaseScreenHeader side="center" />,
+          headerRight: () => <BaseScreenHeader side="right" />,
           tabBarIcon: () => <Avatar src={CURRENT_USER.avatar} size="sm" />,
         }}
       />

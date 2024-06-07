@@ -37,4 +37,6 @@ export const formatRelativeDate = (date: Date) => {
   }
 };
 
-export default formatRelativeDate;
+export const getFirstName = (name: string) => {
+  return name.split(" ")[0];
+};

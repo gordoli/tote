@@ -9,6 +9,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import { SceneMap, TabBar, TabView } from "react-native-tab-view";
 import { useState } from "react";
 import { TextInput } from "react-native-gesture-handler";
+import ProductCard from "../components/ProductCard";
 
 // Tote Tabs
 const MyProducts = () => {
@@ -26,7 +27,7 @@ const MyProducts = () => {
       </View>
 
       {DUMMY_PRODUCTS.map((product, i: number) => (
-        <ToteProductCard key={i} product={product} />
+        <ProductCard key={i} product={product} />
       ))}
     </ScrollView>
   );
@@ -47,7 +48,7 @@ const MyWishlist = () => {
       </View>
 
       {DUMMY_PRODUCTS.map((product, i: number) => (
-        <ToteProductCard key={i} product={product} />
+        <ProductCard key={i} product={product} />
       ))}
     </ScrollView>
   );
@@ -65,7 +66,7 @@ const renderTabBar = (props: any) => (
     style={{ backgroundColor: "white" }}
     renderLabel={({ route, focused, color }) => (
       <View className="flex-row items-center justify-between">
-        {route.key === "myProducts" ? (
+        {/* {route.key === "myProducts" ? (
           <FontAwesome
             name="shopping-bag"
             color={focused ? "#0065FF" : "#787878"}
@@ -77,7 +78,7 @@ const renderTabBar = (props: any) => (
             color={focused ? "#0065FF" : "#787878"}
             size={16}
           />
-        )}
+        )} */}
         <Text
           style={{ color: focused ? "#0065FF" : "#787878", margin: 8 }}
           className="text-base font-semibold"
@@ -110,26 +111,6 @@ const Tote = () => {
 
 export default Tote;
 
-const ToteProductCard = ({ product }: { product: Product }) => {
-  return (
-    <View className="p-6 border-b border-gray-200">
-      <View className="flex-row items-center mb-4">
-        <Image src={product.brand.logo} className="w-8 h-8 mr-2 rounded" />
-        <View>
-          <Text className="font-semibold">{product.brand.name}</Text>
-          <Text className="text-sm text-muted">{product.category}</Text>
-        </View>
-
-        <View className="!ml-auto">
-          <RatingCircle rating={product.rating} />
-        </View>
-      </View>
-
-      <ProductView product={product} />
-    </View>
-  );
-};
-
 export const ToteScreenHeader = ({ side }: { side: string }) => {
   return (
     <>
@@ -141,7 +122,7 @@ export const ToteScreenHeader = ({ side }: { side: string }) => {
 
       {side === "right" && (
         <View className="flex-row items-center px-4 space-x-2">
-          <FontAwesome name="plus-circle" size={20} />
+          {/* <FontAwesome name="plus-circle" size={20} /> */}
           <FontAwesome name="bell-o" size={20} />
         </View>
       )}

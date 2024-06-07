@@ -1,10 +1,16 @@
 import * as React from "react";
-import { Stack } from 'expo-router';
+import { Stack } from "expo-router";
 import { TabView, SceneMap, TabBar } from "react-native-tab-view";
 import { useWindowDimensions, ScrollView } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { StyleSheet, Image, Dimensions, TouchableOpacity } from "react-native";
-import { Ionicons, Entypo, FontAwesome, AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
+import {
+  Ionicons,
+  Entypo,
+  FontAwesome,
+  AntDesign,
+  MaterialCommunityIcons,
+} from "@expo/vector-icons";
 
 import RankModals from "./rankModals";
 import Avatar from "@/app/components/Avatar";
@@ -24,13 +30,13 @@ const FriendsTab = () => {
   const [feed] = React.useState<FeedItem[]>(DUMMY_FEED_ITEMS);
   return (
     <ScrollView className="h-screen">
-    <View className="flex-1 bg-white">
-      <View className="mt-2">
-        {feed.map((item, i: number) => (
-          <FriendsItemCard key={i} item={item} />
-        ))}
+      <View className="flex-1 bg-white">
+        <View className="mt-2">
+          {feed.map((item, i: number) => (
+            <FriendsItemCard key={i} item={item} />
+          ))}
+        </View>
       </View>
-    </View>
     </ScrollView>
   );
 };
@@ -50,24 +56,23 @@ const renderTabBar = (props: any) => (
         {route.key === "friends" ? (
           <MaterialCommunityIcons
             name="heart-circle-outline"
-            color={focused ? '#0065FF' : "#787878"}
+            color={focused ? "#0065FF" : "#787878"}
             size={20}
           />
         ) : (
           <MaterialCommunityIcons
             name="fire"
-            color={focused ? '#0065FF' : "#787878"}
+            color={focused ? "#0065FF" : "#787878"}
             size={22}
           />
         )}
         <Text
-          style={{ color: focused ? '#0065FF' : "#787878", margin: 8 }}
+          style={{ color: focused ? "#0065FF" : "#787878", margin: 8 }}
           className="text-base font-semibold"
         >
           {route.title}
         </Text>
       </View>
-      
     )}
   />
 );
@@ -95,28 +100,36 @@ const BrandProfile = () => {
   const buttonsRender = () => {
     return (
       <View className="flex flex-row items-center justify-between my-3">
-        <TouchableOpacity className="flex-row justify-center items-center rounded-lg py-2 bg-gray-200" style={styles.websiteButton}>
-          <Text className="text-sm text-gray-500 px-1">Website</Text>
+        <TouchableOpacity
+          className="flex-row items-center justify-center py-2 bg-gray-200 rounded-lg"
+          style={styles.websiteButton}
+        >
+          <Text className="px-1 text-sm text-gray-500">Website</Text>
           <AntDesign name="earth" size={20} color="#787878" />
         </TouchableOpacity>
         <TouchableOpacity
-          className="flex-row justify-center items-center rounded-lg py-2"
+          className="flex-row items-center justify-center py-2 rounded-lg"
           style={styles.rankButton}
           onPress={openModal}
         >
-          <Text className="text-sm text-white font-semibold">Rank</Text>
+          <Text className="text-sm font-semibold text-white">Rank</Text>
           <Entypo name="plus" size={22} color="white" />
         </TouchableOpacity>
       </View>
     );
   };
-  
+
   return (
     <View className="flex-1 bg-white">
       <Stack.Screen
         options={{
           title: "Tote",
-          headerLeft: () => <BrandProfileScreenHeader side="left" onBack={() => router.back()} />,
+          headerLeft: () => (
+            <BrandProfileScreenHeader
+              side="left"
+              onBack={() => router.back()}
+            />
+          ),
           headerTitle: () => <BrandProfileScreenHeader side="center" />,
           headerRight: () => <BrandProfileScreenHeader side="right" />,
           headerShadowVisible: false,
@@ -124,48 +137,47 @@ const BrandProfile = () => {
         }}
       />
       {/* <ScrollView className="h-screen"> */}
-        <Image src={brand.cover} className="w-full h-1/5" resizeMode="cover"/>
-        <View className="px-4 space-y-4 flex-row items-center w-full">
-          <View className="h-full" style={styles.logoLeft}>
-            <View className="p-1" style={styles.logoPhotoContainer}>
-              <Image
-                src={brand.logo}
-                resizeMode="contain"
-                style={styles.logoPhoto}
-              />
-            </View>
-            
-          </View>
-          <View className="flex-row items-center mb-4"  style={styles.brandNameContainer}>
-            <View className="ml-2">
-              <View className="flex-row items-center space-x-1">
-                <Text className="font-bold text-2xl">{brand.name}</Text>
-              </View>
-              <Text className="text-base text-zinc-500">
-                {brand.account}
-              </Text>
-            </View>
-            <View className="ml-auto">
-              <FontAwesome name="bookmark-o" size={20} />
-            </View>
+      <Image src={brand.cover} className="w-full h-1/5" resizeMode="cover" />
+      <View className="flex-row items-center w-full px-4 space-y-4">
+        <View className="h-full" style={styles.logoLeft}>
+          <View className="p-1" style={styles.logoPhotoContainer}>
+            <Image
+              src={brand.logo}
+              resizeMode="contain"
+              style={styles.logoPhoto}
+            />
           </View>
         </View>
-        <View className="px-4 space-y-4 w-full">
-          <RatingElements />
-          {buttonsRender()}
+        <View
+          className="flex-row items-center mb-4"
+          style={styles.brandNameContainer}
+        >
+          <View className="ml-2">
+            <View className="flex-row items-center space-x-1">
+              <Text className="text-2xl font-bold">{brand.name}</Text>
+            </View>
+            <Text className="text-base text-zinc-500">{brand.account}</Text>
+          </View>
+          <View className="ml-auto">
+            <FontAwesome name="bookmark-o" size={20} />
+          </View>
         </View>
-        <TabView
-          navigationState={{ index, routes }}
-          renderScene={renderScene}
-          onIndexChange={setIndex}
-          initialLayout={{ width: layout.width }}
-          renderTabBar={renderTabBar}
-        />
-      {/* </ScrollView> */}
-      <RankModals
-        cancelModal={cancelModal}
-        modalizeRef={modalizeModal}
+      </View>
+
+      <View className="w-full px-4 space-y-4">
+        <RatingElements />
+        {buttonsRender()}
+      </View>
+
+      <TabView
+        navigationState={{ index, routes }}
+        renderScene={renderScene}
+        onIndexChange={setIndex}
+        initialLayout={{ width: layout.width }}
+        renderTabBar={renderTabBar}
       />
+      {/* </ScrollView> */}
+      <RankModals cancelModal={cancelModal} modalizeRef={modalizeModal} />
     </View>
   );
 };
@@ -175,15 +187,24 @@ export default BrandProfile;
 const RatingElements = () => {
   return (
     <View className="flex flex-row items-center justify-around my-3">
-      <View className="items-center border border-gray-200 rounded-lg" style={styles.ratingElement}>
+      <View
+        className="items-center border border-gray-200 rounded-lg"
+        style={styles.ratingElement}
+      >
         <Text className="text-sm">My rating</Text>
         <Text className="font-semibold">8.4</Text>
       </View>
-      <View className="items-center border border-gray-200 rounded-lg" style={styles.ratingElement}>
+      <View
+        className="items-center border border-gray-200 rounded-lg"
+        style={styles.ratingElement}
+      >
         <Text className="text-sm">Friends rating</Text>
         <Text className="font-semibold">7.7</Text>
       </View>
-      <View className="items-center border border-gray-200 rounded-lg" style={styles.ratingElement}>
+      <View
+        className="items-center border border-gray-200 rounded-lg"
+        style={styles.ratingElement}
+      >
         <Text className="text-sm">Overall rating</Text>
         <Text className="font-semibold">8.2</Text>
       </View>
@@ -209,7 +230,13 @@ const FriendsItemCard = ({ item }: { item: FeedItem }) => {
   );
 };
 
-const BrandProfileScreenHeader = ({ side, onBack }: { side: string, onBack?: () => void }) => {
+const BrandProfileScreenHeader = ({
+  side,
+  onBack,
+}: {
+  side: string;
+  onBack?: () => void;
+}) => {
   return (
     <>
       {side === "left" && (
@@ -242,7 +269,7 @@ const styles = StyleSheet.create({
   },
   logoLeft: {
     width: "30%",
-    position: "relative"
+    position: "relative",
   },
   logoPhotoContainer: {
     position: "absolute",
@@ -250,9 +277,8 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     zIndex: 99,
     width: "100%",
-
   },
-  brandNameContainer: {width: "70%"},
+  brandNameContainer: { width: "70%" },
   ratingElement: {
     width: "30%",
     paddingVertical: 10,
@@ -262,6 +288,6 @@ const styles = StyleSheet.create({
   },
   rankButton: {
     width: "48%",
-    backgroundColor: '#0065FF',
-  }
+    backgroundColor: "#0065FF",
+  },
 });

@@ -1,9 +1,17 @@
 export enum CATEGORY {
-  Sneakers = "Sneakers",
+  Shoes = "Shoes",
   Tops = "Tops",
   Bottoms = "Bottoms",
   Accessories = "Accessories",
-  Jeans = "Jeans",
-  Jackets = "Jackets",
-  Sweatshirts = "Sweatshirts",
+  Dress = "Jeans",
+  Outerwear = "Jackets",
 }
+
+export const CATEGORIES = [
+  CATEGORY.Shoes,
+  CATEGORY.Tops,
+  CATEGORY.Bottoms,
+  CATEGORY.Accessories,
+  CATEGORY.Dress,
+  CATEGORY.Outerwear,
+];

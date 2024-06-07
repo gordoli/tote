@@ -7,7 +7,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import ToteTitle from "@/app/components/ToteTitle";
 import ProductView from "@/app/components/ProductView";
 import RatingCircle from "../components/RatingCircle";
-import formatRelativeDate from "../lib/helpers";
+import { getFirstName, formatRelativeDate } from "../lib/helpers";
 import NotificationBell from "../components/NotificationBell";
 import Toast from "react-native-toast-message";
 import { TouchableOpacity } from "react-native-gesture-handler";
@@ -44,13 +44,15 @@ const FeedItemCard = ({ item }: { item: FeedItem }) => {
 
   return (
     <View className="p-6 space-y-4 border-b border-gray-200">
-      <View className="flex-row items-center w-full mb-4">
+      <View className="flex-row items-start w-full mb-4">
         <Avatar src={item.user.avatar} />
 
         <View className="ml-2">
-          <View className="flex-row items-center space-x-1">
-            <Text className="font-bold">{item.user.name}</Text>
+          <View className="flex-row flex-wrap items-center gap-1">
+            <Text className="font-bold">{getFirstName(item.user.name)}</Text>
             <Text>{item.content}</Text>
+            <Text className="font-bold">{item.product.category}</Text>
+            <Text>from</Text>
             <Text className="font-bold">{item.product.brand.name}</Text>
           </View>
 
@@ -60,13 +62,12 @@ const FeedItemCard = ({ item }: { item: FeedItem }) => {
         </View>
 
         <View className="flex-row items-center ml-auto">
-          <TouchableOpacity onPress={onBookmarkClick}>
+          {/* <TouchableOpacity onPress={onBookmarkClick} className="mr-2">
             <FontAwesome
               name={wishlisted ? "bookmark" : "bookmark-o"}
               size={20}
-              className="mr-2"
             />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           <RatingCircle rating={item.product.rating} />
         </View>
       </View>
@@ -74,10 +75,16 @@ const FeedItemCard = ({ item }: { item: FeedItem }) => {
       <ProductView product={item.product} />
 
       {/* Don't need until phase 2 with social functions */}
-      {/* <View className="flex-row items-center w-full space-x-2">
+      <View className="flex-row items-center w-full space-x-2">
+        <TouchableOpacity onPress={onBookmarkClick}>
+          <FontAwesome
+            name={wishlisted ? "bookmark" : "bookmark-o"}
+            size={20}
+          />
+        </TouchableOpacity>
         <FontAwesome name="heart-o" size={20} />
-        <FontAwesome name="comment-o" size={20} />
-      </View> */}
+        {/* <FontAwesome name="comment-o" size={20} /> */}
+      </View>
     </View>
   );
 };
@@ -93,7 +100,7 @@ export const FeedScreenHeader = ({ side }: { side: string }) => {
 
       {side === "right" && (
         <View className="flex-row items-center px-4 space-x-2">
-          <FontAwesome name="search" size={20} />
+          {/* <FontAwesome name="search" size={20} /> */}
           <NotificationBell />
         </View>
       )}

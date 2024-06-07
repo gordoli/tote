@@ -9,7 +9,7 @@ import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import Toast, { BaseToast, ErrorToast } from "react-native-toast-message";
+import Toast, { ErrorToast } from "react-native-toast-message";
 
 import { useColorScheme } from "@/components/useColorScheme";
 import { Text, View } from "./components/Themed";

@@ -104,7 +104,7 @@ export const DUMMY_PRODUCTS: Product[] = [
   {
     name: "Air Max",
     brand: DUMMY_BRANDS[0],
-    category: CATEGORY.Sneakers,
+    category: CATEGORY.Shoes,
     createdTime: new Date(),
     rating: 8.5,
     image: "https://i.ibb.co/LgVWqh6/nike-airmax.png",
@@ -112,7 +112,7 @@ export const DUMMY_PRODUCTS: Product[] = [
   {
     name: "Straight Leg Jeans",
     brand: DUMMY_BRANDS[5],
-    category: CATEGORY.Jeans,
+    category: CATEGORY.Bottoms,
     createdTime: new Date(),
     rating: 7.6,
     image: "https://i.ibb.co/Y8NLFb9/levi-straight-leg.png",
@@ -120,7 +120,7 @@ export const DUMMY_PRODUCTS: Product[] = [
   {
     name: "Wool Runners",
     brand: DUMMY_BRANDS[4],
-    category: CATEGORY.Sneakers,
+    category: CATEGORY.Shoes,
     createdTime: new Date(),
     rating: 6.5,
     image: "https://i.ibb.co/T12H1zX/allbirds-wool.png",
@@ -128,7 +128,7 @@ export const DUMMY_PRODUCTS: Product[] = [
   {
     name: "Mach 5",
     brand: DUMMY_BRANDS[2],
-    category: CATEGORY.Sneakers,
+    category: CATEGORY.Shoes,
     createdTime: new Date(),
     rating: 9.6,
     image: "https://i.ibb.co/KFFDqWx/hoka-mach.png",
@@ -136,7 +136,7 @@ export const DUMMY_PRODUCTS: Product[] = [
   {
     name: "Sambas",
     brand: DUMMY_BRANDS[1],
-    category: CATEGORY.Sneakers,
+    category: CATEGORY.Shoes,
     createdTime: new Date(),
     rating: 7.9,
     image: "https://i.ibb.co/8zXW5SN/adidas-sambas.png",
@@ -144,7 +144,7 @@ export const DUMMY_PRODUCTS: Product[] = [
   {
     name: "Dark Denim Strauss",
     brand: DUMMY_BRANDS[6],
-    category: CATEGORY.Jeans,
+    category: CATEGORY.Bottoms,
     createdTime: new Date(),
     rating: 4.2,
     image: "https://i.ibb.co/ydnsbvh/everlane-denim.png",
@@ -152,7 +152,7 @@ export const DUMMY_PRODUCTS: Product[] = [
   {
     name: "Green Wool Jacket",
     brand: DUMMY_BRANDS[5],
-    category: CATEGORY.Jackets,
+    category: CATEGORY.Outerwear,
     createdTime: new Date(),
     rating: 6.8,
     image: "https://i.ibb.co/k139rjZ/everlane-jacket.png",
@@ -160,7 +160,7 @@ export const DUMMY_PRODUCTS: Product[] = [
   {
     name: "Beige Button Jacket",
     brand: DUMMY_BRANDS[5],
-    category: CATEGORY.Jackets,
+    category: CATEGORY.Outerwear,
     createdTime: new Date(),
     rating: 7.3,
     image: "https://i.ibb.co/vvkrLLk/everlane-jacket-beige.png",
@@ -168,7 +168,7 @@ export const DUMMY_PRODUCTS: Product[] = [
   {
     name: "Taupe Clogs",
     brand: DUMMY_BRANDS[4],
-    category: CATEGORY.Jackets,
+    category: CATEGORY.Outerwear,
     createdTime: new Date(),
     rating: 5.5,
     image: "https://i.ibb.co/JpLDxzt/birkenstocks.png",
@@ -402,5 +402,58 @@ export const DUMMY_CUSTOM_LISTS: CustomList[] = [
     name: "Wedding Attire",
     userId: "8",
     products: [DUMMY_PRODUCTS[6], DUMMY_PRODUCTS[7], DUMMY_PRODUCTS[8]],
+  },
+];
+
+export type Notification = {
+  id: number;
+  type: string;
+  sender: User;
+  isRead: boolean;
+  createdTime: Date;
+};
+
+export const DUMMY_NOTIFICATIONS: Notification[] = [
+  {
+    id: 1,
+    type: "follow",
+    sender: DUMMY_USER[Math.floor(Math.random() * DUMMY_USER.length)],
+    isRead: false,
+    createdTime: new Date(Date.now() - 5 * 60 * 1000),
+  },
+  {
+    id: 2,
+    type: "follow",
+    sender: DUMMY_USER[Math.floor(Math.random() * DUMMY_USER.length)],
+    isRead: true,
+    createdTime: new Date(Date.now() - 15 * 60 * 1000),
+  },
+  {
+    id: 3,
+    type: "follow",
+    sender: DUMMY_USER[Math.floor(Math.random() * DUMMY_USER.length)],
+    isRead: true,
+    createdTime: new Date(Date.now() - 25 * 60 * 1000),
+  },
+  {
+    id: 4,
+    type: "follow",
+    sender: DUMMY_USER[Math.floor(Math.random() * DUMMY_USER.length)],
+    isRead: false,
+    createdTime: new Date(Date.now() - 35 * 60 * 1000),
+  },
+  {
+    id: 5,
+    type: "follow",
+    sender: DUMMY_USER[Math.floor(Math.random() * DUMMY_USER.length)],
+    isRead: true,
+    createdTime: new Date(Date.now() - 45 * 60 * 1000),
+  },
+  {
+    id: 6,
+    type: "follow",
+    sender: DUMMY_USER[Math.floor(Math.random() * DUMMY_USER.length)],
+    isRead: false,
+    createdTime: new Date(Date.now() - 55 * 60 * 1000),
   },
 ];
