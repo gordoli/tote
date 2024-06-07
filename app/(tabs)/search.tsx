@@ -13,6 +13,7 @@ import { View, Text } from "@/app/components/Themed";
 import { Brand, DUMMY_BRANDS, DUMMY_USER, User } from "../lib/types";
 import { useState } from "react";
 import Avatar from "../components/Avatar";
+import FollowButton from "../components/FollowButton";
 
 const BrandsList = () => {
   const [text, onChangeText] = useState("");
@@ -77,6 +78,8 @@ const MembersList = () => {
                 <Text className="text-sm text-muted">{user.username}</Text>
               </View>
             </TouchableOpacity>
+
+            <FollowButton />
             <View className="!ml-auto flex-row items-center items-end space-x-2">
               <FontAwesome name="plus-circle" size={20} />
             </View>
