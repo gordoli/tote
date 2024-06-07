@@ -89,21 +89,21 @@ const FeedItemCard = ({ item }: { item: FeedItem }) => {
   );
 };
 
-export const FeedScreenHeader = ({ side }: { side: string }) => {
-  return (
-    <>
-      {side === "left" && (
-        <View className="flex-row items-center px-4">
-          <ToteTitle />
-        </View>
-      )}
+// export const FeedScreenHeader = ({ side }: { side: string }) => {
+//   return (
+//     <>
+//       {side === "left" && (
+//         <View className="flex-row items-center px-4">
+//           <ToteTitle />
+//         </View>
+//       )}
 
-      {side === "right" && (
-        <View className="flex-row items-center px-4 space-x-2">
-          {/* <FontAwesome name="search" size={20} /> */}
-          <NotificationBell />
-        </View>
-      )}
-    </>
-  );
-};
+//       {side === "right" && (
+//         <View className="flex-row items-center px-4 space-x-2">
+//           {/* <FontAwesome name="search" size={20} /> */}
+//           <NotificationBell />
+//         </View>
+//       )}
+//     </>
+//   );
+// };

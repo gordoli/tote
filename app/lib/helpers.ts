@@ -37,11 +37,9 @@ export const formatRelativeDate = (date: Date) => {
   }
 };
 
-<<<<<<< HEAD
 export const getFirstName = (name: string) => {
   return name.split(" ")[0];
 };
-=======
 const regexEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 
 export const EmailValidation = (value: string) => {
@@ -52,6 +50,3 @@ export const EmailValidation = (value: string) => {
   }
   return "";
 };
-
-export default formatRelativeDate;
->>>>>>> a122362408497e4d1b98e7c96cca24a9cf40148b

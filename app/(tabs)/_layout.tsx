@@ -1,15 +1,12 @@
 import React from "react";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import { Tabs, Redirect } from "expo-router";
+import { Tabs } from "expo-router";
 
 import Colors from "@/constants/Colors";
 import { useColorScheme } from "@/components/useColorScheme";
 import { useClientOnlyValue } from "@/components/useClientOnlyValue";
-import { FeedScreenHeader } from "./feed";
 import Avatar from "@/app/components/Avatar";
-import { ProfileScreenHeader } from "./profile";
 import { CURRENT_USER } from "../lib/types";
-import { ToteScreenHeader } from "./tote";
 import BaseScreenHeader from "../components/BaseScreenHeader";
 
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
