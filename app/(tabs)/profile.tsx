@@ -24,9 +24,10 @@ import {
   UserStats,
   DUMMY_BRANDS,
   Brand,
+  User,
 } from "@/app/lib/types";
 import ProductCard from "../components/ProductCard";
-import { useRouter } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 
 // Profile Tabs
 const ActivityList = () => {
@@ -114,6 +115,9 @@ const renderTabBar = (props: any) => (
 );
 
 const Profile = () => {
+  const user: User = useLocalSearchParams();
+  const currUser = user && user.id ? user : CURRENT_USER;
+
   const layout = useWindowDimensions();
   const [index, setIndex] = useState(0);
   const [routes] = useState([
@@ -124,14 +128,14 @@ const Profile = () => {
   return (
     <View className="flex-1">
       <View className="flex-col items-center space-y-4">
-        <Avatar src={CURRENT_USER.avatar} size="xl" />
+        <Avatar src={currUser.avatar} size="xl" />
 
         <View>
-          <Text className="font-semibold">{CURRENT_USER.name}</Text>
-          <Text className="text-muted">@{CURRENT_USER.username}</Text>
+          <Text className="font-semibold">{currUser.name}</Text>
+          <Text className="text-muted">@{currUser.username}</Text>
         </View>
 
-        <ProfileStats stats={CURRENT_USER.stats} />
+        <ProfileStats stats={currUser.stats} />
 
         <View className="flex-row items-center justify-center space-x-4">
           <TouchableOpacity

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { View, Text } from "@/app/components/Themed";
 import Avatar from "@/app/components/Avatar";
-import { DUMMY_FEED_ITEMS, FeedItem } from "@/app/lib/types";
+import { Brand, DUMMY_FEED_ITEMS, FeedItem, User } from "@/app/lib/types";
 import { Button, ScrollView } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import ToteTitle from "@/app/components/ToteTitle";
@@ -11,6 +11,7 @@ import { getFirstName, formatRelativeDate } from "../lib/helpers";
 import NotificationBell from "../components/NotificationBell";
 import Toast from "react-native-toast-message";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { useRouter } from "expo-router";
 
 const Feed = () => {
   const [feed, setFeed] = useState<FeedItem[]>(DUMMY_FEED_ITEMS);
@@ -27,6 +28,7 @@ const Feed = () => {
 export default Feed;
 
 const FeedItemCard = ({ item }: { item: FeedItem }) => {
+  const router = useRouter();
   const [wishlisted, setWishlisted] = useState(false);
 
   const showToast = () => {
@@ -42,10 +44,26 @@ const FeedItemCard = ({ item }: { item: FeedItem }) => {
     showToast();
   };
 
+  const onGoToBrandProfile = (brand: Brand) => {
+    router.navigate({
+      pathname: "/screens/brand",
+      params: brand,
+    });
+  };
+
+  const onUserClick = (user: User) => {
+    router.navigate({
+      pathname: "/(tabs)/profile",
+      params: user,
+    });
+  };
+
   return (
     <View className="p-6 space-y-4 border-b border-gray-200">
       <View className="flex-row items-start w-full mb-4">
-        <Avatar src={item.user.avatar} />
+        <TouchableOpacity onPress={() => onUserClick(item.user)}>
+          <Avatar src={item.user.avatar} />
+        </TouchableOpacity>
 
         <View className="ml-2">
           <View className="flex-row flex-wrap items-center gap-1">

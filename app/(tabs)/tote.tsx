@@ -1,14 +1,11 @@
-import { View, Text } from "@/app/components/Themed";
-import { DUMMY_PRODUCTS, Product } from "../lib/types";
-import { Image, useWindowDimensions } from "react-native";
-import ProductView from "../components/ProductView";
-import RatingCircle from "../components/RatingCircle";
+import { View, Text, TextInput } from "@/app/components/Themed";
+import { DUMMY_PRODUCTS } from "../lib/types";
+import { useWindowDimensions } from "react-native";
 import { ScrollView } from "react-native";
 import ToteTitle from "../components/ToteTitle";
 import { FontAwesome } from "@expo/vector-icons";
 import { SceneMap, TabBar, TabView } from "react-native-tab-view";
 import { useState } from "react";
-import { TextInput } from "react-native-gesture-handler";
 import ProductCard from "../components/ProductCard";
 
 // Tote Tabs

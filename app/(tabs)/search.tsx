@@ -70,7 +70,7 @@ const MembersList = () => {
       />
       <View className="mt-2">
         {DUMMY_USER.map((user: User, i: number) => (
-          <View key={i} className="flex-row items-center py-2">
+          <View key={i} className="flex-row items-center justify-between py-2">
             <TouchableOpacity className="flex-row items-center">
               <Avatar src={user.avatar} size="sm" />
               <View className="ml-2">
@@ -80,9 +80,6 @@ const MembersList = () => {
             </TouchableOpacity>
 
             <FollowButton />
-            <View className="!ml-auto flex-row items-center items-end space-x-2">
-              <FontAwesome name="plus-circle" size={20} />
-            </View>
           </View>
         ))}
       </View>
