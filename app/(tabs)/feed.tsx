@@ -71,7 +71,11 @@ const FeedItemCard = ({ item }: { item: FeedItem }) => {
             <Text>{item.content}</Text>
             <Text className="font-bold">{item.product.category}</Text>
             <Text>from</Text>
-            <Text className="font-bold">{item.product.brand.name}</Text>
+            <TouchableOpacity
+              onPress={() => onGoToBrandProfile(item.product.brand)}
+            >
+              <Text className="font-bold">{item.product.brand.name}</Text>
+            </TouchableOpacity>
           </View>
 
           <Text className="text-sm text-muted">
@@ -80,12 +84,6 @@ const FeedItemCard = ({ item }: { item: FeedItem }) => {
         </View>
 
         <View className="flex-row items-center ml-auto">
-          {/* <TouchableOpacity onPress={onBookmarkClick} className="mr-2">
-            <FontAwesome
-              name={wishlisted ? "bookmark" : "bookmark-o"}
-              size={20}
-            />
-          </TouchableOpacity> */}
           <RatingCircle rating={item.product.rating} />
         </View>
       </View>
