@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SceneMap, TabBar, TabView } from "react-native-tab-view";
 import {
   TouchableOpacity,
@@ -6,13 +6,7 @@ import {
   ScrollView,
   Image,
 } from "react-native";
-import {
-  FontAwesome,
-  Feather,
-  MaterialCommunityIcons,
-  Entypo,
-  Ionicons,
-} from "@expo/vector-icons";
+import { FontAwesome, Feather } from "@expo/vector-icons";
 
 import Avatar from "../components/Avatar";
 import ToteTitle from "../components/ToteTitle";
@@ -28,6 +22,7 @@ import {
 } from "@/app/lib/types";
 import ProductCard from "../components/ProductCard";
 import { useLocalSearchParams, useRouter } from "expo-router";
+import { get } from "../lib/api";
 
 // Profile Tabs
 const ActivityList = () => {
@@ -124,6 +119,22 @@ const Profile = () => {
     { key: "activity", title: "Activity" },
     { key: "brands", title: "Top Brands" },
   ]);
+
+  const [data, setData] = useState(null);
+  const [error, setError] = useState(null);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const result = await get("/user/me");
+        alert("Data fetched: " + JSON.stringify(result));
+        setData(result);
+      } catch (err: any) {
+        setError(err.message);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <View className="flex-1">
