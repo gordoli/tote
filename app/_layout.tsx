@@ -7,12 +7,15 @@ import {
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import Toast, { ErrorToast } from "react-native-toast-message";
 
+import Storage from "../app/lib/storage";
+import { APP_CONST } from "../app/lib/const";
 import { useColorScheme } from "@/components/useColorScheme";
 import { Text, View } from "./components/Themed";
+import { AuthContext } from "../app/lib/globalContext";
 
 /*
   1. Create the config
@@ -76,6 +79,17 @@ export default function RootLayout() {
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
     ...FontAwesome.font,
   });
+  const [session, setSession] = useState<string | null>(null);
+
+  useEffect(() => {
+    const getUser = async () => {
+      const userItem = await Storage.getItem(APP_CONST.AUTH);
+      if (userItem && userItem.accessToken) {
+        setSession(userItem.accessToken.token);
+      }
+    };
+    getUser();
+  }, []);
 
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
   useEffect(() => {
@@ -92,7 +106,22 @@ export default function RootLayout() {
     return null;
   }
 
-  return <RootLayoutNav />;
+  return (
+    <AuthContext.Provider
+      value={{
+        login: (token) => {
+          setSession(token);
+        },
+        logout: async () => {
+          await Storage.setItem(APP_CONST.AUTH, null);
+          setSession(null);
+        },
+        session,
+      }}
+    >
+      <RootLayoutNav />
+    </AuthContext.Provider>
+  )
 }
 
 function RootLayoutNav() {

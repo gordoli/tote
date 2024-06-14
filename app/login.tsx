@@ -2,16 +2,18 @@ import { useState } from "react";
 import { useRouter, Stack } from 'expo-router';
 import { AntDesign, FontAwesome } from "@expo/vector-icons";
 import { View, Text } from "@/app/components/Themed";
-import { KeyboardAvoidingView, ViewStyle, TextInput, TouchableOpacity, Platform, TouchableWithoutFeedback, Keyboard } from "react-native";
+import { KeyboardAvoidingView, ViewStyle, TextInput, TouchableOpacity, Platform, TouchableWithoutFeedback, Keyboard, Alert } from "react-native";
 
-import { EmailValidation } from "./lib/helpers";
+import { useLogin } from "./hooks/useLogin";
+import { LogInForm } from "./lib/types";
+import LoadingScreen from "../app/components/LoadingScreen";
 
 const Login = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [emailError, setEmailError] = useState<string>("");
   const [isShowPassword, setIsShowPassword] = useState<boolean>(true);
   const router = useRouter();
+  const {loading, formErrors, onLogin} = useLogin();
 
   const onGoToSignUp = () => {
     router.replace({
@@ -19,13 +21,23 @@ const Login = () => {
     });
   };
 
-  const onLogin = () => {
-    setEmailError(EmailValidation(email));
+  const handleLogin = () => {
+    const param: LogInForm = {
+      email,
+      password,
+    }
+    onLogin(param, (message: string) => {
+      Alert.alert(message);
+    });
   };
 
   const onShowPassword = () => {
     setIsShowPassword(!isShowPassword);
   };
+
+  if (loading) {
+    return <LoadingScreen />;
+  }
 
   return (
     <KeyboardAvoidingView
@@ -50,29 +62,30 @@ const Login = () => {
               onChangeText={setEmail}
               value={email}
               placeholder="Enter your email"
-              className={`w-full h-10 p-2 bg-gray-200 rounded-lg ${emailError ? '' : 'mb-4'}`}
+              className={`w-full h-10 p-2 bg-gray-200 rounded-lg ${formErrors.email ? '' : 'mb-4'}`}
             />
-            {emailError && <Text className="pb-4 text-red-600">{emailError}</Text>}
+            {formErrors.email && <Text className="pb-4 text-red-600">{formErrors.email}</Text>}
             <Text className="pb-1">Password</Text>
             <View className="w-full relative">
               <TextInput
                 onChangeText={setPassword}
                 value={password}
                 placeholder="Enter your password"
-                className="w-full h-10 p-2 bg-gray-200 rounded-lg"
+                className={`w-full h-10 p-2 bg-gray-200 rounded-lg ${formErrors.email ? '' : 'mb-4'}`}
                 secureTextEntry={isShowPassword}
               />
               <TouchableOpacity style={styles.eyePassword} onPress={onShowPassword}>
                 <FontAwesome name={`${isShowPassword ? 'eye-slash' : 'eye'}`} size={20} color="#787878" />
               </TouchableOpacity>
             </View>
+            {formErrors.password && <Text className="pb-4 text-red-600">{formErrors.password}</Text>}
             <View className="w-full items-end">
               <Text className="pb-10 pt-1">Forgot Password?</Text>
             </View>
             <TouchableOpacity
               className="flex-row justify-center items-center rounded-lg py-3"
               style={styles.loginButton}
-              onPress={onLogin}
+              onPress={handleLogin}
             >
               <Text className="text-sm text-white font-semibold">LOGIN</Text>
             </TouchableOpacity>

@@ -457,3 +457,27 @@ export const DUMMY_NOTIFICATIONS: Notification[] = [
     createdTime: new Date(Date.now() - 55 * 60 * 1000),
   },
 ];
+
+export type RegistrationFormError = {
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+};
+
+export type RegistrationForm = {
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+};
+
+export type LogInFormError = {
+  email: string;
+  password: string;
+};
+
+export type LogInForm = {
+  email: string;
+  password: string;
+};

@@ -4,16 +4,18 @@ import { useRouter, Stack } from 'expo-router';
 import { View, Text } from "@/app/components/Themed";
 import { Keyboard, Platform, ViewStyle, TextInput, TouchableOpacity, KeyboardAvoidingView, TouchableWithoutFeedback } from "react-native";
 
-import { EmailValidation } from "./lib/helpers";
+import { useRegister } from "./hooks/useRegister";
+import { RegistrationForm } from "./lib/types";
+import LoadingScreen from "../app/components/LoadingScreen";
 
 const SignUp = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
-  const [emailError, setEmailError] = useState<string>("");
   const [isShowPassword, setIsShowPassword] = useState<boolean>(true);
   const router = useRouter();
+  const {loading, formErrors, register} = useRegister();
 
   const onGoToLogIn = () => {
     router.replace({
@@ -22,16 +24,24 @@ const SignUp = () => {
   };
 
   const onSignUp = () => {
-    const error = EmailValidation(email);
-    setEmailError(error);
-    if (!error) {
-      onGoToLogIn();
+    const param: RegistrationForm = {
+      email,
+      password,
+      firstName,
+      lastName,
     }
+    register(param, () => {
+      onGoToLogIn();
+    });
   };
 
   const onShowPassword = () => {
     setIsShowPassword(!isShowPassword);
   };
+
+  if (loading) {
+    return <LoadingScreen />;
+  }
 
   return (
     <KeyboardAvoidingView
@@ -52,41 +62,44 @@ const SignUp = () => {
             <Text className="text-gray-500">Create an account</Text>
           </View>
           <View>
+            <Text className="pb-1">First name</Text>
+            <TextInput
+              onChangeText={setFirstName}
+              value={firstName}
+              placeholder="Enter your first name"
+              className={`w-full h-10 p-2 bg-gray-200 rounded-lg ${formErrors.password ? '' : 'mb-4'}`}
+            />
+            {formErrors.firstName && <Text className="pb-4 text-red-600">{formErrors.firstName}</Text>}
+            <Text className="pb-1">Last name</Text>
+            <TextInput
+              onChangeText={setLastName}
+              value={lastName}
+              placeholder="Enter your last name"
+              className={`w-full h-10 p-2 bg-gray-200 rounded-lg ${formErrors.password ? '' : 'mb-4'}`}
+            />
+            {formErrors.lastName && <Text className="pb-4 text-red-600">{formErrors.lastName}</Text>}
             <Text className="pb-1">Email</Text>
             <TextInput
               onChangeText={setEmail}
               value={email}
               placeholder="Enter your email"
-              className={`w-full h-10 p-2 bg-gray-200 rounded-lg ${emailError ? '' : 'mb-4'}`}
+              className={`w-full h-10 p-2 bg-gray-200 rounded-lg ${formErrors.email ? '' : 'mb-4'}`}
             />
-            {emailError && <Text className="pb-4 text-red-600">{emailError}</Text>}
+            {formErrors.email && <Text className="pb-4 text-red-600">{formErrors.email}</Text>}
             <Text className="pb-1">Password</Text>
             <View className="w-full relative">
               <TextInput
                 onChangeText={setPassword}
                 value={password}
                 placeholder="Enter your password"
-                className="w-full h-10 p-2 bg-gray-200 rounded-lg"
+                className={`w-full h-10 p-2 bg-gray-200 rounded-lg ${formErrors.password ? '' : 'mb-10'}`}
                 secureTextEntry={isShowPassword}
               />
               <TouchableOpacity style={styles.eyePassword} onPress={onShowPassword}>
                 <FontAwesome name={`${isShowPassword ? 'eye-slash' : 'eye'}`} size={20} color="#787878" />
               </TouchableOpacity>
             </View>
-            <Text className="pb-1">First name</Text>
-            <TextInput
-              onChangeText={setFirstName}
-              value={firstName}
-              placeholder="Enter your first name"
-              className="w-full h-10 p-2 bg-gray-200 rounded-lg mb-4"
-            />
-            <Text className="pb-1">Last name</Text>
-            <TextInput
-              onChangeText={setLastName}
-              value={lastName}
-              placeholder="Enter your last name"
-              className="w-full h-10 p-2 bg-gray-200 rounded-lg mb-10"
-            />
+            {formErrors.password && <Text className="pb-4 text-red-600">{formErrors.password}</Text>}
             <TouchableOpacity
               className="flex-row justify-center items-center rounded-lg py-3"
               style={styles.signupButton}
