@@ -22,9 +22,20 @@ import { DUMMY_FEED_ITEMS, FeedItem, Brand } from "@/app/lib/types";
 
 const { width } = Dimensions.get("screen");
 
-const TrendingTab = () => (
-  <View style={{ flex: 1, backgroundColor: "green" }} />
-);
+const TrendingTab = () => {
+  const [feed] = React.useState<FeedItem[]>(DUMMY_FEED_ITEMS);
+  return (
+    <ScrollView className="h-screen">
+      <View className="flex-1 bg-white">
+        <View className="mt-2">
+          {feed.map((item, i: number) => (
+            <FriendsItemCard key={i} item={item} />
+          ))}
+        </View>
+      </View>
+    </ScrollView>
+  );
+};
 
 const FriendsTab = () => {
   const [feed] = React.useState<FeedItem[]>(DUMMY_FEED_ITEMS);
@@ -49,11 +60,11 @@ const renderScene = SceneMap({
 const renderTabBar = (props: any) => (
   <TabBar
     {...props}
-    indicatorStyle={{ backgroundColor: "black" }}
+    indicatorStyle={{ backgroundColor: "#0065FF" }}
     style={{ backgroundColor: "white" }}
     renderLabel={({ route, focused, color }) => (
       <View className="flex-row items-center justify-between">
-        {route.key === "friends" ? (
+        {/* {route.key === "friends" ? (
           <MaterialCommunityIcons
             name="heart-circle-outline"
             color={focused ? "#0065FF" : "#787878"}
@@ -65,7 +76,7 @@ const renderTabBar = (props: any) => (
             color={focused ? "#0065FF" : "#787878"}
             size={22}
           />
-        )}
+        )} */}
         <Text
           style={{ color: focused ? "#0065FF" : "#787878", margin: 8 }}
           className="text-base font-semibold"
@@ -137,9 +148,9 @@ const BrandProfile = () => {
         }}
       />
       {/* <ScrollView className="h-screen"> */}
-      <Image src={brand.cover} className="w-full h-1/5" resizeMode="cover" />
+      {/* <Image src={brand.cover} className="w-full h-1/5" resizeMode="cover" /> */}
       <View className="flex-row items-center w-full px-4 space-y-4">
-        <View className="h-full" style={styles.logoLeft}>
+        <View className="h-full mt-4" style={styles.logoLeft}>
           <View className="p-1" style={styles.logoPhotoContainer}>
             <Image
               src={brand.logo}
@@ -148,6 +159,7 @@ const BrandProfile = () => {
             />
           </View>
         </View>
+
         <View
           className="flex-row items-center mb-4"
           style={styles.brandNameContainer}
@@ -158,14 +170,11 @@ const BrandProfile = () => {
             </View>
             <Text className="text-base text-zinc-500">{brand.account}</Text>
           </View>
-          <View className="ml-auto">
-            <FontAwesome name="bookmark-o" size={20} />
-          </View>
         </View>
       </View>
 
       <View className="w-full px-4 space-y-4">
-        <RatingElements />
+        {/* <RatingElements /> */}
         {buttonsRender()}
       </View>
 
@@ -250,11 +259,11 @@ const BrandProfileScreenHeader = ({
           <ToteTitle customStyles={styles.titleHeader} />
         </View>
       )}
-      {side === "right" && (
+      {/* {side === "right" && (
         <View className="flex-row items-center px-4 space-x-2">
           <Entypo name="dots-three-horizontal" size={20} color="gray" />
         </View>
-      )}
+      )} */}
     </>
   );
 };
@@ -272,9 +281,9 @@ const styles = StyleSheet.create({
     position: "relative",
   },
   logoPhotoContainer: {
-    position: "absolute",
-    top: -20,
-    borderRadius: 15,
+    // position: "absolute",
+    // top: -20,
+    // borderRadius: 15,
     zIndex: 99,
     width: "100%",
   },
