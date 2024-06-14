@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { SceneMap, TabBar, TabView } from "react-native-tab-view";
 import {
   TouchableOpacity,
@@ -23,6 +23,8 @@ import {
 import ProductCard from "../components/ProductCard";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { get } from "../lib/api";
+import Storage from "../lib/storage";
+import { AuthContext } from "../lib/globalContext";
 
 // Profile Tabs
 const ActivityList = () => {
@@ -112,6 +114,7 @@ const renderTabBar = (props: any) => (
 const Profile = () => {
   const user: User = useLocalSearchParams();
   const currUser = user && user.id ? user : CURRENT_USER;
+  const { logout } = useContext(AuthContext);
 
   const layout = useWindowDimensions();
   const [index, setIndex] = useState(0);
@@ -153,6 +156,9 @@ const Profile = () => {
             className="px-4 py-2 bg-white border border-gray-300 rounded-full"
             onPress={() => {
               /* Handle edit profile */
+              // Test logout
+              Storage.removeItem("AUTH");
+              logout();
             }}
           >
             <Text className="text-sm">Edit profile</Text>

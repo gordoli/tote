@@ -23,10 +23,6 @@ export default function TabLayout(props: any) {
   const colorScheme = "light";
   const { session } = React.useContext(AuthContext);
 
-  if (!session) {
-    return <Redirect href="/login" />;
-  }
-
   return (
     <Tabs
       screenOptions={{

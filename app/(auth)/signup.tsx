@@ -4,9 +4,9 @@ import { useRouter, Stack } from 'expo-router';
 import { View, Text } from "@/app/components/Themed";
 import { Keyboard, Platform, ViewStyle, TextInput, TouchableOpacity, KeyboardAvoidingView, TouchableWithoutFeedback } from "react-native";
 
-import { useRegister } from "./hooks/useRegister";
-import { RegistrationForm } from "./lib/types";
-import LoadingScreen from "../app/components/LoadingScreen";
+import { useRegister } from "../hooks/useRegister";
+import { RegistrationForm } from "../lib/types";
+import LoadingScreen from "../components/LoadingScreen";
 
 const SignUp = () => {
   const [email, setEmail] = useState<string>("");
@@ -58,7 +58,7 @@ const SignUp = () => {
             }}
           />
           <View className="items-center">
-            <Text className="text-3xl font-semibold">Let's Get Started</Text>
+            <Text className="text-3xl font-semibold">Let's Get Started1</Text>
             <Text className="text-gray-500">Create an account</Text>
           </View>
           <View>

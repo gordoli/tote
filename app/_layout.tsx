@@ -5,7 +5,7 @@ import {
   ThemeProvider,
 } from "@react-navigation/native";
 import { useFonts } from "expo-font";
-import { Stack } from "expo-router";
+import { Slot, useRouter, useSegments } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect, useState } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -80,16 +80,29 @@ export default function RootLayout() {
     ...FontAwesome.font,
   });
   const [session, setSession] = useState<string | null>(null);
+  const segments = useSegments();
+  const router = useRouter();
 
   useEffect(() => {
     const getUser = async () => {
       const userItem = await Storage.getItem(APP_CONST.AUTH);
       if (userItem && userItem.accessToken) {
         setSession(userItem.accessToken.token);
+        router.replace("/(tabs)/feed");
+      } else {
+        router.replace("/(auth)/login");
       }
     };
     getUser();
   }, []);
+
+  useEffect(() => {
+    if (session && segments[0] === '(auth)') {
+      router.replace("/(tabs)/feed");
+    } else {
+      router.replace("/(auth)/login");
+    }
+  }, [session]);
 
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
   useEffect(() => {
@@ -102,9 +115,9 @@ export default function RootLayout() {
     }
   }, [loaded]);
 
-  if (!loaded) {
-    return null;
-  }
+  // if (!loaded) {
+  //   return null;
+  // }
 
   return (
     <AuthContext.Provider
@@ -135,10 +148,11 @@ function RootLayoutNav() {
         {/* <ThemeProvider value={DefaultTheme}> */}
 
         <GestureHandlerRootView style={{ flex: 1 }}>
-          <Stack>
+          {/* <Stack>
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
             <Stack.Screen name="modal" options={{ presentation: "modal" }} />
-          </Stack>
+          </Stack> */}
+          <Slot />
         </GestureHandlerRootView>
       </ThemeProvider>
 

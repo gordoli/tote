@@ -4,9 +4,9 @@ import { AntDesign, FontAwesome } from "@expo/vector-icons";
 import { View, Text } from "@/app/components/Themed";
 import { KeyboardAvoidingView, ViewStyle, TextInput, TouchableOpacity, Platform, TouchableWithoutFeedback, Keyboard, Alert } from "react-native";
 
-import { useLogin } from "./hooks/useLogin";
-import { LogInForm } from "./lib/types";
-import LoadingScreen from "../app/components/LoadingScreen";
+import { useLogin } from "../hooks/useLogin";
+import { LogInForm } from "../lib/types";
+import LoadingScreen from "../components/LoadingScreen";
 
 const Login = () => {
   const [email, setEmail] = useState<string>("");
@@ -53,7 +53,7 @@ const Login = () => {
               }}
             />
           <View className="items-center">
-            <Text className="text-3xl font-semibold">Welcome to Tote</Text>
+            <Text className="text-3xl font-semibold">Welcome to Tote1</Text>
             <Text className="text-gray-500">Log in to your account</Text>
           </View>
           <View>
