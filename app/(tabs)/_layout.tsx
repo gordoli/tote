@@ -1,6 +1,6 @@
 import React from "react";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import { Tabs } from "expo-router";
+import { Tabs, Redirect } from "expo-router";
 
 import Colors from "@/constants/Colors";
 import { useColorScheme } from "@/components/useColorScheme";
@@ -8,6 +8,7 @@ import { useClientOnlyValue } from "@/components/useClientOnlyValue";
 import Avatar from "@/app/components/Avatar";
 import { CURRENT_USER } from "../lib/types";
 import BaseScreenHeader from "../components/BaseScreenHeader";
+import { AuthContext } from "../lib/globalContext";
 
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 function TabBarIcon(props: {
@@ -17,12 +18,10 @@ function TabBarIcon(props: {
   return <FontAwesome size={28} style={{ marginBottom: -3 }} {...props} />;
 }
 
-export default function TabLayout() {
+export default function TabLayout(props: any) {
   // const colorScheme = useColorScheme();
   const colorScheme = "light";
-
-  // Test the login page
-  // return <Redirect href="/login" />;
+  const { session } = React.useContext(AuthContext);
 
   return (
     <Tabs

@@ -15,3 +15,7 @@ export const CATEGORIES = [
   CATEGORY.Dress,
   CATEGORY.Outerwear,
 ];
+
+export const APP_CONST = {
+  AUTH: "AUTH",
+}
