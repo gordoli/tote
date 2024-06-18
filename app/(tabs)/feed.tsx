@@ -1,26 +1,28 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { View, Text } from "@/app/components/Themed";
 import Avatar from "@/app/components/Avatar";
 import { Brand, DUMMY_FEED_ITEMS, FeedItem, User } from "@/app/lib/types";
-import { Button, ScrollView } from "react-native";
+import { ScrollView } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
-import ToteTitle from "@/app/components/ToteTitle";
 import ProductView from "@/app/components/ProductView";
 import RatingCircle from "../components/RatingCircle";
 import { getFirstName, formatRelativeDate } from "../lib/helpers";
-import NotificationBell from "../components/NotificationBell";
 import Toast from "react-native-toast-message";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useRouter } from "expo-router";
+import { useFeed } from "../hooks/useFeed";
 
 const Feed = () => {
-  const [feed, setFeed] = useState<FeedItem[]>(DUMMY_FEED_ITEMS);
+  const { data, loading, error } = useFeed();
+
+  useEffect(() => {
+    console.log("Feed Data", data);
+  }, [data]);
 
   return (
     <ScrollView className="h-screen">
-      {feed.map((item, i: number) => (
-        <FeedItemCard key={i} item={item} />
-      ))}
+      {data &&
+        data.map((item, i: number) => <FeedItemCard key={i} item={item} />)}
     </ScrollView>
   );
 };

@@ -17,7 +17,8 @@ const fetchWrapper = async (
 ) => {
   let userItem = await Storage.getItem(APP_CONST.AUTH);
   const url = `${API_BASE_URL}${endpoint}`;
-  const headers:any = { ...defaultHeaders, ...customHeaders };
+  const headers: any = { ...defaultHeaders, ...customHeaders };
+
   if (userItem !== null && userItem) {
     headers.Authorization = `Bearer ${userItem.accessToken.token}`;
   }
@@ -30,6 +31,7 @@ const fetchWrapper = async (
 
   try {
     const response = await fetch(url, options);
+    console.log(options);
 
     if (!response.ok) {
       const errorText = await response.text();
