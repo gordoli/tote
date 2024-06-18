@@ -1,4 +1,5 @@
-import { useEffect, useState, useContext } from "react";
+import { useRouter } from "expo-router";
+import { useState, useContext } from "react";
 import { SceneMap, TabBar, TabView } from "react-native-tab-view";
 import {
   TouchableOpacity,
@@ -14,17 +15,15 @@ import { View, Text } from "@/app/components/Themed";
 import {
   DUMMY_FEED_ITEMS,
   FeedItem,
-  CURRENT_USER,
   UserStats,
   DUMMY_BRANDS,
   Brand,
-  User,
 } from "@/app/lib/types";
 import ProductCard from "../components/ProductCard";
-import { useLocalSearchParams, useRouter } from "expo-router";
-import { get } from "../lib/api";
 import Storage from "../lib/storage";
 import { AuthContext } from "../lib/globalContext";
+import { useProfile } from "../hooks/useProfile";
+import LoadingScreen from "../components/LoadingScreen";
 
 // Profile Tabs
 const ActivityList = () => {
@@ -112,9 +111,8 @@ const renderTabBar = (props: any) => (
 );
 
 const Profile = () => {
-  const user: User = useLocalSearchParams();
-  const currUser = user && user.id ? user : CURRENT_USER;
   const { logout } = useContext(AuthContext);
+  const { data, loading, error } = useProfile();
 
   const layout = useWindowDimensions();
   const [index, setIndex] = useState(0);
@@ -123,33 +121,23 @@ const Profile = () => {
     { key: "brands", title: "Top Brands" },
   ]);
 
-  const [data, setData] = useState(null);
-  const [error, setError] = useState(null);
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const result = await get("/user/me");
-        alert("Data fetched: " + JSON.stringify(result));
-        setData(result);
-      } catch (err: any) {
-        setError(err.message);
-      }
-    };
-
-    fetchData();
-  }, []);
+  if (loading) {
+    return <LoadingScreen />;
+  }
 
   return (
     <View className="flex-1">
       <View className="flex-col items-center space-y-4">
-        <Avatar src={currUser.avatar} size="xl" />
+        <Avatar src={data && data.avatar || "https://i.pravatar.cc/150?img=26"} size="xl" />
 
-        <View>
-          <Text className="font-semibold">{currUser.name}</Text>
-          <Text className="text-muted">@{currUser.username}</Text>
-        </View>
+        {data && (
+          <View>
+            <Text className="font-semibold">{data.firstName} {data.lastName}</Text>
+            <Text className="text-muted">@{data.username}</Text>
+          </View>
+        )}
 
-        <ProfileStats stats={currUser.stats} />
+        {data && <ProfileStats stats={data.statistics} />}
 
         <View className="flex-row items-center justify-center space-x-4">
           <TouchableOpacity
@@ -191,15 +179,15 @@ const ProfileStats = ({ stats }: { stats: UserStats }) => {
   return (
     <View className="flex flex-row items-center w-4/5 px-4 py-2 mt-4 border border-gray-200 rounded-lg">
       <View className="flex-col items-center w-1/3">
-        <Text className="font-semibold">{stats.followers}</Text>
+        <Text className="font-semibold">{stats.followerCount}</Text>
         <Text className="text-sm text-muted">followers</Text>
       </View>
       <View className="flex-col items-center w-1/3">
-        <Text className="font-semibold">{stats.following}</Text>
+        <Text className="font-semibold">{stats.followingCount}</Text>
         <Text className="text-sm text-muted">following</Text>
       </View>
       <View className="flex-col items-center w-1/3">
-        <Text className="font-semibold">{stats.products}</Text>
+        <Text className="font-semibold">{stats.rankedProductCount}</Text>
         <Text className="text-sm text-muted">products</Text>
       </View>
     </View>

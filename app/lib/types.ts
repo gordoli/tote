@@ -1,9 +1,9 @@
 import { CATEGORY } from "./const";
 
 export type UserStats = {
-  followers: number;
-  following: number;
-  products: number;
+  followerCount: number;
+  followingCount: number;
+  rankedProductCount: number;
 };
 
 export type Brand = {
@@ -177,12 +177,14 @@ export const DUMMY_PRODUCTS: Product[] = [
 
 export type User = {
   id: string;
-  avatar: string;
   name: string;
-  username: string;
-  email: string;
-  stats: UserStats;
+  statistics: UserStats;
   products: Product[];
+  avatar: string
+  email: string;
+  firstName?: string;
+  lastName?: string;
+  username: string;
 };
 
 export const DUMMY_USER: User[] = [
@@ -192,10 +194,10 @@ export const DUMMY_USER: User[] = [
     name: "John Doe",
     username: "johndoe",
     email: "john@gmail.com",
-    stats: {
-      followers: 123,
-      following: 456,
-      products: 10,
+    statistics: {
+      followerCount: 123,
+      followingCount: 456,
+      rankedProductCount: 10,
     },
     products: [DUMMY_PRODUCTS[0], DUMMY_PRODUCTS[1]],
   },
@@ -205,10 +207,10 @@ export const DUMMY_USER: User[] = [
     name: "Jane Doe",
     username: "janedoe",
     email: "jane@gmail.com",
-    stats: {
-      followers: 123,
-      following: 456,
-      products: 10,
+    statistics: {
+      followerCount: 123,
+      followingCount: 456,
+      rankedProductCount: 10,
     },
     products: [DUMMY_PRODUCTS[3], DUMMY_PRODUCTS[4]],
   },
@@ -218,10 +220,10 @@ export const DUMMY_USER: User[] = [
     name: "Alice Smith",
     username: "alicesmith",
     email: "alice@gmail.com",
-    stats: {
-      followers: 123,
-      following: 456,
-      products: 10,
+    statistics: {
+      followerCount: 123,
+      followingCount: 456,
+      rankedProductCount: 10,
     },
     products: [DUMMY_PRODUCTS[5], DUMMY_PRODUCTS[6]],
   },
@@ -231,10 +233,10 @@ export const DUMMY_USER: User[] = [
     name: "Bob Johnson",
     username: "bobjohnson",
     email: "bob@gmail.com",
-    stats: {
-      followers: 123,
-      following: 456,
-      products: 10,
+    statistics: {
+      followerCount: 123,
+      followingCount: 456,
+      rankedProductCount: 10,
     },
     products: [DUMMY_PRODUCTS[7], DUMMY_PRODUCTS[8]],
   },
@@ -244,10 +246,10 @@ export const DUMMY_USER: User[] = [
     name: "Emma Davis",
     username: "emmadavis",
     email: "emma@gmail.com",
-    stats: {
-      followers: 123,
-      following: 456,
-      products: 10,
+    statistics: {
+      followerCount: 123,
+      followingCount: 456,
+      rankedProductCount: 10,
     },
     products: [DUMMY_PRODUCTS[8], DUMMY_PRODUCTS[1]],
   },
@@ -257,10 +259,10 @@ export const DUMMY_USER: User[] = [
     name: "James Wilson",
     username: "jameswilson",
     email: "james@gmail.com",
-    stats: {
-      followers: 123,
-      following: 456,
-      products: 10,
+    statistics: {
+      followerCount: 123,
+      followingCount: 456,
+      rankedProductCount: 10,
     },
     products: [DUMMY_PRODUCTS[4], DUMMY_PRODUCTS[8]],
   },
@@ -270,10 +272,10 @@ export const DUMMY_USER: User[] = [
     name: "Olivia Brown",
     username: "oliviabrown",
     email: "olivia@gmail.com",
-    stats: {
-      followers: 123,
-      following: 456,
-      products: 10,
+    statistics: {
+      followerCount: 123,
+      followingCount: 456,
+      rankedProductCount: 10,
     },
     products: [DUMMY_PRODUCTS[2], DUMMY_PRODUCTS[5]],
   },
@@ -285,10 +287,10 @@ export const CURRENT_USER: User = {
   name: "Lavender Haze",
   username: "lavenderhaze",
   email: "lavender@gmail.com",
-  stats: {
-    followers: 123,
-    following: 456,
-    products: 10,
+  statistics: {
+    followerCount: 123,
+    followingCount: 456,
+    rankedProductCount: 10,
   },
   products: [DUMMY_PRODUCTS[0], DUMMY_PRODUCTS[1]],
 };

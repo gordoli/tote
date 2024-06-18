@@ -1,4 +1,6 @@
 // api.js
+import Storage from "./storage";
+import { APP_CONST } from "./const";
 
 const API_BASE_URL = "http://52.52.111.138:8080/api";
 
@@ -13,8 +15,12 @@ const fetchWrapper = async (
   body = null,
   customHeaders = {}
 ) => {
+  let userItem = await Storage.getItem(APP_CONST.AUTH);
   const url = `${API_BASE_URL}${endpoint}`;
-  const headers = { ...defaultHeaders, ...customHeaders };
+  const headers:any = { ...defaultHeaders, ...customHeaders };
+  if (userItem !== null && userItem) {
+    headers.Authorization = `Bearer ${userItem.accessToken.token}`;
+  }
 
   const options = {
     method,
