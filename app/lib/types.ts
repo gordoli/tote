@@ -6,19 +6,29 @@ export type UserStats = {
   rankedProductCount: number;
 };
 
+export type RankProducts = {
+  userRating: number;
+  friendsRating: number;
+  overallRanking: number;
+  totalRanking: number;
+};
+
 export type Brand = {
-  id: string;
+  id: number;
   name: string;
   logo: string;
   cover: string;
   account: string;
   overallRating: number;
   friendsRating: number;
+  description?: string;
+  rankProducts?: RankProducts;
+  website?: string;
 };
 
 export const DUMMY_BRANDS: Brand[] = [
   {
-    id: "1",
+    id: 1,
     name: "Nike",
     logo: "https://i.ibb.co/qFqn12c/nike-logo.png",
     cover: "https://picsum.photos/150",
@@ -27,7 +37,7 @@ export const DUMMY_BRANDS: Brand[] = [
     friendsRating: 7.7,
   },
   {
-    id: "2",
+    id: 2,
     name: "Adidas",
     logo: "https://i.ibb.co/Db2mTpb/adidas-logo.png",
     cover: "https://picsum.photos/150",
@@ -36,7 +46,7 @@ export const DUMMY_BRANDS: Brand[] = [
     friendsRating: 8.4,
   },
   {
-    id: "3",
+    id: 3,
     name: "Hoka",
     logo: "https://i.ibb.co/n7WBXMN/hoka-logo.png",
     cover: "https://picsum.photos/150",
@@ -45,7 +55,7 @@ export const DUMMY_BRANDS: Brand[] = [
     friendsRating: 7.2,
   },
   {
-    id: "4",
+    id: 4,
     name: "Alo Yoga",
     logo: "https://i.ibb.co/my8mbdx/alo-logo.png",
     cover: "https://picsum.photos/150",
@@ -54,7 +64,7 @@ export const DUMMY_BRANDS: Brand[] = [
     friendsRating: 7.3,
   },
   {
-    id: "5",
+    id: 5,
     name: "All Birds",
     logo: "https://i.ibb.co/qJLFsQK/allbirds-logo.png",
     cover: "https://picsum.photos/150",
@@ -63,7 +73,7 @@ export const DUMMY_BRANDS: Brand[] = [
     friendsRating: 6.5,
   },
   {
-    id: "6",
+    id: 6,
     name: "Everlane",
     logo: "https://i.ibb.co/t2STCPc/everlane-logo.png",
     cover: "https://picsum.photos/150",
@@ -72,7 +82,7 @@ export const DUMMY_BRANDS: Brand[] = [
     friendsRating: 6.8,
   },
   {
-    id: "7",
+    id: 7,
     name: "Levis",
     logo: "https://i.ibb.co/1LqQ51T/levis-logo.png",
     cover: "https://picsum.photos/150",
@@ -81,7 +91,7 @@ export const DUMMY_BRANDS: Brand[] = [
     friendsRating: 7.7,
   },
   {
-    id: "8",
+    id: 8,
     name: "Patagonia",
     logo: "https://i.ibb.co/D8B6dbv/patagonia-logo.png",
     cover: "https://picsum.photos/150",
@@ -302,6 +312,11 @@ export type FeedItem = {
   brand: Brand;
   product: Product;
   createdTime: Date;
+  image?: string;
+  rate?: number;
+  name?: string;
+  category?: Product;
+  createdBy?: User;
 };
 
 export const DUMMY_FEED_ITEMS: FeedItem[] = [

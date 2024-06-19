@@ -57,14 +57,12 @@ export default function TabLayout(props: any) {
         }}
       />
       <Tabs.Screen
-        name="search"
+        name="(search)"
         options={{
-          title: "Search",
-          headerLeft: () => <BaseScreenHeader side="left" />,
-          headerTitle: () => <BaseScreenHeader side="center" />,
-          headerRight: () => <BaseScreenHeader side="right" />,
+          title: "",
           headerShadowVisible: false,
           tabBarIcon: ({ color }) => <TabBarIcon name="search" color={color} />,
+          headerShown: false,
         }}
       />
       {/* <Tabs.Screen
