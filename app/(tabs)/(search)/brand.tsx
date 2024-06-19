@@ -21,11 +21,9 @@ import ToteTitle from "@/app/components/ToteTitle";
 import LoadingScreen from "../../components/LoadingScreen";
 import { Brand, RankProducts, FeedItem } from "@/app/lib/types";
 
-const { width } = Dimensions.get("screen");
-
-const TrendingTab = React.memo(({ data, loading }: { data: FeedItem[], loading: boolean}) => {
+const TrendingTab = React.memo(({ data, loading, focused }: { data: FeedItem[], loading: boolean, focused: boolean}) => {
   
-  if (loading) {
+  if (focused && loading) {
     return <LoadingScreen />;
   }
 
@@ -107,6 +105,7 @@ const BrandProfile = () => {
   const modalizeModal = React.useRef(null);
   const brand: Brand = useLocalSearchParams();
   const layout = useWindowDimensions();
+  const [focused, setFocused] = React.useState(false);
   const { handleFetchAllRanked, brandDetail, friendsRanked, allRanked, loading, loadingTab } = useBrand(brand.id);
 
   const [index, setIndex] = React.useState(0);
@@ -131,7 +130,7 @@ const BrandProfile = () => {
 
   const renderScene = SceneMap({
     friends: () => <FriendsTab data={friendsRanked} />,
-    trending: () => <TrendingTab data={allRanked} loading={loadingTab} />,
+    trending: () => <TrendingTab data={allRanked} loading={loadingTab} focused={focused} />,
   });
   
   if (loading) {
@@ -234,6 +233,9 @@ const BrandProfile = () => {
         onIndexChange={(index) => {
           if (index === 1) {
             handleFetchAllRanked();
+            setFocused(true);
+          } else {
+            setFocused(false);
           }
           setIndex(index);
         }}
