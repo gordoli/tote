@@ -12,6 +12,8 @@ export const useFeed = () => {
     const fetchData = async () => {
       try {
         const result = await get("/feeds?page=1&perPage=10");
+        console.log("Result", result.data);
+
         setData(result.data);
         setLoading(false);
       } catch (err: any) {
