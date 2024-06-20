@@ -1,19 +1,50 @@
 import React, { useState } from "react";
-import {Modalize} from 'react-native-modalize';
-import { TouchableOpacity, TextInput, ScrollView, Image, StyleSheet } from "react-native";
-import { FontAwesome, SimpleLineIcons, Entypo, FontAwesome6, MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
+import { Modalize } from "react-native-modalize";
+import {
+  TouchableOpacity,
+  TextInput,
+  ScrollView,
+  Image,
+  StyleSheet,
+} from "react-native";
+import {
+  FontAwesome,
+  SimpleLineIcons,
+  Entypo,
+  FontAwesome6,
+  MaterialCommunityIcons,
+  MaterialIcons,
+} from "@expo/vector-icons";
 
 import { View, Text } from "@/app/components/Themed";
 import { DUMMY_PRODUCTS, Product, DUMMY_BRANDS } from "@/app/lib/types";
+import { CATEGORIES, CATEGORY } from "../lib/const";
+
+type RankBody = {
+  category: CATEGORY;
+  name: string;
+  description: string;
+  link: string;
+  image: string;
+  feeling: number;
+};
 
 const RankModals = ({
   cancelModal,
   modalizeRef,
 }: {
-  cancelModal: () => void,
-  modalizeRef: any,
+  cancelModal: () => void;
+  modalizeRef: any;
 }) => {
   const [step, setStep] = useState(1);
+  const [rankBody, setRankBody] = useState<RankBody>({
+    category: CATEGORY.Shoes,
+    name: "",
+    description: "",
+    link: "",
+    image: "",
+    feeling: 0,
+  });
 
   const nextStepAction = (num: number) => {
     setStep(num);
@@ -35,99 +66,147 @@ const RankModals = ({
       adjustToContentHeight
       closeOnOverlayTap={false}
     >
-      <View className="bg-white w-full flex-column justify-between p-4 pb-10 rounded-2xl">
-        {step === 1 && <Step1 cancelModal={handleCancelStep} nextStep={() => nextStepAction(2)} />}
-        {step === 2 && <Step2 cancelModal={handleCancelStep} nextStep={() => nextStepAction(3)} />}
-        {step === 3 && <Step3 cancelModal={handleCancelStep} nextStep={() => nextStepAction(4)} />}
-        {step === 4 && <Step4 cancelModal={handleCancelStep} nextStep={() => nextStepAction(5)} product={DUMMY_PRODUCTS[0]} />}
+      <View className="justify-between w-full p-4 pb-10 bg-white flex-column rounded-2xl">
+        {step === 1 && (
+          <Step1
+            cancelModal={handleCancelStep}
+            nextStep={() => nextStepAction(2)}
+            rankBody={rankBody}
+            setRankBody={setRankBody}
+          />
+        )}
+        {step === 2 && (
+          <Step2
+            cancelModal={handleCancelStep}
+            nextStep={() => nextStepAction(3)}
+            rankBody={rankBody}
+            setRankBody={setRankBody}
+          />
+        )}
+        {step === 3 && (
+          <Step3
+            cancelModal={handleCancelStep}
+            nextStep={() => nextStepAction(4)}
+            rankBody={rankBody}
+            setRankBody={setRankBody}
+          />
+        )}
+        {step === 4 && (
+          <Step4
+            cancelModal={handleCancelStep}
+            nextStep={() => nextStepAction(5)}
+            product={DUMMY_PRODUCTS[0]}
+            rankBody={rankBody}
+            setRankBody={setRankBody}
+          />
+        )}
         {step === 5 && <Step5 cancelModal={handleCancelStep} />}
       </View>
     </Modalize>
   );
-}
+};
 
 export default RankModals;
 
-
+// Step 1: Choose a category
 const Step1 = ({
   cancelModal,
   nextStep,
+  rankBody,
+  setRankBody,
 }: {
-  cancelModal: () => void,
-  nextStep: (step: number) => void,
+  cancelModal: () => void;
+  nextStep: (step: number) => void;
+  rankBody: RankBody;
+  setRankBody: (rankBody: RankBody) => void;
 }) => {
-  const [text, onChangeText] = React.useState("");
+  const onNext = (category: CATEGORY) => {
+    setRankBody({ ...rankBody, category });
+    nextStep(2);
+  };
+
   return (
     <>
       <View>
-        <View className="flex-row justify-between items-end">
+        <View className="flex-row items-end justify-between">
           <View>
-            <Text className="text-xs font-semibold text-gray-700">STEP 1 OF 4</Text>
+            <Text className="text-xs font-semibold text-gray-700">
+              STEP 1 OF 4
+            </Text>
             <Text className="text-lg font-semibold">Choose a category</Text>
           </View>
           <TouchableOpacity onPress={cancelModal}>
             <Text className="text-sm font-semibold text-gray-700">Cancel</Text>
           </TouchableOpacity>
         </View>
-        <TextInput
-          placeholder="Search for a category"
-          onChangeText={onChangeText}
-          value={text}
-          className="w-full h-10 p-2 bg-gray-200 rounded-lg mt-4"
-        />
         <ScrollView className="flex pt-4">
-          <View className="flex-wrap flex-row justify-start">
-            {DUMMY_BRANDS.map((item) => (
+          <View className="flex-row flex-wrap justify-start">
+            {CATEGORIES.map((category: CATEGORY, i: number) => (
               <TouchableOpacity
-                key={item.id}
-                className="border-2 border-gray-300 mr-3 mb-3 p-2 rounded-lg"
+                key={i}
+                className="p-2 mb-3 mr-3 border-2 border-gray-300 rounded-lg"
+                onPress={() => onNext(category)}
               >
-                <Text className="text-sm text-gray-500 font-semibold">{item.name}</Text>
+                <Text className="text-sm font-semibold text-gray-500">
+                  {category}
+                </Text>
               </TouchableOpacity>
             ))}
           </View>
         </ScrollView>
       </View>
-      <TouchableOpacity
+      {/* <TouchableOpacity
         className="items-center content-center p-2 rounded-lg"
-        style={{backgroundColor: '#0065FF'}}
+        style={{ backgroundColor: "#0065FF" }}
         onPress={() => nextStep(2)}
       >
-        <Text className="text-white text-sm font-semibold">Next</Text>
-      </TouchableOpacity>
+        <Text className="text-sm font-semibold text-white">Next</Text>
+      </TouchableOpacity> */}
     </>
   );
 };
 
+// Step 2: Describe this product (name, description)
 const Step2 = ({
   cancelModal,
   nextStep,
+  rankBody,
+  setRankBody,
 }: {
-  cancelModal: () => void,
-  nextStep: (step: number) => void,
+  cancelModal: () => void;
+  nextStep: (step: number) => void;
+  rankBody: RankBody;
+  setRankBody: (rankBody: RankBody) => void;
 }) => {
   const [name, onChangeName] = React.useState("");
   const [description, onChangeDes] = React.useState("");
+
+  const onNext = () => {
+    setRankBody({ ...rankBody, name, description });
+    nextStep(3);
+  };
   return (
     <>
       <View>
-        <View className="flex-row justify-between items-end">
+        <View className="flex-row items-end justify-between">
           <View>
-            <Text className="text-xs font-semibold text-gray-700">STEP 2 OF 4</Text>
+            <Text className="text-xs font-semibold text-gray-700">
+              STEP 2 OF 4
+            </Text>
             <Text className="text-lg font-semibold">Describe this product</Text>
           </View>
           <TouchableOpacity onPress={cancelModal}>
             <Text className="text-sm font-semibold text-gray-700">Cancel</Text>
           </TouchableOpacity>
         </View>
-        <Text className="text-sm text-gray-700 mt-4">Name</Text>
+        <Text className="mt-4 text-sm text-gray-700">Name</Text>
         <TextInput
           onChangeText={onChangeName}
           placeholder="Enter name here"
           value={name}
           className="w-full h-10 p-2 bg-gray-200 rounded-lg"
         />
-        <Text className="text-sm text-gray-700 mt-4">Description</Text>
+        <Text className="mt-4 text-sm text-gray-700">Description</Text>
         <TextInput
           onChangeText={onChangeDes}
           placeholder="Type here..."
@@ -140,47 +219,60 @@ const Step2 = ({
         />
       </View>
       <TouchableOpacity
-        className="items-center content-center p-2 rounded-lg mt-5"
-        style={{backgroundColor: '#0065FF'}}
-        onPress={() => nextStep(2)}
+        className="items-center content-center p-2 mt-5 rounded-lg"
+        style={{ backgroundColor: "#0065FF" }}
+        onPress={() => onNext()}
       >
-        <Text className="text-white text-sm font-semibold">Next</Text>
+        <Text className="text-sm font-semibold text-white">Next</Text>
       </TouchableOpacity>
     </>
   );
 };
 
+// Step 3: More information about this product (link and image)
 const Step3 = ({
   cancelModal,
   nextStep,
+  rankBody,
+  setRankBody,
 }: {
-  cancelModal: () => void,
-  nextStep: (step: number) => void,
+  cancelModal: () => void;
+  nextStep: (step: number) => void;
+  rankBody: RankBody;
+  setRankBody: (rankBody: RankBody) => void;
 }) => {
   const [link, setLink] = React.useState("");
+  const onNext = () => {
+    setRankBody({ ...rankBody, link });
+    nextStep(4);
+  };
   return (
     <>
       <View>
-        <View className="flex-row justify-between items-end">
+        <View className="flex-row items-end justify-between">
           <View className="w-3/4">
-            <Text className="text-xs font-semibold text-gray-700">STEP 3 OF 4</Text>
-            <Text className="text-lg font-semibold">More information about this product</Text>
+            <Text className="text-xs font-semibold text-gray-700">
+              STEP 3 OF 4
+            </Text>
+            <Text className="text-lg font-semibold">
+              More information about this product
+            </Text>
           </View>
           <TouchableOpacity onPress={cancelModal}>
             <Text className="text-sm font-semibold text-gray-700">Cancel</Text>
           </TouchableOpacity>
         </View>
-        <Text className="text-sm text-gray-700 mt-4">Product link</Text>
+        <Text className="mt-4 text-sm text-gray-700">Product link</Text>
         <TextInput
           onChangeText={setLink}
           placeholder="Enter product link here"
           value={link}
           className="w-full h-10 p-2 bg-gray-200 rounded-lg"
         />
-        <Text className="text-sm text-gray-700 mt-4">Upload image</Text>
-        <View className="flex-row justify-between items-center border border-gray-300 rounded-lg p-3">
+        <Text className="mt-4 text-sm text-gray-700">Upload image</Text>
+        <View className="flex-row items-center justify-between p-3 border border-gray-300 rounded-lg">
           <View className="flex-row">
-            <View className="bg-gray-300 p-2 rounded mr-2">
+            <View className="p-2 mr-2 bg-gray-300 rounded">
               <FontAwesome name="camera" size={18} color="gray" />
             </View>
             <View>
@@ -188,91 +280,118 @@ const Step3 = ({
               <Text className="text-xs text-gray-400">Max. size 3MB</Text>
             </View>
           </View>
-          <TouchableOpacity
-            className="border-2 border-gray-200 p-2 rounded-lg bg-gray-200"
-          >
-            <Text className="text-sm text-gray-500 font-semibold">Upload</Text>
+          <TouchableOpacity className="p-2 bg-gray-200 border-2 border-gray-200 rounded-lg">
+            <Text className="text-sm font-semibold text-gray-500">Upload</Text>
           </TouchableOpacity>
         </View>
       </View>
       <TouchableOpacity
-        className="items-center content-center p-2 rounded-lg mt-5"
-        style={{backgroundColor: '#0065FF'}}
-        onPress={() => nextStep(2)}
+        className="items-center content-center p-2 mt-5 rounded-lg"
+        style={{ backgroundColor: "#0065FF" }}
+        onPress={() => onNext()}
       >
-        <Text className="text-white text-sm font-semibold">Next</Text>
+        <Text className="text-sm font-semibold text-white">Next</Text>
       </TouchableOpacity>
     </>
   );
 };
 
+// Step 4: How do you feel about this product?
 const Step4 = ({
   cancelModal,
   nextStep,
   product,
+  rankBody,
+  setRankBody,
 }: {
-  cancelModal: () => void,
-  nextStep: (step: number) => void,
-  product: Product
+  cancelModal: () => void;
+  nextStep: (step: number) => void;
+  product: Product;
+  rankBody: RankBody;
+  setRankBody: (rankBody: RankBody) => void;
 }) => {
+  const onNext = (feeling: number) => {
+    setRankBody({ ...rankBody, feeling });
+    alert(JSON.stringify(rankBody));
+    nextStep(5);
+  };
+
   return (
     <>
       <View>
-        <View className="flex-row justify-between items-end">
+        <View className="flex-row items-end justify-between">
           <View className="w-3/4">
-            <Text className="text-xs font-semibold text-gray-700">STEP 4 OF 4</Text>
-            <Text className="text-lg font-semibold">How do you feel about this?</Text>
+            <Text className="text-xs font-semibold text-gray-700">
+              STEP 4 OF 4
+            </Text>
+            <Text className="text-lg font-semibold">
+              How do you feel about this?
+            </Text>
           </View>
           <TouchableOpacity onPress={cancelModal}>
             <Text className="text-sm font-semibold text-gray-700">Cancel</Text>
           </TouchableOpacity>
         </View>
-        <View className="flex-row items-center border border-gray-200 bg-gray-200 rounded-lg p-3 mt-4">
-          <Image src={product.image} className="h-10 w-10 rounded-lg mr-3" />
+        <View className="flex-row items-center p-3 mt-4 bg-gray-200 border border-gray-200 rounded-lg">
+          <Image src={product.image} className="w-10 h-10 mr-3 rounded-lg" />
           <View>
             <Text className="text-sm font-semibold">{product.name}</Text>
             <Text className="text-xs text-gray-500">{`${product.brand.name} . ${product.category}`}</Text>
           </View>
         </View>
       </View>
-      <View className="flex-row flex-swap justify-between" style={styles.selectionContainer}>
-        <TouchableOpacity style={[styles.likedSelection, styles.selectionItem]} onPress={nextStep}>
+      <View
+        className="flex-row justify-between flex-swap"
+        style={styles.selectionContainer}
+      >
+        <TouchableOpacity
+          style={[styles.likedSelection, styles.selectionItem]}
+          onPress={() => onNext(1)}
+        >
           <SimpleLineIcons name="emotsmile" size={24} color="white" />
-          <Text className="text-sm pt-1 text-white">I liked it!</Text>
+          <Text className="pt-1 text-sm text-white">I liked it!</Text>
         </TouchableOpacity>
-        <TouchableOpacity className="bg-gray-200" style={[styles.fineSelection, styles.selectionItem]} onPress={nextStep}>
+        <TouchableOpacity
+          className="bg-gray-200"
+          style={[styles.fineSelection, styles.selectionItem]}
+          onPress={() => onNext(0)}
+        >
           <FontAwesome6 name="face-meh" size={24} color="black" />
-          <Text className="text-sm pt-1">It was fine</Text>
+          <Text className="pt-1 text-sm">It was fine</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={[styles.dislikeSelection, styles.selectionItem]} onPress={nextStep}>
+        <TouchableOpacity
+          style={[styles.dislikeSelection, styles.selectionItem]}
+          onPress={() => onNext(-1)}
+        >
           <Entypo name="emoji-sad" size={24} color="white" />
-          <Text className="text-sm text-white pt-1">I don't like it!</Text>
+          <Text className="pt-1 text-sm text-white">I don't like it!</Text>
         </TouchableOpacity>
       </View>
     </>
   );
 };
 
-const Step5 = ({
-  cancelModal,
-}: {
-  cancelModal: () => void,
-}) => {
+const Step5 = ({ cancelModal }: { cancelModal: () => void }) => {
   const renderItem = (item: Product) => {
     return (
-      <View className="border-2 border-gray-300 rounded-lg items-center p-5 mr-3" style={{width: '12.5%'}}>
-        <Image src={item.image} className="h-10 w-10 rounded-lg mr-3" />
-          <View>
-            <Text className="text-sm font-semibold text-center">{item.name}</Text>
-            <Text className="text-xs text-gray-500 text-center">{item.brand.name}</Text>
-          </View>
+      <View
+        className="items-center p-5 mr-3 border-2 border-gray-300 rounded-lg"
+        style={{ width: "12.5%" }}
+      >
+        <Image src={item.image} className="w-10 h-10 mr-3 rounded-lg" />
+        <View>
+          <Text className="text-sm font-semibold text-center">{item.name}</Text>
+          <Text className="text-xs text-center text-gray-500">
+            {item.brand.name}
+          </Text>
+        </View>
       </View>
     );
   };
   return (
     <>
       <View>
-        <View className="flex-row justify-between items-end">
+        <View className="flex-row items-end justify-between">
           <View className="w-3/4">
             <Text className="text-lg font-semibold">Which do you prefer?</Text>
           </View>
@@ -287,19 +406,33 @@ const Step5 = ({
         </View>
       </View>
       <View className="flex-row items-center justify-between w-full mt-5">
-        <TouchableOpacity className="bg-gray-300 rounded-lg" style={styles.buttonSelectPrefer}>
-          <MaterialCommunityIcons name="arrow-left-top" size={20} color="gray" />
+        <TouchableOpacity
+          className="bg-gray-300 rounded-lg"
+          style={styles.buttonSelectPrefer}
+        >
+          <MaterialCommunityIcons
+            name="arrow-left-top"
+            size={20}
+            color="gray"
+          />
         </TouchableOpacity>
         <TouchableOpacity
           className="flex-row items-center justify-center p-2 rounded-lg"
           onPress={cancelModal}
           style={styles.shuffleButton}
         >
-          <Text className="text-white text-sm font-semibold">Shuffle</Text>
+          <Text className="text-sm font-semibold text-white">Shuffle</Text>
           <MaterialIcons name="shuffle" size={20} color="white" />
         </TouchableOpacity>
-        <TouchableOpacity className="bg-gray-300 rounded-lg" style={styles.buttonSelectPrefer}>
-          <MaterialCommunityIcons name="arrow-right-top" size={20} color="gray" />
+        <TouchableOpacity
+          className="bg-gray-300 rounded-lg"
+          style={styles.buttonSelectPrefer}
+        >
+          <MaterialCommunityIcons
+            name="arrow-right-top"
+            size={20}
+            color="gray"
+          />
         </TouchableOpacity>
       </View>
     </>
@@ -325,7 +458,6 @@ const styles = StyleSheet.create({
   },
   fineSelection: {
     width: "32%",
-
   },
   dislikeSelection: {
     width: "32%",
@@ -337,7 +469,7 @@ const styles = StyleSheet.create({
     padding: 7,
   },
   shuffleButton: {
-    backgroundColor: '#0065FF',
+    backgroundColor: "#0065FF",
     width: "65%",
   },
 });

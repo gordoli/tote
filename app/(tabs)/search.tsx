@@ -10,10 +10,10 @@ import {
 } from "react-native";
 
 import { View, Text } from "@/app/components/Themed";
-import { Brand, DUMMY_BRANDS, DUMMY_USER, User } from "../../lib/types";
+import { Brand, DUMMY_BRANDS, DUMMY_USER, User } from "../lib/types";
 import { useState } from "react";
-import Avatar from "../../components/Avatar";
-import FollowButton from "../../components/FollowButton";
+import Avatar from "../components/Avatar";
+import FollowButton from "../components/FollowButton";
 
 const BrandsList = () => {
   const [text, onChangeText] = useState("");
@@ -21,7 +21,7 @@ const BrandsList = () => {
 
   const onGoToBrandProfile = (brand: Brand) => {
     router.navigate({
-      pathname: "/(search)/brand",
+      pathname: "/screens/brand",
       params: brand,
     });
   };
@@ -38,7 +38,7 @@ const BrandsList = () => {
         {DUMMY_BRANDS.map((brand: Brand, i: number) => (
           <View key={i} className="flex-row items-center py-2">
             <TouchableOpacity
-              className="flex-row items-center w-3/4"
+              className="flex-row items-center"
               onPress={() => onGoToBrandProfile(brand)}
             >
               <Image src={brand.logo} className="w-8 h-8 mr-2 rounded" />

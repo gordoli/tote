@@ -33,12 +33,14 @@ export default function TabLayout(props: any) {
       }}
     >
       <Tabs.Screen
-        name="(feed)"
+        name="feed"
         options={{
-          title: "",
-          headerShadowVisible: false,
+          title: "Tote",
+          headerLeft: () => <BaseScreenHeader side="left" />,
+          headerTitle: () => <BaseScreenHeader side="center" />,
+          headerRight: () => <BaseScreenHeader side="right" />,
+          headerShadowVisible: false, // removes shadow and border from header
           tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
-          headerShown: false,
         }}
       />
       <Tabs.Screen
@@ -55,12 +57,14 @@ export default function TabLayout(props: any) {
         }}
       />
       <Tabs.Screen
-        name="(search)"
+        name="search"
         options={{
-          title: "",
+          title: "Search",
+          headerLeft: () => <BaseScreenHeader side="left" />,
+          headerTitle: () => <BaseScreenHeader side="center" />,
+          headerRight: () => <BaseScreenHeader side="right" />,
           headerShadowVisible: false,
           tabBarIcon: ({ color }) => <TabBarIcon name="search" color={color} />,
-          headerShown: false,
         }}
       />
       {/* <Tabs.Screen

@@ -1,24 +1,42 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { View, Text } from "@/app/components/Themed";
 import Avatar from "@/app/components/Avatar";
-import { Brand, DUMMY_FEED_ITEMS, FeedItem, User } from "@/app/lib/types";
-import { Button, ScrollView } from "react-native";
+import {
+  Brand,
+  DUMMY_FEED_ITEMS,
+  FeedActivity,
+  FeedItem,
+  User,
+  User2,
+} from "@/app/lib/types";
+import { ScrollView } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
-import ToteTitle from "@/app/components/ToteTitle";
 import ProductView from "@/app/components/ProductView";
-import RatingCircle from "../../components/RatingCircle";
-import { getFirstName, formatRelativeDate } from "../../lib/helpers";
-import NotificationBell from "../../components/NotificationBell";
+import RatingCircle from "../components/RatingCircle";
+import { getFirstName, formatRelativeDate } from "../lib/helpers";
 import Toast from "react-native-toast-message";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useRouter } from "expo-router";
+import { useFeed } from "../hooks/useFeed";
+import LoadingScreen from "../components/LoadingScreen";
+import { BE_FEED_ACTIVITIES } from "../lib/dummy";
 
 const Feed = () => {
-  const [feed, setFeed] = useState<FeedItem[]>(DUMMY_FEED_ITEMS);
+  const { data, loading, error } = useFeed();
+
+  useEffect(() => {
+    console.log("Feed Data", data);
+  }, [data]);
+
+  if (loading) {
+    return <LoadingScreen />;
+  }
 
   return (
     <ScrollView className="h-screen">
-      {feed.map((item, i: number) => (
+      {/* {data &&
+        data.map((item, i: number) => <FeedItemCard key={i} item={item} />)} */}
+      {BE_FEED_ACTIVITIES.map((item, i: number) => (
         <FeedItemCard key={i} item={item} />
       ))}
     </ScrollView>
@@ -27,14 +45,18 @@ const Feed = () => {
 
 export default Feed;
 
-const FeedItemCard = ({ item }: { item: FeedItem }) => {
+const FeedItemCard = ({ item }: { item: FeedActivity }) => {
   const router = useRouter();
   const [wishlisted, setWishlisted] = useState(false);
+
+  const contentMap: { [key: string]: string } = {
+    rank_product: "ranked",
+  };
 
   const showToast = () => {
     Toast.show({
       type: "success",
-      text1: `${item.product.name} added to your wishlist`,
+      text1: `${item.rankProduct.name} added to your wishlist`,
       position: "bottom",
     });
   };
@@ -46,14 +68,14 @@ const FeedItemCard = ({ item }: { item: FeedItem }) => {
 
   const onGoToBrandProfile = (brand: Brand) => {
     router.navigate({
-      pathname: "/(feed)/brand",
+      pathname: "/screens/brand",
       params: brand,
     });
   };
 
-  const onUserClick = (user: User) => {
+  const onUserClick = (user: User2) => {
     router.navigate({
-      pathname: "/(feed)/userProfile",
+      pathname: "/(tabs)/profile",
       params: user,
     });
   };
@@ -61,34 +83,36 @@ const FeedItemCard = ({ item }: { item: FeedItem }) => {
   return (
     <View className="p-6 space-y-4 border-b border-gray-200">
       <View className="flex-row items-start w-full mb-4">
-        <TouchableOpacity onPress={() => onUserClick(item.user)}>
-          <Avatar src={item.user.avatar} />
+        <TouchableOpacity onPress={() => onUserClick(item.createdBy)}>
+          <Avatar src={item.createdBy.avatar} />
         </TouchableOpacity>
 
         <View className="ml-2">
           <View className="flex-row flex-wrap items-center gap-1">
-            <Text className="font-bold">{getFirstName(item.user.name)}</Text>
-            <Text>{item.content}</Text>
-            <Text className="font-bold">{item.product.category}</Text>
+            <Text className="font-bold">
+              {getFirstName(item.createdBy.username)}
+            </Text>
+            <Text>{contentMap[item.type]}</Text>
+            {/* <Text className="font-bold">{item.rankProduct.category}</Text> */}
             <Text>from</Text>
-            <TouchableOpacity
+            {/* <TouchableOpacity
               onPress={() => onGoToBrandProfile(item.product.brand)}
             >
               <Text className="font-bold">{item.product.brand.name}</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
 
           <Text className="text-sm text-muted">
-            {formatRelativeDate(item.createdTime)}
+            {formatRelativeDate(new Date(item.createdAt))}
           </Text>
         </View>
 
         <View className="flex-row items-center ml-auto">
-          <RatingCircle rating={item.product.rating} />
+          <RatingCircle rating={item.rankProduct.rate} />
         </View>
       </View>
 
-      <ProductView product={item.product} />
+      {/* <ProductView product={item.product} /> */}
 
       {/* Don't need until phase 2 with social functions */}
       <View className="flex-row items-center w-full space-x-2">

@@ -46,7 +46,7 @@ const BrandsList = () => {
 
   const onGoToBrandProfile = (brand: Brand) => {
     router.navigate({
-      pathname: "/(search)/brand",
+      pathname: "/screens/brand",
       params: brand,
     });
   };
@@ -125,36 +125,19 @@ const Profile = () => {
     return <LoadingScreen />;
   }
 
-  if (data === null) {
-    return (
-      <View className="flex-1 bg-white justify-center items-center">
-        <Text className="text-base text-zinc-500">Something went wrong. Please try again!</Text>
-        <View className="flex-row items-center justify-center space-x-4">
-          <TouchableOpacity
-            className="px-4 py-2 bg-white border border-gray-300 rounded-full"
-            onPress={() => {
-              Storage.removeItem("AUTH");
-              logout();
-            }}
-          >
-            <Text className="text-sm">Logout</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    );
-  }
-
   return (
     <View className="flex-1">
       <View className="flex-col items-center space-y-4">
-        <Avatar src={data.avatar || "https://i.pravatar.cc/150?img=26"} size="xl" />
+        <Avatar src={data && data.avatar || "https://i.pravatar.cc/150?img=26"} size="xl" />
 
-        <View>
-          <Text className="font-semibold">{data.firstName} {data.lastName}</Text>
-          <Text className="text-muted">@{data.username}</Text>
-        </View>
+        {data && (
+          <View>
+            <Text className="font-semibold">{data.firstName} {data.lastName}</Text>
+            <Text className="text-muted">@{data.username}</Text>
+          </View>
+        )}
 
-        <ProfileStats stats={data.statistics} />
+        {data && <ProfileStats stats={data.statistics} />}
 
         <View className="flex-row items-center justify-center space-x-4">
           <TouchableOpacity

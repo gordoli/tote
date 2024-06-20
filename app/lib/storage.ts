@@ -11,14 +11,6 @@ const Storage = {
   removeItem: async function (key: string) {
     return await AsyncStorage.removeItem(key);
   },
-  updateItem: async function (key: string, value: any) {
-    const item: any = await AsyncStorage.getItem(key);
-    const data = {
-      ...JSON.parse(item),
-      ...value
-    }
-    return await AsyncStorage.setItem(key, JSON.stringify(data));
-  },
 };
 
 export default Storage;
