@@ -27,7 +27,7 @@ const BrandsTab = () => {
 
   const onGoToBrandProfile = (brand: Brand) => {
     router.navigate({
-      pathname: "/screens/brand",
+      pathname: "/(search)/brand",
       params: brand,
     });
   };

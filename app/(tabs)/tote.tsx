@@ -7,7 +7,6 @@ import { FontAwesome } from "@expo/vector-icons";
 import { SceneMap, TabBar, TabView } from "react-native-tab-view";
 import { useState } from "react";
 import ProductCard from "../components/ProductCard";
-import { BE_PRODUCTS } from "../lib/dummy";
 
 // Tote Tabs
 const MyProducts = () => {
@@ -24,7 +23,7 @@ const MyProducts = () => {
         />
       </View>
 
-      {BE_PRODUCTS.map((product, i: number) => (
+      {DUMMY_PRODUCTS.map((product, i: number) => (
         <ProductCard key={i} product={product} />
       ))}
     </ScrollView>
@@ -45,7 +44,7 @@ const MyWishlist = () => {
         />
       </View>
 
-      {BE_PRODUCTS.map((product, i: number) => (
+      {DUMMY_PRODUCTS.map((product, i: number) => (
         <ProductCard key={i} product={product} />
       ))}
     </ScrollView>
