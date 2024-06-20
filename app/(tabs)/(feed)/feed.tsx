@@ -6,9 +6,9 @@ import { Button, ScrollView } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import ToteTitle from "@/app/components/ToteTitle";
 import ProductView from "@/app/components/ProductView";
-import RatingCircle from "../components/RatingCircle";
-import { getFirstName, formatRelativeDate } from "../lib/helpers";
-import NotificationBell from "../components/NotificationBell";
+import RatingCircle from "../../components/RatingCircle";
+import { getFirstName, formatRelativeDate } from "../../lib/helpers";
+import NotificationBell from "../../components/NotificationBell";
 import Toast from "react-native-toast-message";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useRouter } from "expo-router";
@@ -46,14 +46,14 @@ const FeedItemCard = ({ item }: { item: FeedItem }) => {
 
   const onGoToBrandProfile = (brand: Brand) => {
     router.navigate({
-      pathname: "/screens/brand",
+      pathname: "/(feed)/brand",
       params: brand,
     });
   };
 
   const onUserClick = (user: User) => {
     router.navigate({
-      pathname: "/(tabs)/profile",
+      pathname: "/(feed)/userProfile",
       params: user,
     });
   };

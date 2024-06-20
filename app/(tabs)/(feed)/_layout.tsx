@@ -8,11 +8,11 @@ const commonOptions = {
   headerBackVisible: false,
 };
 
-const SearchLayout = () => {
+const FeedLayout = () => {
   return (
     <Stack>
       <Stack.Screen
-        name="search"
+        name="feed"
         options={{
           headerLeft: () => <BaseScreenHeader side="left" />,
           headerTitle: () => <BaseScreenHeader side="center" />,
@@ -24,8 +24,12 @@ const SearchLayout = () => {
         name="brand"
         options={{...commonOptions}}
       />
+      <Stack.Screen
+        name="userProfile"
+        options={{...commonOptions}}
+      />
     </Stack>
   );
 };
 
-export default SearchLayout;
+export default FeedLayout;

@@ -1,6 +1,7 @@
 // api.js
 import Storage from "./storage";
 import { APP_CONST } from "./const";
+import { reloadAsync } from 'expo-updates';
 
 const API_BASE_URL = "http://52.52.111.138:8080/api";
 
@@ -9,7 +10,7 @@ const defaultHeaders = {
   Accept: "application/json",
 };
 
-const fetchWrapper = async (
+export const fetchWrapper = async (
   endpoint: string,
   method = "GET",
   body = null,
@@ -29,18 +30,31 @@ const fetchWrapper = async (
   };
 
   try {
-    const response = await fetch(url, options);
+    let response = await fetch(url, options);
 
-    if (!response.ok) {
+    if (!response.ok && response.status === 401 && userItem !== null && userItem) {
+      await fetch(`${API_BASE_URL}/auth/refresh`, {
+        method: "POST",
+        headers,
+        body: JSON.stringify({ refreshToken: userItem.refreshToken.token }),
+      }).then(async (res) => {
+        const result = await res.json();
+        await Storage.updateItem(APP_CONST.AUTH, result.data);
+        options.headers.Authorization = `Bearer ${result.data.accessToken.token}`;
+        response = await fetch(url, options);
+      }).catch((err) => {
+        Storage.removeItem("AUTH");
+        reloadAsync();
+        throw err;
+      })
+    } else if (!response.ok) {
       const errorText = await response.text();
       throw new Error(
         `HTTP error! status: ${response.status}, message: ${errorText}`
       );
     }
-
     return await response.json();
   } catch (error) {
-    console.error("Fetch error:", error);
     throw error;
   }
 };
