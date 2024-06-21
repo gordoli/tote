@@ -318,7 +318,7 @@ const FriendsItemCard = ({ item }: { item: any }) => {
   return (
     <View className="p-6 space-y-4 border-b border-gray-200">
       <View className="flex-row items-center w-full mb-4">
-        <Avatar src={item.createdBy.avatar || "https://i.pravatar.cc/150?img=26"} />
+        <Avatar src={item.createdBy.avatar} />
         <View className="ml-2">
           <Text className="font-bold">{item.createdBy.username}</Text>
           <Text className="text-sm text-zinc-500">{item.category.name}</Text>
@@ -328,7 +328,7 @@ const FriendsItemCard = ({ item }: { item: any }) => {
         </View>
       </View>
       <View className="relative">
-        <Image src={item.image || "https://i.ibb.co/LgVWqh6/nike-airmax.png"} className="w-full rounded-lg aspect-video" />
+        <Image src={item.image} className="w-full rounded-lg aspect-video" />
         <View className="absolute bottom-0 left-0 w-full p-4 rounded-b-lg bg-black/60">
           <Text className="font-semibold text-white">{item.name}</Text>
         </View>

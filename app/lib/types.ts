@@ -13,13 +13,6 @@ export type RankProducts = {
   totalRanking: number;
 };
 
-export type Category = {
-  id: number;
-  name: string;
-  description: string;
-  image: string;
-};
-
 export type RankingData = {
   rate: number;
   brandId: number;

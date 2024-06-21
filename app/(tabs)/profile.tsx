@@ -147,7 +147,7 @@ const Profile = () => {
   return (
     <View className="flex-1">
       <View className="flex-col items-center space-y-4">
-        <Avatar src={data.avatar || "https://i.pravatar.cc/150?img=26"} size="xl" />
+        <Avatar src={data.avatar} size="xl" />
 
         <View>
           <Text className="font-semibold">{data.firstName} {data.lastName}</Text>
