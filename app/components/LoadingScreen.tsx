@@ -1,11 +1,11 @@
 import React from 'react';
 import { Stack } from 'expo-router';
-import {ActivityIndicator, StyleSheet} from 'react-native';
+import {ActivityIndicator, StyleSheet, ViewStyle} from 'react-native';
 
 import { View } from "@/app/components/Themed";
 
-const LoadingScreen = () => (
-  <View style={styles.container}>
+const LoadingScreen = ({ customeStyles={} } : { customeStyles?: ViewStyle }) => (
+  <View style={[styles.container, customeStyles]}>
     <Stack.Screen
       options={{
       title: "",

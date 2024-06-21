@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
-import { get } from "../lib/api";
-import { Brand, FeedItem } from "../lib/types";
+import { get, post } from "../lib/api";
+import { Brand, FeedItem, Category, RankingData } from "../lib/types";
 
 export const useBrand = (brandId: number) => {
   const [loading, setLoading] = useState(true);
@@ -10,6 +10,19 @@ export const useBrand = (brandId: number) => {
   const [friendsRanked, setFriendsRanked] = useState<FeedItem[] | []>([]);
   const [allRanked, setAllRanked] = useState<FeedItem[] | []>([]);
   const [error, setError] = useState(null);
+
+  const [loadingStep, setLoadingStep] = useState(true);
+  const [categories, setCategories] = useState<Category[] | []>([]);
+  const [rankingData, setRankingData] = useState<RankingData>({
+    rate: 0,
+    brandId: brandId,
+    categoryId: 0,
+    link: "",
+    image: "",
+    name: "",
+    description: "",
+    // preferProductId: 0,
+  });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -28,9 +41,8 @@ export const useBrand = (brandId: number) => {
     fetchData();
   }, []);
 
-  const handleFetchAllRanked = async () => {
+  const handleFetchAllRanked = useCallback(async () => {
     try {
-      setLoadingTab(true);
       const resultAllRanked = await get(`/rank-products?brandId=${brandId}`);
       setAllRanked(resultAllRanked.data);
       setLoadingTab(false);
@@ -38,15 +50,52 @@ export const useBrand = (brandId: number) => {
       setError(err.message);
       setLoadingTab(false);
     }
-  };
+  }, []);
+
+  const handleGetCategories = useCallback(async () => {
+    try {
+      if (categories.length === 0) {
+        const result = await get(`/categories`);
+        setCategories(result.data);
+        setLoadingStep(false);
+      } else {
+        setLoadingStep(false);
+      }
+    } catch (err: any) {
+      setError(err.message);
+      setLoadingStep(false);
+    }
+  }, []);
+
+  const handleRankProduct = useCallback(async (cb: () => void) => {
+    try {
+      setLoadingStep(true);
+      // const result = await post(`/rank-products`, rankingData);
+      // setLoadingStep(false);
+      cb && cb();
+    } catch (err: any) {
+      setError(err.message);
+      setLoadingStep(false);
+    }
+  }, []);
+
+  const handleUpdateRankingData = useCallback((data: RankingData) => {
+    setRankingData(data);
+  }, []);
 
   return {
     error,
     loading,
     loadingTab,
+    loadingStep,
     allRanked,
     brandDetail,
     friendsRanked,
+    categories,
+    rankingData,
     handleFetchAllRanked,
+    handleGetCategories,
+    handleUpdateRankingData,
+    handleRankProduct,
   }
 }

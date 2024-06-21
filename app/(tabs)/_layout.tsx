@@ -1,6 +1,6 @@
 import React from "react";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import { Tabs, Redirect } from "expo-router";
+import { Tabs } from "expo-router";
 
 import Colors from "@/constants/Colors";
 import { useColorScheme } from "@/components/useColorScheme";
@@ -31,14 +31,17 @@ export default function TabLayout(props: any) {
         // to prevent a hydration error in React Navigation v6.
         headerShown: useClientOnlyValue(false, true),
       }}
+      // backBehavior="history"
     >
       <Tabs.Screen
-        name="(feed)"
+        name="feed"
         options={{
-          title: "",
-          headerShadowVisible: false,
+          title: "Tote",
+          headerLeft: () => <BaseScreenHeader side="left" />,
+          headerTitle: () => <BaseScreenHeader side="center" />,
+          headerRight: () => <BaseScreenHeader side="right" />,
+          headerShadowVisible: false, // removes shadow and border from header
           tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
-          headerShown: false,
         }}
       />
       <Tabs.Screen
@@ -55,12 +58,14 @@ export default function TabLayout(props: any) {
         }}
       />
       <Tabs.Screen
-        name="(search)"
+        name="search"
         options={{
-          title: "",
+          title: "Search",
+          headerLeft: () => <BaseScreenHeader side="left" />,
+          headerTitle: () => <BaseScreenHeader side="center" />,
+          headerRight: () => <BaseScreenHeader side="right" />,
           headerShadowVisible: false,
           tabBarIcon: ({ color }) => <TabBarIcon name="search" color={color} />,
-          headerShown: false,
         }}
       />
       {/* <Tabs.Screen

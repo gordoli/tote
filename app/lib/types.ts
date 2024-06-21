@@ -13,6 +13,24 @@ export type RankProducts = {
   totalRanking: number;
 };
 
+export type Category = {
+  id: number;
+  name: string;
+  description: string;
+  image: string;
+};
+
+export type RankingData = {
+  rate: number;
+  brandId: number;
+  categoryId: number;
+  // preferProductId: number;
+  link: string;
+  image: string;
+  name: string;
+  description: string;
+}
+
 export type Brand = {
   id: number;
   name: string;
@@ -190,7 +208,7 @@ export type User = {
   name: string;
   statistics: UserStats;
   products: Product[];
-  avatar: string
+  avatar: string;
   email: string;
   firstName?: string;
   lastName?: string;
@@ -497,4 +515,61 @@ export type LogInFormError = {
 export type LogInForm = {
   email: string;
   password: string;
+};
+
+// ---------------------------------------------------
+// Types that match backend
+
+export type FeedActivity = {
+  id: number;
+  createdAt: string;
+  updatedAt: string;
+  type: string;
+  referenceId: number;
+  title: string;
+  createdBy: User2;
+  rankProduct: Product2;
+};
+
+export type User2 = {
+  id: number;
+  name?: string;
+  username: string;
+  email: string;
+  avatar: string | null;
+};
+
+export type Product2 = {
+  id: number;
+  createdAt: string;
+  updatedAt: string;
+  rate: number;
+  link: string;
+  image: string;
+  name: string;
+  description: string;
+  createdBy: User2;
+  category?: Category;
+  brand?: Brand2;
+};
+
+export type Brand2 = {
+  id: number;
+  createdAt: string;
+  updatedAt: string;
+  name: string;
+  description: string;
+  cover: string | null;
+  logo: string | null;
+  website: string;
+  overallRanking?: number;
+};
+
+export type Category = {
+  id: number;
+  createdAt: string;
+  updatedAt: string;
+  name: string;
+  description: string | null;
+  image: string | null;
 };
