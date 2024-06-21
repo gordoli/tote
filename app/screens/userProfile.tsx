@@ -1,13 +1,14 @@
-import { useRouter } from "expo-router";
-import { useState, useContext } from "react";
+import { useRouter, useLocalSearchParams, Stack } from "expo-router";
+import { useState, useContext, useEffect } from "react";
 import { SceneMap, TabBar, TabView } from "react-native-tab-view";
 import {
   TouchableOpacity,
   useWindowDimensions,
   ScrollView,
   Image,
+  StyleSheet,
 } from "react-native";
-import { FontAwesome, Feather } from "@expo/vector-icons";
+import { FontAwesome, Ionicons, Entypo } from "@expo/vector-icons";
 
 import Avatar from "../components/Avatar";
 import ToteTitle from "../components/ToteTitle";
@@ -18,11 +19,12 @@ import {
   UserStats,
   DUMMY_BRANDS,
   Brand,
+  User,
 } from "@/app/lib/types";
 import ProductCard from "../components/ProductCard";
 import Storage from "../lib/storage";
 import { AuthContext } from "../lib/globalContext";
-import { useProfile } from "../hooks/useProfile";
+import { useFriendProfile } from "../hooks/useFriendProfile";
 import LoadingScreen from "../components/LoadingScreen";
 
 // Profile Tabs
@@ -86,19 +88,6 @@ const renderTabBar = (props: any) => (
     style={{ backgroundColor: "white" }}
     renderLabel={({ route, focused, color }) => (
       <View className="flex-row items-center justify-between">
-        {/* {route.key === "activity" ? (
-          <MaterialCommunityIcons
-            name="heart-circle-outline"
-            color={focused ? "#0065FF" : "#787878"}
-            size={20}
-          />
-        ) : (
-          <FontAwesome
-            name="shopping-bag"
-            color={focused ? "#0065FF" : "#787878"}
-            size={16}
-          />
-        )} */}
         <Text
           style={{ color: focused ? "#0065FF" : "#787878", margin: 8 }}
           className="text-base font-semibold"
@@ -110,9 +99,11 @@ const renderTabBar = (props: any) => (
   />
 );
 
-const Profile = () => {
+const UserProfile = () => {
+  const router = useRouter();
   const { logout } = useContext(AuthContext);
-  const { data, loading, error } = useProfile();
+  const user: User = useLocalSearchParams();
+  const { data, loading, handleGetUserById } = useFriendProfile(user.id);
 
   const layout = useWindowDimensions();
   const [index, setIndex] = useState(0);
@@ -120,6 +111,10 @@ const Profile = () => {
     { key: "activity", title: "Activity" },
     { key: "brands", title: "Top Brands" },
   ]);
+
+  useEffect(() => {
+    handleGetUserById();
+  }, []);
 
   if (loading) {
     return <LoadingScreen />;
@@ -146,8 +141,23 @@ const Profile = () => {
 
   return (
     <View className="flex-1">
+      <Stack.Screen
+        options={{
+          title: "Tote",
+          headerLeft: () => (
+            <BrandProfileScreenHeader
+              side="left"
+              onBack={() => router.back()}
+            />
+          ),
+          headerTitle: () => <BrandProfileScreenHeader side="center" />,
+          headerRight: () => <BrandProfileScreenHeader side="right" />,
+          headerShadowVisible: false,
+          headerBackVisible: false,
+        }}
+      />
       <View className="flex-col items-center space-y-4">
-        <Avatar src={data.avatar} size="xl" />
+        <Avatar src={data.avatar || "https://i.pravatar.cc/150?img=26"} size="xl" />
 
         <View>
           <Text className="font-semibold">{data.firstName} {data.lastName}</Text>
@@ -156,27 +166,6 @@ const Profile = () => {
 
         <ProfileStats stats={data.statistics} />
 
-        <View className="flex-row items-center justify-center space-x-4">
-          <TouchableOpacity
-            className="px-4 py-2 bg-white border border-gray-300 rounded-full"
-            onPress={() => {
-              /* Handle edit profile */
-              // Test logout
-              Storage.removeItem("AUTH");
-              logout();
-            }}
-          >
-            <Text className="text-sm">Edit profile</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            className="px-4 py-2 bg-white border border-gray-300 rounded-full"
-            onPress={() => {
-              /* Handle share profile */
-            }}
-          >
-            <Text className="text-sm">Share profile</Text>
-          </TouchableOpacity>
-        </View>
       </View>
 
       <TabView
@@ -190,7 +179,7 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default UserProfile;
 
 const ProfileStats = ({ stats }: { stats: UserStats }) => {
   return (
@@ -211,20 +200,37 @@ const ProfileStats = ({ stats }: { stats: UserStats }) => {
   );
 };
 
-export const ProfileScreenHeader = ({ side }: { side: string }) => {
+const BrandProfileScreenHeader = ({
+  side,
+  onBack,
+}: {
+  side: string;
+  onBack?: () => void;
+}) => {
   return (
     <>
       {side === "left" && (
-        <View className="flex-row items-center px-4">
-          <ToteTitle />
+        <View className="flex-row items-center">
+          <Ionicons
+            name="chevron-back-outline"
+            size={24}
+            color="gray"
+            onPress={onBack}
+          />
+          <ToteTitle customStyles={styles.titleHeader} />
         </View>
       )}
       {side === "right" && (
         <View className="flex-row items-center px-4 space-x-2">
-          <Feather name="share-2" size={20} />
-          <FontAwesome name="bell-o" size={20} />
+          <Entypo name="dots-three-horizontal" size={20} color="gray" />
         </View>
       )}
     </>
   );
 };
+
+const styles = StyleSheet.create({
+  titleHeader: {
+    paddingLeft: 10,
+  },
+});

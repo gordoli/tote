@@ -13,6 +13,7 @@ module.exports = {
         lightBlue: "#748db3",
         slate: "#354160",
         skyBlue: "#1DA1F2",
+        green: "#22A06B",
       },
     },
   },

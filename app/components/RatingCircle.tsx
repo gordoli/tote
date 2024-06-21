@@ -1,4 +1,5 @@
 import React from "react";
+import { ViewStyle } from "react-native";
 import ProgressCircle from "react-native-progress-circle";
 import { Text } from "./Themed";
 
@@ -14,20 +15,20 @@ const getColorForRating = (rating: number) => {
   }
 };
 
-const RatingCircle = ({ rating }: { rating: number }) => {
+const RatingCircle = ({ rating, numberStyles = {}, radius = 20 } : { rating: number, numberStyles?: ViewStyle, radius?: number }) => {
   const percentage = (rating / 10) * 100;
   const strokeColor = getColorForRating(rating);
 
   return (
     <ProgressCircle
       percent={percentage}
-      radius={20}
+      radius={radius}
       borderWidth={2}
       color={strokeColor}
       shadowColor="#d3d3d3"
       bgColor="#fff"
     >
-      <Text className="text-sm font-semibold" style={{ color: strokeColor }}>
+      <Text className="text-sm font-semibold" style={[{ color: strokeColor }, numberStyles]}>
         {rating}
       </Text>
     </ProgressCircle>

@@ -1,43 +1,113 @@
-import { View, Text } from "@/app/components/Themed";
-import { DUMMY_PRODUCTS, Product } from "../lib/types";
-import { Image } from "react-native";
-import ProductView from "../components/ProductView";
-import RatingCircle from "../components/RatingCircle";
+import { View, Text, TextInput } from "@/app/components/Themed";
+import { DUMMY_PRODUCTS } from "../lib/types";
+import { useWindowDimensions } from "react-native";
 import { ScrollView } from "react-native";
 import ToteTitle from "../components/ToteTitle";
 import { FontAwesome } from "@expo/vector-icons";
+import { SceneMap, TabBar, TabView } from "react-native-tab-view";
+import { useState } from "react";
+import ProductCard from "../components/ProductCard";
+import { BE_PRODUCTS } from "../lib/dummy";
 
-const Tote = () => {
+// Tote Tabs
+const MyProducts = () => {
+  const [text, onChangeText] = useState("");
+
   return (
     <ScrollView>
-      {DUMMY_PRODUCTS.map((product, i: number) => (
-        <ToteProductCard key={i} product={product} />
+      <View className="px-6 pt-6">
+        <TextInput
+          onChangeText={onChangeText}
+          value={text}
+          className="w-full h-10 p-2 bg-gray-200 rounded-lg"
+          placeholder="Search products..."
+        />
+      </View>
+
+      {BE_PRODUCTS.map((product, i: number) => (
+        <ProductCard key={i} product={product} />
       ))}
     </ScrollView>
   );
 };
 
-export default Tote;
+const MyWishlist = () => {
+  const [text, onChangeText] = useState("");
 
-const ToteProductCard = ({ product }: { product: Product }) => {
   return (
-    <View className="p-6 border-b border-gray-200">
-      <View className="flex-row items-center mb-4">
-        <Image src={product.brand.logo} className="w-8 h-8 mr-2 rounded" />
-        <View>
-          <Text className="font-semibold">{product.brand.name}</Text>
-          <Text className="text-sm text-muted">{product.category}</Text>
-        </View>
-
-        <View className="!ml-auto">
-          <RatingCircle rating={product.rating} />
-        </View>
+    <ScrollView>
+      <View className="px-6 pt-6">
+        <TextInput
+          onChangeText={onChangeText}
+          value={text}
+          className="w-full h-10 p-2 bg-gray-200 rounded-lg"
+          placeholder="Search your wishlist..."
+        />
       </View>
 
-      <ProductView product={product} />
-    </View>
+      {BE_PRODUCTS.map((product, i: number) => (
+        <ProductCard key={i} product={product} />
+      ))}
+    </ScrollView>
   );
 };
+
+const renderScene = SceneMap({
+  myProducts: MyProducts,
+  myWishlist: MyWishlist,
+});
+
+const renderTabBar = (props: any) => (
+  <TabBar
+    {...props}
+    indicatorStyle={{ backgroundColor: "#0065FF" }}
+    style={{ backgroundColor: "white" }}
+    renderLabel={({ route, focused, color }) => (
+      <View className="flex-row items-center justify-between">
+        {/* {route.key === "myProducts" ? (
+          <FontAwesome
+            name="shopping-bag"
+            color={focused ? "#0065FF" : "#787878"}
+            size={20}
+          />
+        ) : (
+          <FontAwesome
+            name={focused ? "bookmark" : "bookmark-o"}
+            color={focused ? "#0065FF" : "#787878"}
+            size={16}
+          />
+        )} */}
+        <Text
+          style={{ color: focused ? "#0065FF" : "#787878", margin: 8 }}
+          className="text-base font-semibold"
+        >
+          {route.title}
+        </Text>
+      </View>
+    )}
+  />
+);
+
+const Tote = () => {
+  const layout = useWindowDimensions();
+  const [index, setIndex] = useState(0);
+  const [routes] = useState([
+    { key: "myProducts", title: "My Products" },
+    { key: "myWishlist", title: "Wishlist" },
+  ]);
+
+  return (
+    <TabView
+      navigationState={{ index, routes }}
+      renderScene={renderScene}
+      onIndexChange={setIndex}
+      initialLayout={{ width: layout.width }}
+      renderTabBar={renderTabBar}
+    />
+  );
+};
+
+export default Tote;
 
 export const ToteScreenHeader = ({ side }: { side: string }) => {
   return (
@@ -50,7 +120,7 @@ export const ToteScreenHeader = ({ side }: { side: string }) => {
 
       {side === "right" && (
         <View className="flex-row items-center px-4 space-x-2">
-          <FontAwesome name="plus-circle" size={20} />
+          {/* <FontAwesome name="plus-circle" size={20} /> */}
           <FontAwesome name="bell-o" size={20} />
         </View>
       )}

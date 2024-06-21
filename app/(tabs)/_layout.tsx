@@ -5,11 +5,10 @@ import { Tabs } from "expo-router";
 import Colors from "@/constants/Colors";
 import { useColorScheme } from "@/components/useColorScheme";
 import { useClientOnlyValue } from "@/components/useClientOnlyValue";
-import { FeedScreenHeader } from "./feed";
 import Avatar from "@/app/components/Avatar";
-import { ProfileScreenHeader } from "./profile";
 import { CURRENT_USER } from "../lib/types";
-import { ToteScreenHeader } from "./tote";
+import BaseScreenHeader from "../components/BaseScreenHeader";
+import { AuthContext } from "../lib/globalContext";
 
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 function TabBarIcon(props: {
@@ -19,9 +18,10 @@ function TabBarIcon(props: {
   return <FontAwesome size={28} style={{ marginBottom: -3 }} {...props} />;
 }
 
-export default function TabLayout() {
-  const colorScheme = useColorScheme();
-  // const colorScheme = "dark";
+export default function TabLayout(props: any) {
+  // const colorScheme = useColorScheme();
+  const colorScheme = "light";
+  const { session } = React.useContext(AuthContext);
 
   return (
     <Tabs
@@ -31,14 +31,15 @@ export default function TabLayout() {
         // to prevent a hydration error in React Navigation v6.
         headerShown: useClientOnlyValue(false, true),
       }}
+      // backBehavior="history"
     >
       <Tabs.Screen
         name="feed"
         options={{
           title: "Tote",
-          headerLeft: () => <FeedScreenHeader side="left" />,
-          headerTitle: () => <FeedScreenHeader side="center" />,
-          headerRight: () => <FeedScreenHeader side="right" />,
+          headerLeft: () => <BaseScreenHeader side="left" />,
+          headerTitle: () => <BaseScreenHeader side="center" />,
+          headerRight: () => <BaseScreenHeader side="right" />,
           headerShadowVisible: false, // removes shadow and border from header
           tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
         }}
@@ -47,9 +48,9 @@ export default function TabLayout() {
         name="tote"
         options={{
           title: "Tote",
-          headerLeft: () => <ToteScreenHeader side="left" />,
-          headerTitle: () => <ToteScreenHeader side="center" />,
-          headerRight: () => <ToteScreenHeader side="right" />,
+          headerLeft: () => <BaseScreenHeader side="left" />,
+          headerTitle: () => <BaseScreenHeader side="center" />,
+          headerRight: () => <BaseScreenHeader side="right" />,
           headerShadowVisible: false,
           tabBarIcon: ({ color }) => (
             <TabBarIcon name="shopping-bag" color={color} />
@@ -60,11 +61,14 @@ export default function TabLayout() {
         name="search"
         options={{
           title: "Search",
+          headerLeft: () => <BaseScreenHeader side="left" />,
+          headerTitle: () => <BaseScreenHeader side="center" />,
+          headerRight: () => <BaseScreenHeader side="right" />,
           headerShadowVisible: false,
           tabBarIcon: ({ color }) => <TabBarIcon name="search" color={color} />,
         }}
       />
-      <Tabs.Screen
+      {/* <Tabs.Screen
         name="discover"
         options={{
           title: "Discover",
@@ -73,13 +77,26 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
+        name="explorer"
+        options={{
+          title: "Explorer",
+          headerShadowVisible: false,
+          headerLeft: () => <ExplorerScreenHeader side="left" />,
+          headerTitle: () => <ExplorerScreenHeader side="center" />,
+          headerRight: () => <ExplorerScreenHeader side="right" />,
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="compass" color={color} />
+          ),
+        }}
+      /> */}
+      <Tabs.Screen
         name="profile"
         options={{
           title: "Profile",
           headerShadowVisible: false,
-          headerLeft: () => <ProfileScreenHeader side="left" />,
-          headerTitle: () => <ProfileScreenHeader side="center" />,
-          headerRight: () => <ProfileScreenHeader side="right" />,
+          headerLeft: () => <BaseScreenHeader side="left" />,
+          headerTitle: () => <BaseScreenHeader side="center" />,
+          headerRight: () => <BaseScreenHeader side="right" />,
           tabBarIcon: () => <Avatar src={CURRENT_USER.avatar} size="sm" />,
         }}
       />
