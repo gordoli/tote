@@ -20,12 +20,8 @@ export const fetchWrapper = async (
   const url = `${API_BASE_URL}${endpoint}`;
   const headers: any = { ...defaultHeaders, ...customHeaders };
 
-  const postmanToken =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsInVzZXJuYW1lIjoiVGVzdCIsImVtYWlsIjoiVGVzdEBnb3Jkb24uY29tIiwiZGVsZXRlZEF0IjpudWxsLCJpc1ZlcmlmaWVkIjpmYWxzZSwiY3JlYXRlZEF0IjoiMjAyNC0wNi0xOFQxNzo0NTowNC41NTBaIiwidXBkYXRlZEF0IjoiMjAyNC0wNi0xOFQyMDo0MzoxNC45NzBaIiwic3RhdHVzIjoiYWN0aXZlIiwicHJvdmlkZXIiOiJlbWFpbCIsInNvY2lhbElkIjpudWxsLCJmaXJzdE5hbWUiOiJHb3Jkb24iLCJsYXN0TmFtZSI6IkxpIiwiYXZhdGFyIjpudWxsLCJpYXQiOjE3MTg3NDM4MTYsImV4cCI6MTcxODc0NDExNn0.seyXK4XBkRWsZPEWZg64H_AD53a3mpNs5bmVE0QzF8A";
-
   if (userItem !== null && userItem) {
-    // headers.Authorization = `Bearer ${userItem.accessToken.token}`;
-    headers.Authorization = `Bearer ${postmanToken}`;
+    headers.Authorization = `Bearer ${userItem.accessToken.token}`;
   }
 
   const options = {

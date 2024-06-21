@@ -41,8 +41,8 @@ const RankModals = ({
         newData.description = value.description;
         break;
       case 4:
-        // newData.link = value.link;
-        // newData.image = value.image;
+        newData.link = value.link;
+        newData.image = value.image;
         break;
       case 5:
         newData.rate = value;

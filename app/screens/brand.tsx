@@ -1,16 +1,9 @@
 import * as React from "react";
-import { Stack } from "expo-router";
 import { TabView, SceneMap, TabBar } from "react-native-tab-view";
 import { useWindowDimensions, ScrollView, Linking } from "react-native";
-import { useLocalSearchParams, useRouter } from "expo-router";
+import { useLocalSearchParams, useRouter, Stack } from "expo-router";
 import { StyleSheet, Image, TouchableOpacity } from "react-native";
-import {
-  Ionicons,
-  Entypo,
-  FontAwesome,
-  AntDesign,
-  MaterialCommunityIcons,
-} from "@expo/vector-icons";
+import { Ionicons, Entypo, AntDesign } from "@expo/vector-icons";
 
 import RankModals from "../screens/rankModals";
 import { useBrand } from "../hooks/useBrand";
@@ -104,6 +97,7 @@ const BrandProfile = () => {
   const router = useRouter();
   const modalizeModal = React.useRef(null);
   const brand: Brand = useLocalSearchParams();
+  const rootScreen = brand.screen;
   const layout = useWindowDimensions();
   const [focused, setFocused] = React.useState(false);
   const {
@@ -127,6 +121,24 @@ const BrandProfile = () => {
     { key: "trending", title: "Trending" },
   ]);
 
+  const renderHeader = () => (
+    <Stack.Screen
+      options={{
+        title: "Tote",
+        headerLeft: () => (
+          <BrandProfileScreenHeader
+            side="left"
+            onBack={() => rootScreen ? router.navigate(rootScreen) : router.back()}
+          />
+        ),
+        headerTitle: "",
+        headerRight: () => <BrandProfileScreenHeader side="right" />,
+        headerShadowVisible: false,
+        headerBackVisible: false,
+      }}
+    />
+  );
+
   const openModal = () => {
     handleGetCategories();
     modalizeModal.current?.open();
@@ -138,7 +150,7 @@ const BrandProfile = () => {
       brandId: brand.id,
       categoryId: 0,
       link: "",
-      image: "",
+      image: null,
       name: "",
       description: "",
       // preferProductId: 0,
@@ -147,7 +159,7 @@ const BrandProfile = () => {
   };
 
   const onRankProduct = () => {
-    handleRankProduct(() => {
+    handleRankProduct(rankingData, () => {
       cancelModal();
     });
   };
@@ -170,21 +182,7 @@ const BrandProfile = () => {
   if (brandDetail === null) {
     return (
       <View className="flex-1 bg-white justify-center items-center">
-        <Stack.Screen
-          options={{
-            title: "Tote",
-            headerLeft: () => (
-              <BrandProfileScreenHeader
-                side="left"
-                onBack={() => router.back()}
-              />
-            ),
-            headerTitle: "",
-            headerRight: () => <BrandProfileScreenHeader side="right" />,
-            headerShadowVisible: false,
-            headerBackVisible: false,
-          }}
-        />
+        {renderHeader()}
         <Text className="text-base text-zinc-500">Something went wrong. Please try again!</Text>
       </View>
     );
@@ -192,21 +190,7 @@ const BrandProfile = () => {
 
   return (
     <View className="flex-1 bg-white">
-      <Stack.Screen
-        options={{
-          title: "Tote",
-          headerLeft: () => (
-            <BrandProfileScreenHeader
-              side="left"
-              onBack={() => router.back()}
-            />
-          ),
-          headerTitle: "",
-          headerRight: () => <BrandProfileScreenHeader side="right" />,
-          headerShadowVisible: false,
-          headerBackVisible: false,
-        }}
-      />
+      {renderHeader()}
       {/* <ScrollView className="h-screen"> */}
       <Image src={brandDetail.cover || brand.cover} className="w-full h-1/5" resizeMode="cover" />
       <View className="flex-row items-center w-full px-4 space-y-4">

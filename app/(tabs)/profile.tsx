@@ -47,7 +47,7 @@ const BrandsList = () => {
   const onGoToBrandProfile = (brand: Brand) => {
     router.navigate({
       pathname: "/screens/brand",
-      params: brand,
+      params: {...brand, screen: "profile"},
     });
   };
 

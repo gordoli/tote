@@ -1,3 +1,4 @@
+import { Alert, Platform } from "react-native";
 import { useState, useEffect, useCallback } from "react";
 
 import { get, post } from "../lib/api";
@@ -18,7 +19,7 @@ export const useBrand = (brandId: number) => {
     brandId: brandId,
     categoryId: 0,
     link: "",
-    image: "",
+    image: null,
     name: "",
     description: "",
     // preferProductId: 0,
@@ -67,13 +68,62 @@ export const useBrand = (brandId: number) => {
     }
   }, []);
 
-  const handleRankProduct = useCallback(async (cb: () => void) => {
+  const handleRankProduct = useCallback(async (data: RankingData, cb: () => void) => {
     try {
       setLoadingStep(true);
-      // const result = await post(`/rank-products`, rankingData);
-      // setLoadingStep(false);
-      cb && cb();
+      const formData = new FormData();
+      const dataBody = data.image ? (
+        Platform.OS === "android" ? data.image.uri : data.image.uri.replace('file://', '')
+      ) : "";
+      formData.append('file', dataBody);
+      // const headers = { 'Content-Type': 'multipart/form-data' };
+      const result = await post('/files/upload', formData);
+      if (result && result.code === "ok" && result.status === 200) {
+        try {
+          const body = {
+            ...data,
+            image: result.data,
+          }
+          const res = await post(`/rank-products`, body);
+          if (res.status === 201 && res.code === "ok") {
+            cb && cb();
+            Alert.alert("Rank product successfully");
+          }
+          setLoadingStep(false);
+        } catch (e: any) {
+          setError(e.message);
+          setLoadingStep(false);
+        }
+      } else {
+        setLoadingStep(false);
+        Alert.alert('Failure', `Upload product's image fail. Please try again`, [
+          {
+            text: 'Cancel',
+            onPress: () => cb(),
+            style: 'cancel',
+          },
+          {
+            text: 'OK',
+            onPress: () => {
+              handleRankProduct(data, cb);
+            }
+          },
+        ]);
+      }
     } catch (err: any) {
+      Alert.alert('Failure', `Upload product's image fail. Please try again`, [
+        {
+          text: 'Cancel',
+          onPress: () => cb(),
+          style: 'cancel',
+        },
+        {
+          text: 'OK',
+          onPress: () => {
+            handleRankProduct(data, cb);
+          }
+        },
+      ]);
       setError(err.message);
       setLoadingStep(false);
     }

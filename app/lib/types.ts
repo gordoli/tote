@@ -1,3 +1,4 @@
+import { ImagePickerAsset } from "expo-image-picker";
 import { CATEGORY } from "./const";
 
 export type UserStats = {
@@ -19,7 +20,7 @@ export type RankingData = {
   categoryId: number;
   // preferProductId: number;
   link: string;
-  image: string;
+  image: ImagePickerAsset | null;
   name: string;
   description: string;
 }

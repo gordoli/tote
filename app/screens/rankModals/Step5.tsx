@@ -23,7 +23,7 @@ export const Step5 = ({
         key={item.name}
         className="border-2 border-gray-300 rounded-lg items-center p-5 mr-3"
         style={{width: width*0.4}}
-        onPress={() => handlSelectItem(6, null)}
+        // onPress={() => handlSelectItem(6, null)}
       >
         <Image src={item.image} className="h-10 w-10 rounded-lg mr-3" />
         <View>

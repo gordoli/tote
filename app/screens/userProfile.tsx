@@ -49,7 +49,7 @@ const BrandsList = () => {
   const onGoToBrandProfile = (brand: Brand) => {
     router.navigate({
       pathname: "/screens/brand",
-      params: brand,
+      params: {...brand, screen: "/screens/userProfile"},
     });
   };
 
@@ -103,6 +103,7 @@ const UserProfile = () => {
   const router = useRouter();
   const { logout } = useContext(AuthContext);
   const user: User = useLocalSearchParams();
+  const rootScreen = user.screen;
   const { data, loading, handleGetUserById } = useFriendProfile(user.id);
 
   const layout = useWindowDimensions();
@@ -116,6 +117,24 @@ const UserProfile = () => {
     handleGetUserById();
   }, []);
 
+  const renderHeader = () => (
+    <Stack.Screen
+      options={{
+        title: "Tote",
+        headerLeft: () => (
+          <BrandProfileScreenHeader
+            side="left"
+            onBack={() => rootScreen ? router.navigate(rootScreen) : router.back()}
+          />
+        ),
+        headerTitle: () => <BrandProfileScreenHeader side="center" />,
+        headerRight: () => <BrandProfileScreenHeader side="right" />,
+        headerShadowVisible: false,
+        headerBackVisible: false,
+      }}
+    />
+  );
+
   if (loading) {
     return <LoadingScreen />;
   }
@@ -123,6 +142,7 @@ const UserProfile = () => {
   if (data === null) {
     return (
       <View className="flex-1 bg-white justify-center items-center">
+        {renderHeader()}
         <Text className="text-base text-zinc-500">Something went wrong. Please try again!</Text>
         <View className="flex-row items-center justify-center space-x-4">
           <TouchableOpacity
@@ -141,23 +161,9 @@ const UserProfile = () => {
 
   return (
     <View className="flex-1">
-      <Stack.Screen
-        options={{
-          title: "Tote",
-          headerLeft: () => (
-            <BrandProfileScreenHeader
-              side="left"
-              onBack={() => router.back()}
-            />
-          ),
-          headerTitle: () => <BrandProfileScreenHeader side="center" />,
-          headerRight: () => <BrandProfileScreenHeader side="right" />,
-          headerShadowVisible: false,
-          headerBackVisible: false,
-        }}
-      />
+      {renderHeader()}
       <View className="flex-col items-center space-y-4">
-        <Avatar src={data.avatar || "https://i.pravatar.cc/150?img=26"} size="xl" />
+        <Avatar src={data.avatar} size="xl" />
 
         <View>
           <Text className="font-semibold">{data.firstName} {data.lastName}</Text>
