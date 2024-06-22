@@ -72,13 +72,17 @@ export const useBrand = (brandId: number) => {
     try {
       setLoadingStep(true);
       const formData = new FormData();
-      const dataBody = data.image ? (
-        Platform.OS === "android" ? data.image.uri : data.image.uri.replace('file://', '')
+
+      let filename = data.image ? data.image.uri.split('/').pop() : "";
+      let type = data.image ? data.image.mimeType : "image";
+      const localUri = data.image ? (
+        Platform.OS === "android" ? data.image.uri : data.image.uri.replace("file://", "")
       ) : "";
-      formData.append('file', dataBody);
-      // const headers = { 'Content-Type': 'multipart/form-data' };
-      const result = await post('/files/upload', formData);
-      if (result && result.code === "ok" && result.status === 200) {
+      const dataBody = { uri: localUri, name: filename, type };
+      formData.append("file", dataBody);
+      const headers = {"Content-Type": "multipart/form-data"};
+      const result = await post("/files/upload", formData, headers);
+      if (result && result.code === "ok" && result.status === 201) {
         try {
           const body = {
             ...data,
@@ -99,7 +103,7 @@ export const useBrand = (brandId: number) => {
         Alert.alert('Failure', `Upload product's image fail. Please try again`, [
           {
             text: 'Cancel',
-            onPress: () => cb(),
+            onPress: () => {},
             style: 'cancel',
           },
           {
@@ -114,7 +118,7 @@ export const useBrand = (brandId: number) => {
       Alert.alert('Failure', `Upload product's image fail. Please try again`, [
         {
           text: 'Cancel',
-          onPress: () => cb(),
+          onPress: () => {},
           style: 'cancel',
         },
         {

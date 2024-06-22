@@ -14,11 +14,12 @@ export const fetchWrapper = async (
   endpoint: string,
   method = "GET",
   body = null,
-  customHeaders = {}
+  customHeaders = {},
 ) => {
   let userItem = await Storage.getItem(APP_CONST.AUTH);
   const url = `${API_BASE_URL}${endpoint}`;
   const headers: any = { ...defaultHeaders, ...customHeaders };
+  const isFormData = JSON.stringify(customHeaders).includes(`"Content-Type":"multipart/form-data"`);
 
   if (userItem !== null && userItem) {
     headers.Authorization = `Bearer ${userItem.accessToken.token}`;
@@ -27,7 +28,7 @@ export const fetchWrapper = async (
   const options = {
     method,
     headers,
-    body: body ? JSON.stringify(body) : null,
+    body: body ? (isFormData ? body : JSON.stringify(body)) : null,
   };
 
   try {
