@@ -4,64 +4,67 @@ import { TabView, SceneMap, TabBar } from "react-native-tab-view";
 import { useWindowDimensions, ScrollView, Linking } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { StyleSheet, Image, TouchableOpacity } from "react-native";
-import {
-  Ionicons,
-  Entypo,
-  FontAwesome,
-  AntDesign,
-  MaterialCommunityIcons,
-} from "@expo/vector-icons";
+import { Ionicons, Entypo, AntDesign } from "@expo/vector-icons";
 
 import RankModals from "../screens/rankModals";
 import { useBrand } from "../hooks/useBrand";
 import Avatar from "@/app/components/Avatar";
-import RatingCircle from "../components/RatingCircle";
 import { View, Text } from "@/app/components/Themed";
 import ToteTitle from "@/app/components/ToteTitle";
 import LoadingScreen from "../components/LoadingScreen";
-import { Brand, RankProducts, FeedItem } from "@/app/lib/types";
+import { Brand, FeedItem, Product } from "@/app/lib/types";
+import ProductCard from "../components/ProductCard";
 
-const TrendingTab = React.memo(({ data, loading, focused }: { data: FeedItem[], loading: boolean, focused: boolean}) => {
-  
-  if (focused && loading) {
-    return <LoadingScreen />;
+const TrendingTab = React.memo(
+  ({
+    data,
+    loading,
+    focused,
+  }: {
+    data: FeedItem[];
+    loading: boolean;
+    focused: boolean;
+  }) => {
+    if (focused && loading) {
+      return <LoadingScreen />;
+    }
+
+    if (data.length === 0) {
+      return (
+        <View className="items-center justify-center flex-1 bg-white">
+          <Text className="text-base text-zinc-500">Data is empty</Text>
+        </View>
+      );
+    }
+
+    return (
+      <ScrollView className="h-screen">
+        <View className="flex-1 bg-white">
+          <View className="mt-2">
+            {/* {data.map((item: any, i: number) => (
+              <FriendsItemCard key={`${item.id}-${i}`} item={item} />
+            ))} */}
+          </View>
+        </View>
+      </ScrollView>
+    );
   }
+);
 
+const FriendsTab = React.memo(({ data }: { data: Product[] }) => {
   if (data.length === 0) {
     return (
-     <View className="flex-1 bg-white justify-center items-center">
-       <Text className="text-base text-zinc-500">Data is empty</Text>
-     </View>
+      <View className="items-center justify-center flex-1 bg-white">
+        <Text className="text-base text-zinc-500">Data is empty</Text>
+      </View>
     );
-   }
-
-   return (
-     <ScrollView className="h-screen">
-       <View className="flex-1 bg-white">
-        <View className="mt-2">
-          {data.map((item: any, i: number) => (
-            <FriendsItemCard key={`${item.id}-${i}`} item={item} />
-          ))}
-        </View>
-       </View>
-     </ScrollView>
-   );
-});
-
-const FriendsTab = React.memo(({ data }: { data: FeedItem[]}) => {
-  if (data.length === 0) {
-   return (
-    <View className="flex-1 bg-white justify-center items-center">
-      <Text className="text-base text-zinc-500">Data is empty</Text>
-    </View>
-   );
   }
   return (
     <ScrollView className="h-screen">
       <View className="flex-1 bg-white">
         <View className="mt-2">
-          {data.map((item: any, i: number) => (
-            <FriendsItemCard key={`${item.id}-${i}`} item={item} />
+          {data.map((item: Product, i: number) => (
+            <ProductCard key={`${item.id}-${i}`} product={item} />
           ))}
         </View>
       </View>
@@ -76,19 +79,6 @@ const renderTabBar = (props: any) => (
     style={{ backgroundColor: "white" }}
     renderLabel={({ route, focused, color }) => (
       <View className="flex-row items-center justify-between">
-        {/* {route.key === "friends" ? (
-          <MaterialCommunityIcons
-            name="heart-circle-outline"
-            color={focused ? "#0065FF" : "#787878"}
-            size={20}
-          />
-        ) : (
-          <MaterialCommunityIcons
-            name="fire"
-            color={focused ? "#0065FF" : "#787878"}
-            size={22}
-          />
-        )} */}
         <Text
           style={{ color: focused ? "#0065FF" : "#787878", margin: 8 }}
           className="text-base font-semibold"
@@ -102,8 +92,8 @@ const renderTabBar = (props: any) => (
 
 const BrandProfile = () => {
   const router = useRouter();
-  const modalizeModal = React.useRef(null);
-  const brand: Brand = useLocalSearchParams();
+  const modalizeModal = React.useRef<any>();
+  const brand: any = useLocalSearchParams();
   const layout = useWindowDimensions();
   const [focused, setFocused] = React.useState(false);
   const {
@@ -141,7 +131,6 @@ const BrandProfile = () => {
       image: "",
       name: "",
       description: "",
-      // preferProductId: 0,
     });
     modalizeModal.current?.close();
   };
@@ -160,16 +149,18 @@ const BrandProfile = () => {
 
   const renderScene = SceneMap({
     friends: () => <FriendsTab data={friendsRanked} />,
-    trending: () => <TrendingTab data={allRanked} loading={loadingTab} focused={focused} />,
+    trending: () => (
+      <TrendingTab data={allRanked} loading={loadingTab} focused={focused} />
+    ),
   });
-  
+
   if (loading) {
     return <LoadingScreen />;
   }
 
   if (brandDetail === null) {
     return (
-      <View className="flex-1 bg-white justify-center items-center">
+      <View className="items-center justify-center flex-1 bg-white">
         <Stack.Screen
           options={{
             title: "Tote",
@@ -185,7 +176,9 @@ const BrandProfile = () => {
             headerBackVisible: false,
           }}
         />
-        <Text className="text-base text-zinc-500">Something went wrong. Please try again!</Text>
+        <Text className="text-base text-zinc-500">
+          Something went wrong. Please try again!
+        </Text>
       </View>
     );
   }
@@ -208,15 +201,15 @@ const BrandProfile = () => {
         }}
       />
       {/* <ScrollView className="h-screen"> */}
-      <Image src={brandDetail.cover || brand.cover} className="w-full h-1/5" resizeMode="cover" />
+      {/* <Image
+        src={brandDetail.cover || brand.cover}
+        className="w-full h-1/5"
+        resizeMode="cover"
+      /> */}
       <View className="flex-row items-center w-full px-4 space-y-4">
         <View className="h-full mt-4" style={styles.logoLeft}>
           <View className="p-1" style={styles.logoPhotoContainer}>
-            <Image
-              src={brandDetail.logo || brand.logo}
-              resizeMode="contain"
-              style={styles.logoPhoto}
-            />
+            <Avatar src={brandDetail.logo || brand.logo} />
           </View>
         </View>
 
@@ -228,13 +221,15 @@ const BrandProfile = () => {
             <View className="flex-row items-center space-x-1">
               <Text className="text-2xl font-bold">{brandDetail.name}</Text>
             </View>
-            <Text className="text-base text-zinc-500">{brandDetail.description}</Text>
+            <Text className="text-base text-zinc-500">
+              {brandDetail.description}
+            </Text>
           </View>
         </View>
       </View>
 
       <View className="w-full px-4 space-y-4">
-        <RatingElements ranks={brandDetail.rankProducts} />
+        {/* <RatingElements ranks={brandDetail.rankProducts} /> */}
         <View className="flex flex-row items-center justify-between my-3">
           <TouchableOpacity
             className="flex-row items-center justify-center py-2 bg-gray-200 rounded-lg"
@@ -285,57 +280,6 @@ const BrandProfile = () => {
 };
 
 export default BrandProfile;
-
-const RatingElements = ({ranks}: { ranks: RankProducts}) => {
-  return (
-    <View className="flex flex-row items-center justify-around my-3">
-      <View
-        className="items-center border border-gray-200 rounded-lg"
-        style={styles.ratingElement}
-      >
-        <Text className="text-sm">My rating</Text>
-        <Text className="font-semibold">{ranks.userRating}</Text>
-      </View>
-      <View
-        className="items-center border border-gray-200 rounded-lg"
-        style={styles.ratingElement}
-      >
-        <Text className="text-sm">Friends rating</Text>
-        <Text className="font-semibold">{ranks.friendsRating}</Text>
-      </View>
-      <View
-        className="items-center border border-gray-200 rounded-lg"
-        style={styles.ratingElement}
-      >
-        <Text className="text-sm">Overall rating</Text>
-        <Text className="font-semibold">{ranks.overallRanking}</Text>
-      </View>
-    </View>
-  );
-};
-
-const FriendsItemCard = ({ item }: { item: any }) => {
-  return (
-    <View className="p-6 space-y-4 border-b border-gray-200">
-      <View className="flex-row items-center w-full mb-4">
-        <Avatar src={item.createdBy.avatar} />
-        <View className="ml-2">
-          <Text className="font-bold">{item.createdBy.username}</Text>
-          <Text className="text-sm text-zinc-500">{item.category.name}</Text>
-        </View>
-        <View className="ml-auto">
-          <RatingCircle rating={item.rate} />
-        </View>
-      </View>
-      <View className="relative">
-        <Image src={item.image} className="w-full rounded-lg aspect-video" />
-        <View className="absolute bottom-0 left-0 w-full p-4 rounded-b-lg bg-black/60">
-          <Text className="font-semibold text-white">{item.name}</Text>
-        </View>
-      </View>
-    </View>
-  );
-};
 
 const BrandProfileScreenHeader = ({
   side,
@@ -398,3 +342,33 @@ const styles = StyleSheet.create({
     backgroundColor: "#0065FF",
   },
 });
+
+// Old Elements
+
+// const RatingElements = ({ ranks }: { ranks: RankProducts }) => {
+//   return (
+//     <View className="flex flex-row items-center justify-around my-3">
+//       <View
+//         className="items-center border border-gray-200 rounded-lg"
+//         style={styles.ratingElement}
+//       >
+//         <Text className="text-sm">My rating</Text>
+//         <Text className="font-semibold">{ranks.userRating}</Text>
+//       </View>
+//       <View
+//         className="items-center border border-gray-200 rounded-lg"
+//         style={styles.ratingElement}
+//       >
+//         <Text className="text-sm">Friends rating</Text>
+//         <Text className="font-semibold">{ranks.friendsRating}</Text>
+//       </View>
+//       <View
+//         className="items-center border border-gray-200 rounded-lg"
+//         style={styles.ratingElement}
+//       >
+//         <Text className="text-sm">Overall rating</Text>
+//         <Text className="font-semibold">{ranks.overallRanking}</Text>
+//       </View>
+//     </View>
+//   );
+// };

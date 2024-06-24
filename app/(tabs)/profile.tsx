@@ -1,5 +1,5 @@
-import { useRouter } from "expo-router";
-import { useState, useContext } from "react";
+import { useLocalSearchParams, useRouter } from "expo-router";
+import { useState, useContext, useEffect } from "react";
 import { SceneMap, TabBar, TabView } from "react-native-tab-view";
 import {
   TouchableOpacity,
@@ -12,29 +12,24 @@ import { FontAwesome, Feather } from "@expo/vector-icons";
 import Avatar from "../components/Avatar";
 import ToteTitle from "../components/ToteTitle";
 import { View, Text } from "@/app/components/Themed";
-import {
-  DUMMY_FEED_ITEMS,
-  FeedItem,
-  UserStats,
-  DUMMY_BRANDS,
-  Brand,
-} from "@/app/lib/types";
+import { FeedItem, UserStats, Brand } from "@/app/lib/types";
 import ProductCard from "../components/ProductCard";
 import Storage from "../lib/storage";
 import { AuthContext } from "../lib/globalContext";
 import { useProfile } from "../hooks/useProfile";
 import LoadingScreen from "../components/LoadingScreen";
+import { BE_BRANDS } from "../lib/dummy";
+import { useFriendProfile } from "../hooks/useFriendProfile";
 
 // Profile Tabs
 const ActivityList = () => {
-  const [feed] = useState<FeedItem[]>(DUMMY_FEED_ITEMS);
   return (
     <ScrollView className="h-screen">
       <View className="flex-1 bg-white">
         <View className="mt-2">
-          {feed.map((item, i: number) => (
+          {/* {feed.map((item, i: number) => (
             <ProductCard key={i} product={item.product} />
-          ))}
+          ))} */}
         </View>
       </View>
     </ScrollView>
@@ -53,13 +48,13 @@ const BrandsList = () => {
 
   return (
     <View className="flex-1 p-5 bg-white">
-      {DUMMY_BRANDS.map((brand: Brand, i: number) => (
+      {BE_BRANDS.map((brand: Brand, i: number) => (
         <View key={i} className="flex-row items-center py-2">
           <TouchableOpacity
             className="flex-row items-center"
             onPress={() => onGoToBrandProfile(brand)}
           >
-            <Image src={brand.logo} className="w-8 h-8 mr-2 rounded" />
+            {/* <Image src={brand.logo} className="w-8 h-8 mr-2 rounded" /> */}
             <View>
               <Text className="font-semibold">{brand.name}</Text>
             </View>
@@ -86,19 +81,6 @@ const renderTabBar = (props: any) => (
     style={{ backgroundColor: "white" }}
     renderLabel={({ route, focused, color }) => (
       <View className="flex-row items-center justify-between">
-        {/* {route.key === "activity" ? (
-          <MaterialCommunityIcons
-            name="heart-circle-outline"
-            color={focused ? "#0065FF" : "#787878"}
-            size={20}
-          />
-        ) : (
-          <FontAwesome
-            name="shopping-bag"
-            color={focused ? "#0065FF" : "#787878"}
-            size={16}
-          />
-        )} */}
         <Text
           style={{ color: focused ? "#0065FF" : "#787878", margin: 8 }}
           className="text-base font-semibold"
@@ -112,8 +94,8 @@ const renderTabBar = (props: any) => (
 
 const Profile = () => {
   const { logout } = useContext(AuthContext);
-  const { data, loading, error } = useProfile();
-
+  const user: any = useLocalSearchParams();
+  const { data, loading, error } = useProfile(user?.id || "");
   const layout = useWindowDimensions();
   const [index, setIndex] = useState(0);
   const [routes] = useState([
@@ -127,8 +109,10 @@ const Profile = () => {
 
   if (data === null) {
     return (
-      <View className="flex-1 bg-white justify-center items-center">
-        <Text className="text-base text-zinc-500">Something went wrong. Please try again!</Text>
+      <View className="items-center justify-center flex-1 bg-white">
+        <Text className="text-base text-zinc-500">
+          Something went wrong. Please try again!
+        </Text>
         <View className="flex-row items-center justify-center space-x-4">
           <TouchableOpacity
             className="px-4 py-2 bg-white border border-gray-300 rounded-full"
@@ -150,7 +134,9 @@ const Profile = () => {
         <Avatar src={data.avatar} size="xl" />
 
         <View>
-          <Text className="font-semibold">{data.firstName} {data.lastName}</Text>
+          <Text className="font-semibold">
+            {data.firstName} {data.lastName} {user ? "Friends" : "Mine"}
+          </Text>
           <Text className="text-muted">@{data.username}</Text>
         </View>
 

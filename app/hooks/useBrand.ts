@@ -1,13 +1,13 @@
 import { useState, useEffect, useCallback } from "react";
 
 import { get, post } from "../lib/api";
-import { Brand, FeedItem, Category, RankingData } from "../lib/types";
+import { Brand, FeedItem, Category, RankingData, Product } from "../lib/types";
 
 export const useBrand = (brandId: number) => {
   const [loading, setLoading] = useState(true);
   const [loadingTab, setLoadingTab] = useState(true);
   const [brandDetail, setBrandDetail] = useState<Brand | null>(null);
-  const [friendsRanked, setFriendsRanked] = useState<FeedItem[] | []>([]);
+  const [friendsRanked, setFriendsRanked] = useState<Product[] | []>([]);
   const [allRanked, setAllRanked] = useState<FeedItem[] | []>([]);
   const [error, setError] = useState(null);
 
@@ -21,14 +21,17 @@ export const useBrand = (brandId: number) => {
     image: "",
     name: "",
     description: "",
-    // preferProductId: 0,
   });
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const resultBrand = await get(`/brands/${brandId}`);
-        const resultFriendsRanked = await get(`/rank-products?${brandId}&isOnlyFriend`);
+        const resultFriendsRanked = await get(
+          `/rank-products?${brandId}&isOnlyFriend`
+        );
+        console.log(resultBrand);
+        console.log(resultFriendsRanked);
         setBrandDetail(resultBrand.data);
         setFriendsRanked(resultFriendsRanked.data);
         setLoading(false);
@@ -97,5 +100,5 @@ export const useBrand = (brandId: number) => {
     handleGetCategories,
     handleUpdateRankingData,
     handleRankProduct,
-  }
-}
+  };
+};

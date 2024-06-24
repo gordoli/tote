@@ -1,5 +1,4 @@
-import { View, Text, TextInput } from "@/app/components/Themed";
-import { DUMMY_PRODUCTS } from "../lib/types";
+import { View, Text } from "@/app/components/Themed";
 import { useWindowDimensions } from "react-native";
 import { ScrollView } from "react-native";
 import ToteTitle from "../components/ToteTitle";
@@ -15,14 +14,14 @@ const MyProducts = () => {
 
   return (
     <ScrollView>
-      <View className="px-6 pt-6">
+      {/* <View className="px-6 pt-6">
         <TextInput
           onChangeText={onChangeText}
           value={text}
           className="w-full h-10 p-2 bg-gray-200 rounded-lg"
           placeholder="Search products..."
         />
-      </View>
+      </View> */}
 
       {BE_PRODUCTS.map((product, i: number) => (
         <ProductCard key={i} product={product} />
@@ -36,14 +35,14 @@ const MyWishlist = () => {
 
   return (
     <ScrollView>
-      <View className="px-6 pt-6">
+      {/* <View className="px-6 pt-6">
         <TextInput
           onChangeText={onChangeText}
           value={text}
           className="w-full h-10 p-2 bg-gray-200 rounded-lg"
           placeholder="Search your wishlist..."
         />
-      </View>
+      </View> */}
 
       {BE_PRODUCTS.map((product, i: number) => (
         <ProductCard key={i} product={product} />

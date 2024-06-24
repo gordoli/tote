@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import {Modalize} from 'react-native-modalize';
+import { Modalize } from "react-native-modalize";
 
 import { Step1 } from "./Step1";
 import { Step2 } from "./Step2";
@@ -9,7 +9,7 @@ import { Step5 } from "./Step5";
 import styles from "./styles";
 import { View } from "@/app/components/Themed";
 import LoadingScreen from "../../components/LoadingScreen";
-import { DUMMY_PRODUCTS, Category, RankingData } from "@/app/lib/types";
+import { Category, RankingData } from "@/app/lib/types";
 
 const RankModals = ({
   cancelModal,
@@ -20,18 +20,18 @@ const RankModals = ({
   handleUpdateRankingData,
   handleRankProduct,
 }: {
-  cancelModal: () => void,
-  modalizeRef: any,
-  loading: boolean,
-  categories: Category[],
-  data: RankingData,
-  handleUpdateRankingData: (value: any) => void,
-  handleRankProduct: () => void,
+  cancelModal: () => void;
+  modalizeRef: any;
+  loading: boolean;
+  categories: Category[];
+  data: RankingData;
+  handleUpdateRankingData: (value: any) => void;
+  handleRankProduct: () => void;
 }) => {
   const [step, setStep] = useState(1);
 
   const nextStepAction = (num: number, value: any) => {
-    const newData = {...data};
+    const newData = { ...data };
     switch (num) {
       case 2:
         newData.categoryId = value;
@@ -69,51 +69,43 @@ const RankModals = ({
       adjustToContentHeight
       closeOnOverlayTap={false}
     >
-      <View className="bg-white w-full flex-column justify-between p-4 pb-10 rounded-2xl">
-        {step === 1 && (
-          loading ? (
-            <LoadingScreen customeStyles={styles.loadingStyle}/>
+      <View className="justify-between w-full p-4 pb-10 bg-white flex-column rounded-2xl">
+        {step === 1 &&
+          (loading ? (
+            <LoadingScreen customeStyles={styles.loadingStyle} />
           ) : (
             <Step1
               cancelModal={handleCancelStep}
               nextStep={nextStepAction}
               data={categories}
             />
-          )
-        )}
+          ))}
         {step === 2 && (
-          <Step2
-            cancelModal={handleCancelStep}
-            nextStep={nextStepAction}
-          />
+          <Step2 cancelModal={handleCancelStep} nextStep={nextStepAction} />
         )}
         {step === 3 && (
-          <Step3
-            cancelModal={handleCancelStep}
-            nextStep={nextStepAction}
-          />
+          <Step3 cancelModal={handleCancelStep} nextStep={nextStepAction} />
         )}
-        {step === 4 && (
+        {/* {step === 4 && (
           <Step4
             cancelModal={handleCancelStep}
             nextStep={nextStepAction}
             product={DUMMY_PRODUCTS[0]}
           />
-        )}
-        {step === 5 && (
-          loading ? (
-            <LoadingScreen customeStyles={styles.loadingStyle}/>
+        )} */}
+        {step === 5 &&
+          (loading ? (
+            <LoadingScreen customeStyles={styles.loadingStyle} />
           ) : (
             <Step5
               cancelModal={handleCancelStep}
               handlSelectItem={nextStepAction}
               handlRanking={handleRankProduct}
             />
-          )
-        )}
+          ))}
       </View>
     </Modalize>
   );
-}
+};
 
 export default RankModals;

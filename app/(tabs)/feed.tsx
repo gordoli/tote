@@ -1,14 +1,7 @@
 import { useEffect, useState } from "react";
 import { View, Text } from "@/app/components/Themed";
 import Avatar from "@/app/components/Avatar";
-import {
-  Brand,
-  DUMMY_FEED_ITEMS,
-  FeedActivity,
-  FeedItem,
-  User,
-  User2,
-} from "@/app/lib/types";
+import { Brand, FeedActivity, User } from "@/app/lib/types";
 import { ScrollView } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import ProductView from "@/app/components/ProductView";
@@ -66,16 +59,17 @@ const FeedItemCard = ({ item }: { item: FeedActivity }) => {
     showToast();
   };
 
-  const onGoToBrandProfile = (brand: Brand) => {
+  const onGoToBrandProfile = (brand: Brand | undefined) => {
+    if (!brand) return;
     router.navigate({
       pathname: "/screens/brand",
       params: brand,
     });
   };
 
-  const onUserClick = (user: User2) => {
+  const onUserClick = (user: User | undefined) => {
     router.navigate({
-      pathname: "/screens/userProfile",
+      pathname: "/(tabs)/profile",
       params: user,
     });
   };
@@ -93,13 +87,15 @@ const FeedItemCard = ({ item }: { item: FeedActivity }) => {
               {getFirstName(item.createdBy.username)}
             </Text>
             <Text>{contentMap[item.type]}</Text>
-            {/* <Text className="font-bold">{item.rankProduct.category}</Text> */}
+            <Text className="font-bold">{item.rankProduct.category?.name}</Text>
             <Text>from</Text>
-            {/* <TouchableOpacity
-              onPress={() => onGoToBrandProfile(item.product.brand)}
-            >
-              <Text className="font-bold">{item.product.brand.name}</Text>
-            </TouchableOpacity> */}
+            {item.rankProduct.brand && (
+              <TouchableOpacity
+                onPress={() => onGoToBrandProfile(item.rankProduct.brand)}
+              >
+                <Text className="font-bold">{item.rankProduct.brand.name}</Text>
+              </TouchableOpacity>
+            )}
           </View>
 
           <Text className="text-sm text-muted">

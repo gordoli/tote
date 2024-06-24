@@ -13,14 +13,7 @@ import { FontAwesome, Ionicons, Entypo } from "@expo/vector-icons";
 import Avatar from "../components/Avatar";
 import ToteTitle from "../components/ToteTitle";
 import { View, Text } from "@/app/components/Themed";
-import {
-  DUMMY_FEED_ITEMS,
-  FeedItem,
-  UserStats,
-  DUMMY_BRANDS,
-  Brand,
-  User,
-} from "@/app/lib/types";
+import { FeedItem, UserStats, Brand, User } from "@/app/lib/types";
 import ProductCard from "../components/ProductCard";
 import Storage from "../lib/storage";
 import { AuthContext } from "../lib/globalContext";
@@ -29,14 +22,13 @@ import LoadingScreen from "../components/LoadingScreen";
 
 // Profile Tabs
 const ActivityList = () => {
-  const [feed] = useState<FeedItem[]>(DUMMY_FEED_ITEMS);
   return (
     <ScrollView className="h-screen">
       <View className="flex-1 bg-white">
         <View className="mt-2">
-          {feed.map((item, i: number) => (
+          {/* {feed.map((item, i: number) => (
             <ProductCard key={i} product={item.product} />
-          ))}
+          ))} */}
         </View>
       </View>
     </ScrollView>
@@ -55,7 +47,7 @@ const BrandsList = () => {
 
   return (
     <View className="flex-1 p-5 bg-white">
-      {DUMMY_BRANDS.map((brand: Brand, i: number) => (
+      {/* {DUMMY_BRANDS.map((brand: Brand, i: number) => (
         <View key={i} className="flex-row items-center py-2">
           <TouchableOpacity
             className="flex-row items-center"
@@ -71,7 +63,7 @@ const BrandsList = () => {
             <FontAwesome name="bookmark-o" size={20} />
           </View>
         </View>
-      ))}
+      ))} */}
     </View>
   );
 };
@@ -102,7 +94,7 @@ const renderTabBar = (props: any) => (
 const UserProfile = () => {
   const router = useRouter();
   const { logout } = useContext(AuthContext);
-  const user: User = useLocalSearchParams();
+  const user: any = useLocalSearchParams();
   const { data, loading, handleGetUserById } = useFriendProfile(user.id);
 
   const layout = useWindowDimensions();
@@ -122,8 +114,10 @@ const UserProfile = () => {
 
   if (data === null) {
     return (
-      <View className="flex-1 bg-white justify-center items-center">
-        <Text className="text-base text-zinc-500">Something went wrong. Please try again!</Text>
+      <View className="items-center justify-center flex-1 bg-white">
+        <Text className="text-base text-zinc-500">
+          Something went wrong. Please try again!
+        </Text>
         <View className="flex-row items-center justify-center space-x-4">
           <TouchableOpacity
             className="px-4 py-2 bg-white border border-gray-300 rounded-full"
@@ -157,15 +151,19 @@ const UserProfile = () => {
         }}
       />
       <View className="flex-col items-center space-y-4">
-        <Avatar src={data.avatar || "https://i.pravatar.cc/150?img=26"} size="xl" />
+        <Avatar
+          src={data.avatar || "https://i.pravatar.cc/150?img=26"}
+          size="xl"
+        />
 
         <View>
-          <Text className="font-semibold">{data.firstName} {data.lastName}</Text>
+          <Text className="font-semibold">
+            {data.firstName} {data.lastName}
+          </Text>
           <Text className="text-muted">@{data.username}</Text>
         </View>
 
         <ProfileStats stats={data.statistics} />
-
       </View>
 
       <TabView
