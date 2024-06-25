@@ -1,22 +1,23 @@
 import { useState, useEffect } from "react";
 
 import { get } from "../lib/api";
-import { User } from "../lib/types";
+import { Brand } from "../lib/types";
 
-export const useProfile = (userId?: string) => {
+export const useBrandList = (userId?: string, brandId?: string) => {
   const [loading, setLoading] = useState(true);
-  const [data, setData] = useState<User | null>(null);
+  const [brands, setBrands] = useState<Brand[] | null>(null);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
-      console.log("userId", userId);
       try {
-        const result =
-          userId && userId !== ""
-            ? await get(`/users/${userId}`)
-            : await get("/users/me");
-        setData(result.data);
+        // Only add userId and brandId if they exist
+        const result = await get(
+          `/brands/${userId ? `?userId=${userId}` : ""}${
+            brandId ? `&brandId=${brandId}` : ""
+          }`
+        );
+        setBrands(result.data);
         setLoading(false);
       } catch (err: any) {
         console.log(err);
@@ -28,12 +29,9 @@ export const useProfile = (userId?: string) => {
     fetchData();
   }, []);
 
-  const handleFollowUser = () => {};
-
   return {
     loading,
-    data,
+    brands,
     error,
-    handleFollowUser,
   };
 };

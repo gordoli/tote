@@ -5,29 +5,17 @@ import ToteTitle from "../components/ToteTitle";
 import { FontAwesome } from "@expo/vector-icons";
 import { SceneMap, TabBar, TabView } from "react-native-tab-view";
 import { useState } from "react";
-import ProductCard from "../components/ProductCard";
+import ProductCard from "../components/product/ProductCard";
 import { BE_PRODUCTS } from "../lib/dummy";
+import { useTote } from "../hooks/useTote";
+import { Product } from "../lib/types";
+import ProductList from "../components/product/ProductList";
 
 // Tote Tabs
 const MyProducts = () => {
-  const [text, onChangeText] = useState("");
+  const { data, loading, error } = useTote();
 
-  return (
-    <ScrollView>
-      {/* <View className="px-6 pt-6">
-        <TextInput
-          onChangeText={onChangeText}
-          value={text}
-          className="w-full h-10 p-2 bg-gray-200 rounded-lg"
-          placeholder="Search products..."
-        />
-      </View> */}
-
-      {BE_PRODUCTS.map((product, i: number) => (
-        <ProductCard key={i} product={product} />
-      ))}
-    </ScrollView>
-  );
+  return <ProductList products={data} />;
 };
 
 const MyWishlist = () => {
@@ -63,19 +51,6 @@ const renderTabBar = (props: any) => (
     style={{ backgroundColor: "white" }}
     renderLabel={({ route, focused, color }) => (
       <View className="flex-row items-center justify-between">
-        {/* {route.key === "myProducts" ? (
-          <FontAwesome
-            name="shopping-bag"
-            color={focused ? "#0065FF" : "#787878"}
-            size={20}
-          />
-        ) : (
-          <FontAwesome
-            name={focused ? "bookmark" : "bookmark-o"}
-            color={focused ? "#0065FF" : "#787878"}
-            size={16}
-          />
-        )} */}
         <Text
           style={{ color: focused ? "#0065FF" : "#787878", margin: 8 }}
           className="text-base font-semibold"

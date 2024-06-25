@@ -3,19 +3,19 @@ import { useState, useEffect, useCallback } from "react";
 import { get, post } from "../lib/api";
 import { Brand, FeedItem, Category, RankingData, Product } from "../lib/types";
 
-export const useBrand = (brandId: number) => {
+export const useBrand = (brandId?: number, userId?: string) => {
   const [loading, setLoading] = useState(true);
   const [loadingTab, setLoadingTab] = useState(true);
   const [brandDetail, setBrandDetail] = useState<Brand | null>(null);
   const [friendsRanked, setFriendsRanked] = useState<Product[] | []>([]);
-  const [allRanked, setAllRanked] = useState<FeedItem[] | []>([]);
+  const [allRanked, setAllRanked] = useState<Product[] | []>([]);
   const [error, setError] = useState(null);
 
   const [loadingStep, setLoadingStep] = useState(true);
   const [categories, setCategories] = useState<Category[] | []>([]);
   const [rankingData, setRankingData] = useState<RankingData>({
     rate: 0,
-    brandId: brandId,
+    brandId: brandId || 0,
     categoryId: 0,
     link: "",
     image: "",
@@ -30,8 +30,6 @@ export const useBrand = (brandId: number) => {
         const resultFriendsRanked = await get(
           `/rank-products?${brandId}&isOnlyFriend`
         );
-        console.log(resultBrand);
-        console.log(resultFriendsRanked);
         setBrandDetail(resultBrand.data);
         setFriendsRanked(resultFriendsRanked.data);
         setLoading(false);

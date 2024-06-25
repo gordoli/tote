@@ -4,8 +4,6 @@ import { SceneMap, TabBar, TabView } from "react-native-tab-view";
 import {
   TouchableOpacity,
   useWindowDimensions,
-  ScrollView,
-  Image,
   StyleSheet,
 } from "react-native";
 import { FontAwesome, Ionicons, Entypo } from "@expo/vector-icons";
@@ -13,65 +11,17 @@ import { FontAwesome, Ionicons, Entypo } from "@expo/vector-icons";
 import Avatar from "../components/Avatar";
 import ToteTitle from "../components/ToteTitle";
 import { View, Text } from "@/app/components/Themed";
-import { FeedItem, UserStats, Brand, User } from "@/app/lib/types";
-import ProductCard from "../components/ProductCard";
+import { UserStats, Brand, Product } from "@/app/lib/types";
 import Storage from "../lib/storage";
 import { AuthContext } from "../lib/globalContext";
-import { useFriendProfile } from "../hooks/useFriendProfile";
 import LoadingScreen from "../components/LoadingScreen";
-
-// Profile Tabs
-const ActivityList = () => {
-  return (
-    <ScrollView className="h-screen">
-      <View className="flex-1 bg-white">
-        <View className="mt-2">
-          {/* {feed.map((item, i: number) => (
-            <ProductCard key={i} product={item.product} />
-          ))} */}
-        </View>
-      </View>
-    </ScrollView>
-  );
-};
-
-const BrandsList = () => {
-  const router = useRouter();
-
-  const onGoToBrandProfile = (brand: Brand) => {
-    router.navigate({
-      pathname: "/screens/brand",
-      params: brand,
-    });
-  };
-
-  return (
-    <View className="flex-1 p-5 bg-white">
-      {/* {DUMMY_BRANDS.map((brand: Brand, i: number) => (
-        <View key={i} className="flex-row items-center py-2">
-          <TouchableOpacity
-            className="flex-row items-center"
-            onPress={() => onGoToBrandProfile(brand)}
-          >
-            <Image src={brand.logo} className="w-8 h-8 mr-2 rounded" />
-            <View>
-              <Text className="font-semibold">{brand.name}</Text>
-            </View>
-          </TouchableOpacity>
-          <View className="!ml-auto flex-row items-center items-end space-x-2">
-            <FontAwesome name="plus-circle" size={20} />
-            <FontAwesome name="bookmark-o" size={20} />
-          </View>
-        </View>
-      ))} */}
-    </View>
-  );
-};
-
-const renderScene = SceneMap({
-  activity: ActivityList,
-  brands: BrandsList,
-});
+import { useProfile } from "../hooks/useProfile";
+import { useCurrentUser } from "../hooks/useCurrentUser";
+import FollowButton from "../components/FollowButton";
+import { useProductList } from "../hooks/useProductList";
+import ProductList from "../components/product/ProductList";
+import { useBrandList } from "../hooks/useBrandList";
+import BrandList from "../components/brand/BrandList";
 
 const renderTabBar = (props: any) => (
   <TabBar
@@ -95,18 +45,25 @@ const UserProfile = () => {
   const router = useRouter();
   const { logout } = useContext(AuthContext);
   const user: any = useLocalSearchParams();
-  const { data, loading, handleGetUserById } = useFriendProfile(user.id);
 
+  const { currUser } = useCurrentUser();
+  const isCurrentUser = !user.id || (currUser && currUser.id === user.id);
+  const currUserId = user ? user.id : currUser?.id;
+  const { data, loading, error } = useProfile(user.id);
+  const { products } = useProductList(currUserId);
+  const { brands } = useBrandList(currUserId);
   const layout = useWindowDimensions();
   const [index, setIndex] = useState(0);
+
   const [routes] = useState([
-    { key: "activity", title: "Activity" },
-    { key: "brands", title: "Top Brands" },
+    { key: "products", title: "Products" },
+    { key: "brands", title: "Brands" },
   ]);
 
-  useEffect(() => {
-    handleGetUserById();
-  }, []);
+  const renderScene = SceneMap({
+    products: () => <ProductList products={products} />,
+    brands: () => <BrandList brands={brands} />,
+  });
 
   if (loading) {
     return <LoadingScreen />;
@@ -139,13 +96,10 @@ const UserProfile = () => {
         options={{
           title: "Tote",
           headerLeft: () => (
-            <BrandProfileScreenHeader
-              side="left"
-              onBack={() => router.back()}
-            />
+            <UserProfileScreenHeader side="left" onBack={() => router.back()} />
           ),
-          headerTitle: () => <BrandProfileScreenHeader side="center" />,
-          headerRight: () => <BrandProfileScreenHeader side="right" />,
+          headerTitle: () => <UserProfileScreenHeader side="center" />,
+          headerRight: () => <UserProfileScreenHeader side="right" />,
           headerShadowVisible: false,
           headerBackVisible: false,
         }}
@@ -164,6 +118,33 @@ const UserProfile = () => {
         </View>
 
         <ProfileStats stats={data.statistics} />
+
+        <View className="flex-row items-center justify-center space-x-4">
+          {isCurrentUser ? (
+            <TouchableOpacity
+              className="px-4 py-2 bg-white border border-gray-300 rounded-full"
+              onPress={() => {
+                /* Handle edit profile */
+                // Test logout
+                Storage.removeItem("AUTH");
+                logout();
+              }}
+            >
+              <Text className="text-sm">Edit profile</Text>
+            </TouchableOpacity>
+          ) : (
+            <FollowButton />
+          )}
+
+          <TouchableOpacity
+            className="px-4 py-2 bg-white border border-gray-300 rounded-full"
+            onPress={() => {
+              /* Handle share profile */
+            }}
+          >
+            <Text className="text-sm">Share profile</Text>
+          </TouchableOpacity>
+        </View>
       </View>
 
       <TabView
@@ -198,7 +179,7 @@ const ProfileStats = ({ stats }: { stats: UserStats }) => {
   );
 };
 
-const BrandProfileScreenHeader = ({
+const UserProfileScreenHeader = ({
   side,
   onBack,
 }: {

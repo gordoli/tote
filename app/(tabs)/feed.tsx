@@ -4,7 +4,7 @@ import Avatar from "@/app/components/Avatar";
 import { Brand, FeedActivity, User } from "@/app/lib/types";
 import { ScrollView } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
-import ProductView from "@/app/components/ProductView";
+import ProductView from "@/app/components/product/ProductView";
 import RatingCircle from "../components/RatingCircle";
 import { getFirstName, formatRelativeDate } from "../lib/helpers";
 import Toast from "react-native-toast-message";
@@ -12,14 +12,9 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { useRouter } from "expo-router";
 import { useFeed } from "../hooks/useFeed";
 import LoadingScreen from "../components/LoadingScreen";
-import { BE_FEED_ACTIVITIES } from "../lib/dummy";
 
 const Feed = () => {
   const { data, loading, error } = useFeed();
-
-  useEffect(() => {
-    console.log("Feed Data", data);
-  }, [data]);
 
   if (loading) {
     return <LoadingScreen />;
@@ -27,11 +22,8 @@ const Feed = () => {
 
   return (
     <ScrollView className="h-screen">
-      {/* {data &&
-        data.map((item, i: number) => <FeedItemCard key={i} item={item} />)} */}
-      {BE_FEED_ACTIVITIES.map((item, i: number) => (
-        <FeedItemCard key={i} item={item} />
-      ))}
+      {data &&
+        data.map((item, i: number) => <FeedItemCard key={i} item={item} />)}
     </ScrollView>
   );
 };
@@ -69,7 +61,7 @@ const FeedItemCard = ({ item }: { item: FeedActivity }) => {
 
   const onUserClick = (user: User | undefined) => {
     router.navigate({
-      pathname: "/(tabs)/profile",
+      pathname: "/screens/userProfile",
       params: user,
     });
   };
@@ -108,17 +100,18 @@ const FeedItemCard = ({ item }: { item: FeedActivity }) => {
         </View>
       </View>
 
-      {/* <ProductView product={item.product} /> */}
+      <ProductView product={item.rankProduct} />
 
       {/* Don't need until phase 2 with social functions */}
       <View className="flex-row items-center w-full space-x-2">
         <TouchableOpacity onPress={onBookmarkClick}>
           <FontAwesome
             name={wishlisted ? "bookmark" : "bookmark-o"}
+            color={wishlisted ? "gold" : "black"}
             size={20}
           />
         </TouchableOpacity>
-        <FontAwesome name="heart-o" size={20} />
+        {/* <FontAwesome name="heart-o" size={20} /> */}
         {/* <FontAwesome name="comment-o" size={20} /> */}
       </View>
     </View>

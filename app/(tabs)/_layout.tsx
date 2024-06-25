@@ -40,6 +40,7 @@ export default function TabLayout(props: any) {
           headerLeft: () => <BaseScreenHeader side="left" />,
           headerTitle: () => <BaseScreenHeader side="center" />,
           headerRight: () => <BaseScreenHeader side="right" />,
+          tabBarShowLabel: false,
           headerShadowVisible: false, // removes shadow and border from header
           tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
         }}
@@ -55,6 +56,7 @@ export default function TabLayout(props: any) {
           tabBarIcon: ({ color }) => (
             <TabBarIcon name="shopping-bag" color={color} />
           ),
+          tabBarShowLabel: false,
         }}
       />
       <Tabs.Screen
@@ -65,6 +67,7 @@ export default function TabLayout(props: any) {
           headerTitle: () => <BaseScreenHeader side="center" />,
           headerRight: () => <BaseScreenHeader side="right" />,
           headerShadowVisible: false,
+          tabBarShowLabel: false,
           tabBarIcon: ({ color }) => <TabBarIcon name="search" color={color} />,
         }}
       />
@@ -98,6 +101,7 @@ export default function TabLayout(props: any) {
           headerTitle: () => <BaseScreenHeader side="center" />,
           headerRight: () => <BaseScreenHeader side="right" />,
           tabBarIcon: () => <Avatar src={CURRENT_USER.avatar} size="sm" />,
+          tabBarShowLabel: false,
         }}
       />
     </Tabs>

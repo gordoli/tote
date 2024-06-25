@@ -1,18 +1,18 @@
 import { useState, useEffect } from "react";
 
 import { get } from "../lib/api";
-import { FeedItem } from "../lib/types";
+import { FeedActivity } from "../lib/types";
 
 export const useFeed = () => {
   const [loading, setLoading] = useState(true);
-  const [data, setData] = useState<FeedItem[] | null>(null);
+  const [data, setData] = useState<FeedActivity[] | null>(null);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const result = await get("/feeds?page=1&perPage=10");
-        console.log("Result", result.data);
+        console.log("Feed Result", result.data);
 
         setData(result.data);
         setLoading(false);

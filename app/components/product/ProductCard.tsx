@@ -1,9 +1,9 @@
 import { Image } from "react-native";
-import { Text, View } from "./Themed";
-import { Product } from "../lib/types";
-import RatingCircle from "./RatingCircle";
+import { Text, View } from "../Themed";
+import { Product } from "../../lib/types";
+import RatingCircle from "../RatingCircle";
 import ProductView from "./ProductView";
-import Avatar from "./Avatar";
+import Avatar from "../Avatar";
 
 const ProductCard = ({ product }: { product: Product }) => {
   return (
