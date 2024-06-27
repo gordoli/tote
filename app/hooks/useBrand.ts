@@ -69,40 +69,61 @@ export const useBrand = (brandId?: number, userId?: string) => {
     }
   }, []);
 
-  const handleRankProduct = useCallback(async (data: any, cb: () => void) => {
-    try {
-      setLoadingStep(true);
-      const formData = new FormData();
+  const handleRankProduct = useCallback(
+    async (data: RankingData, cb: () => void) => {
+      try {
+        setLoadingStep(true);
+        const formData = new FormData();
 
-      let filename = data.image ? data.image.uri.split("/").pop() : "";
-      let type = data.image ? data.image.mimeType : "image";
-      const localUri = data.image
-        ? Platform.OS === "android"
-          ? data.image.uri
-          : data.image.uri.replace("file://", "")
-        : "";
-      const dataBody = { uri: localUri, name: filename, type };
-      formData.append("file", dataBody);
-      const headers = { "Content-Type": "multipart/form-data" };
-      const result = await post("/files/upload", formData, headers);
-      if (result && result.code === "ok" && result.status === 201) {
-        try {
-          const body = {
-            ...data,
-            image: result.data,
-          };
-          const res = await post(`/rank-products`, body);
-          if (res.status === 201 && res.code === "ok") {
-            cb && cb();
-            Alert.alert("Rank product successfully");
+        let filename = data.image ? data.image.uri.split("/").pop() : "";
+        let type = data.image ? data.image.mimeType : "image";
+        const localUri = data.image
+          ? Platform.OS === "android"
+            ? data.image.uri
+            : data.image.uri.replace("file://", "")
+          : "";
+        const dataBody = { uri: localUri, name: filename, type };
+        const blob = new Blob([dataBody.uri], { type: dataBody.type });
+        formData.append("file", blob, dataBody.name);
+        const headers = { "Content-Type": "multipart/form-data" };
+        const result = await post("/files/upload", formData, headers);
+        if (result && result.code === "ok" && result.status === 201) {
+          try {
+            const body = {
+              ...data,
+              image: result.data,
+            };
+            const res = await post(`/rank-products`, body);
+            if (res.status === 201 && res.code === "ok") {
+              cb && cb();
+              Alert.alert("Rank product successfully");
+            }
+            setLoadingStep(false);
+          } catch (e: any) {
+            setError(e.message);
+            setLoadingStep(false);
           }
+        } else {
           setLoadingStep(false);
-        } catch (e: any) {
-          setError(e.message);
-          setLoadingStep(false);
+          Alert.alert(
+            "Failure",
+            `Upload product's image fail. Please try again`,
+            [
+              {
+                text: "Cancel",
+                onPress: () => {},
+                style: "cancel",
+              },
+              {
+                text: "OK",
+                onPress: () => {
+                  handleRankProduct(data, cb);
+                },
+              },
+            ]
+          );
         }
-      } else {
-        setLoadingStep(false);
+      } catch (err: any) {
         Alert.alert(
           "Failure",
           `Upload product's image fail. Please try again`,
@@ -120,12 +141,12 @@ export const useBrand = (brandId?: number, userId?: string) => {
             },
           ]
         );
+        setError(err.message);
+        setLoadingStep(false);
       }
-    } catch (err: any) {
-      setError(err.message);
-      setLoadingStep(false);
-    }
-  }, []);
+    },
+    []
+  );
 
   const handleUpdateRankingData = useCallback((data: RankingData) => {
     setRankingData(data);

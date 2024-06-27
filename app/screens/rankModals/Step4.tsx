@@ -9,11 +9,9 @@ import { Product, RankingData } from "@/app/lib/types";
 export const Step4 = ({
   cancelModal,
   nextStep,
-  data,
 }: {
   cancelModal: () => void;
   nextStep: (step: number, value: any) => void;
-  data: RankingData;
 }) => {
   return (
     <>
