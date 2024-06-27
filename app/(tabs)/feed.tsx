@@ -60,14 +60,14 @@ const FeedItemCard = ({ item }: { item: FeedActivity }) => {
     if (!brand) return;
     router.navigate({
       pathname: "/screens/brand",
-      params: brand,
+      params: {...brand, screen: "feed"},
     });
   };
 
   const onUserClick = (user: User | undefined) => {
     router.navigate({
       pathname: "/screens/userProfile",
-      params: user,
+      params: {...user, screen: "feed"},
     });
   };
 

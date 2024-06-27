@@ -24,6 +24,9 @@ export const Step5 = ({
         className="items-center p-5 mr-3 border-2 border-gray-300 rounded-lg"
         style={{ width: width * 0.4 }}
         onPress={() => handlSelectItem(6, null)}
+        className="items-center p-5 mr-3 border-2 border-gray-300 rounded-lg"
+        style={{ width: width * 0.4 }}
+        // onPress={() => handlSelectItem(6, null)}
       >
         <Image src={item.image} className="w-10 h-10 mr-3 rounded-lg" />
         <View>

@@ -49,6 +49,7 @@ const UserProfile = () => {
   const { currUser } = useCurrentUser();
   const isCurrentUser = !user.id || (currUser && currUser.id === user.id);
   const currUserId = user ? user.id : currUser?.id;
+  const rootScreen = user.screen;
   const { data, loading, error } = useProfile(user.id);
   const { products } = useProductList(currUserId);
   const { brands } = useBrandList(currUserId);

@@ -1,8 +1,7 @@
 import * as React from "react";
-import { Stack } from "expo-router";
 import { TabView, SceneMap, TabBar } from "react-native-tab-view";
 import { useWindowDimensions, Linking } from "react-native";
-import { useLocalSearchParams, useRouter } from "expo-router";
+import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { StyleSheet, TouchableOpacity } from "react-native";
 import { Ionicons, Entypo, AntDesign } from "@expo/vector-icons";
 
@@ -36,6 +35,7 @@ const BrandProfile = () => {
   const router = useRouter();
   const modalizeModal = React.useRef<any>();
   const brand: any = useLocalSearchParams();
+  const rootScreen = brand.screen;
   const layout = useWindowDimensions();
   const {
     brandDetail,
@@ -58,6 +58,26 @@ const BrandProfile = () => {
     { key: "trending", title: "Trending" },
   ]);
 
+  const renderHeader = () => (
+    <Stack.Screen
+      options={{
+        title: "Tote",
+        headerLeft: () => (
+          <BrandProfileScreenHeader
+            side="left"
+            onBack={() =>
+              rootScreen ? router.navigate(rootScreen) : router.back()
+            }
+          />
+        ),
+        headerTitle: "",
+        headerRight: () => <BrandProfileScreenHeader side="right" />,
+        headerShadowVisible: false,
+        headerBackVisible: false,
+      }}
+    />
+  );
+
   const openModal = () => {
     handleGetCategories();
     modalizeModal.current?.open();
@@ -69,7 +89,7 @@ const BrandProfile = () => {
       brandId: brand.id,
       categoryId: 0,
       link: "",
-      image: "",
+      image: null,
       name: "",
       description: "",
     });
@@ -77,7 +97,7 @@ const BrandProfile = () => {
   };
 
   const onRankProduct = () => {
-    handleRankProduct(() => {
+    handleRankProduct(rankingData, () => {
       cancelModal();
     });
   };
@@ -124,21 +144,7 @@ const BrandProfile = () => {
 
   return (
     <View className="flex-1 bg-white">
-      <Stack.Screen
-        options={{
-          title: "Tote",
-          headerLeft: () => (
-            <BrandProfileScreenHeader
-              side="left"
-              onBack={() => router.back()}
-            />
-          ),
-          headerTitle: "",
-          headerRight: () => <BrandProfileScreenHeader side="right" />,
-          headerShadowVisible: false,
-          headerBackVisible: false,
-        }}
-      />
+      {renderHeader()}
       {/* <ScrollView className="h-screen"> */}
       {/* <Image
         src={brandDetail.cover || brand.cover}
