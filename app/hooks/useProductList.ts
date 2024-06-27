@@ -10,7 +10,6 @@ export const useProductList = (userId?: string, brandId?: string) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      console.log("userId", userId);
       try {
         // Only add userId and brandId if they exist
         const result = await get(

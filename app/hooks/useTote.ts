@@ -12,8 +12,6 @@ export const useTote = () => {
     const fetchData = async () => {
       try {
         const result = await get("/tote");
-        console.log("Tote Result", result.data);
-
         setData(result.data);
         setLoading(false);
       } catch (err: any) {

@@ -10,7 +10,6 @@ export const useProfile = (userId?: string) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      console.log("userId", userId);
       try {
         const result =
           userId && userId !== ""

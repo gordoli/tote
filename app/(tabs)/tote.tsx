@@ -1,15 +1,12 @@
 import { View, Text } from "@/app/components/Themed";
 import { useWindowDimensions } from "react-native";
-import { ScrollView } from "react-native";
 import ToteTitle from "../components/ToteTitle";
 import { FontAwesome } from "@expo/vector-icons";
 import { SceneMap, TabBar, TabView } from "react-native-tab-view";
 import { useState } from "react";
-import ProductCard from "../components/product/ProductCard";
-import { BE_PRODUCTS } from "../lib/dummy";
 import { useTote } from "../hooks/useTote";
-import { Product } from "../lib/types";
 import ProductList from "../components/product/ProductList";
+import { useWishlist } from "../hooks/useWishlist";
 
 // Tote Tabs
 const MyProducts = () => {
@@ -21,28 +18,10 @@ const MyProducts = () => {
 const MyWishlist = () => {
   const [text, onChangeText] = useState("");
 
-  return (
-    <ScrollView>
-      {/* <View className="px-6 pt-6">
-        <TextInput
-          onChangeText={onChangeText}
-          value={text}
-          className="w-full h-10 p-2 bg-gray-200 rounded-lg"
-          placeholder="Search your wishlist..."
-        />
-      </View> */}
+  const { wishlistProducts, loading, error } = useWishlist(true);
 
-      {BE_PRODUCTS.map((product, i: number) => (
-        <ProductCard key={i} product={product} />
-      ))}
-    </ScrollView>
-  );
+  return <ProductList products={wishlistProducts} />;
 };
-
-const renderScene = SceneMap({
-  myProducts: MyProducts,
-  myWishlist: MyWishlist,
-});
 
 const renderTabBar = (props: any) => (
   <TabBar
@@ -69,6 +48,19 @@ const Tote = () => {
     { key: "myProducts", title: "My Products" },
     { key: "myWishlist", title: "Wishlist" },
   ]);
+  const { data, loading: toteLoading, error: toteError } = useTote();
+  const {
+    wishlistProducts,
+    loading: wishlistLoading,
+    error: wishlistError,
+  } = useWishlist(true);
+
+  console.log("Wislist Products", wishlistProducts);
+
+  const renderScene = SceneMap({
+    myProducts: () => <ProductList products={data} />,
+    myWishlist: () => <ProductList products={wishlistProducts} />,
+  });
 
   return (
     <TabView

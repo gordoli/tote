@@ -12,6 +12,7 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { useRouter } from "expo-router";
 import { useFeed } from "../hooks/useFeed";
 import LoadingScreen from "../components/LoadingScreen";
+import { useWishlist } from "../hooks/useWishlist";
 
 const Feed = () => {
   const { data, loading, error } = useFeed();
@@ -38,6 +39,8 @@ const FeedItemCard = ({ item }: { item: FeedActivity }) => {
     rank_product: "ranked",
   };
 
+  const { handleAddToWishlist } = useWishlist();
+
   const showToast = () => {
     Toast.show({
       type: "success",
@@ -47,6 +50,8 @@ const FeedItemCard = ({ item }: { item: FeedActivity }) => {
   };
 
   const onBookmarkClick = () => {
+    handleAddToWishlist(item.rankProduct.id);
+    console.log("Here");
     setWishlisted(!wishlisted);
     showToast();
   };
