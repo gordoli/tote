@@ -17,8 +17,6 @@ export const useWishlist = (getWishlist?: boolean) => {
       const fetchData = async () => {
         try {
           const result = await get(`/wishlist/${currUser?.id}`);
-          console.log(`/wishlist/${currUser?.id}`);
-
           setWishlistProducts(result.data.products);
           setLoading(false);
         } catch (err: any) {

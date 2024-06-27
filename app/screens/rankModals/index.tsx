@@ -32,7 +32,6 @@ const RankModals = ({
 
   const nextStepAction = (num: number, value: any) => {
     const newData = { ...data };
-    console.log("Rank Data:", newData);
     switch (num) {
       case 2:
         newData.categoryId = value;
@@ -55,7 +54,13 @@ const RankModals = ({
         break;
     }
     handleUpdateRankingData(newData);
-    setStep(num);
+    if (num === 5) {
+      console.log("Final Ranking Data:", newData);
+      handleRankProduct();
+    } else {
+      console.log("Rank Data:", newData);
+      setStep(num);
+    }
   };
 
   const handleCancelStep = () => {

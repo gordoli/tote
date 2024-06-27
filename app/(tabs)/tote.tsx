@@ -49,13 +49,12 @@ const Tote = () => {
     { key: "myWishlist", title: "Wishlist" },
   ]);
   const { data, loading: toteLoading, error: toteError } = useTote();
+  console.log(data);
   const {
     wishlistProducts,
     loading: wishlistLoading,
     error: wishlistError,
   } = useWishlist(true);
-
-  console.log("Wislist Products", wishlistProducts);
 
   const renderScene = SceneMap({
     myProducts: () => <ProductList products={data} />,

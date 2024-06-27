@@ -31,13 +31,7 @@ export const Step4 = ({
             <Text className="text-sm font-semibold text-gray-700">Cancel</Text>
           </TouchableOpacity>
         </View>
-        <View className="flex-row items-center p-3 mt-4 bg-gray-200 border border-gray-200 rounded-lg">
-          <Image src={product.image} className="w-10 h-10 mr-3 rounded-lg" />
-          <View className="bg-gray-200">
-            <Text className="text-sm font-semibold">{product.name}</Text>
-            <Text className="text-xs text-gray-500">{`${product.brand.name} . ${product.category}`}</Text>
-          </View>
-        </View>
+        {/*  */}
       </View>
       <View
         className="flex-row justify-between flex-swap"

@@ -71,9 +71,10 @@ export const useBrand = (brandId?: number, userId?: string) => {
   const handleRankProduct = useCallback(async (cb: () => void) => {
     try {
       setLoadingStep(true);
-      // const result = await post(`/rank-products`, rankingData);
-      // setLoadingStep(false);
-      cb && cb();
+      await post(`/rank-products`, rankingData);
+      console.log("Ranking product success");
+      setLoadingStep(false);
+      // cb && cb();
     } catch (err: any) {
       setError(err.message);
       setLoadingStep(false);
