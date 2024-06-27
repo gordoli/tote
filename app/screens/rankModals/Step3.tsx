@@ -106,10 +106,10 @@ export const Step3 = ({
             </TouchableOpacity>
           )}
         </View>
-
+        {error && <Text className="pb-3 text-red-600">{error}</Text>}
         <Text className="mt-4 text-sm text-gray-700">Upload image</Text>
         <View className="flex-row items-center justify-between p-3 border border-gray-300 rounded-lg">
-          <View className="flex-row">
+          <View className="flex-row" style={{ width: "75%" }}>
             <View className="p-2 mr-2 bg-gray-300 rounded">
               <FontAwesome name="camera" size={18} color="gray" />
             </View>
@@ -124,14 +124,17 @@ export const Step3 = ({
               </Text>
             </View>
           </View>
-          <TouchableOpacity className="p-2 bg-gray-200 border-2 border-gray-200 rounded-lg">
+          <TouchableOpacity
+            className="p-2 bg-gray-200 border-2 border-gray-200 rounded-lg"
+            onPress={pickImage}
+          >
             <Text className="text-sm font-semibold text-gray-500">Upload</Text>
           </TouchableOpacity>
         </View>
       </View>
       <TouchableOpacity
         className="items-center content-center p-2 mt-5 rounded-lg"
-        style={{ backgroundColor: "#0065FF" }}
+        style={{ backgroundColor: !checkIsRequired() ? "#86b1f7" : "#0065FF" }}
         onPress={onNextStep}
         disabled={!checkIsRequired()}
       >
