@@ -32,6 +32,7 @@ const RankModals = ({
 
   const nextStepAction = (num: number, value: any) => {
     const newData = { ...data };
+    console.log("Rank Data:", newData);
     switch (num) {
       case 2:
         newData.categoryId = value;
@@ -41,8 +42,8 @@ const RankModals = ({
         newData.description = value.description;
         break;
       case 4:
-        // newData.link = value.link;
-        // newData.image = value.image;
+        newData.link = value.link;
+        newData.image = value.image;
         break;
       case 5:
         newData.rate = value;
@@ -86,13 +87,9 @@ const RankModals = ({
         {step === 3 && (
           <Step3 cancelModal={handleCancelStep} nextStep={nextStepAction} />
         )}
-        {/* {step === 4 && (
-          <Step4
-            cancelModal={handleCancelStep}
-            nextStep={nextStepAction}
-            product={DUMMY_PRODUCTS[0]}
-          />
-        )} */}
+        {step === 4 && (
+          <Step4 cancelModal={handleCancelStep} nextStep={nextStepAction} />
+        )}
         {step === 5 &&
           (loading ? (
             <LoadingScreen customeStyles={styles.loadingStyle} />

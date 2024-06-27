@@ -89,10 +89,6 @@ const BrandProfile = () => {
   };
 
   const renderScene = SceneMap({
-    // friends: () => <FriendsTab data={friendsRanked} />,
-    // trending: () => (
-    //   <TrendingTab data={allRanked} loading={loadingTab} focused={focused} />
-    // ),
     friends: () => <ProductList products={friendsRanked} />,
     trending: () => <ProductList products={allRanked} />,
   });
