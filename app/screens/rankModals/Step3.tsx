@@ -28,7 +28,7 @@ export const Step3 = ({
   const onNextStep = () => {
     const value = {
       link,
-      image: "",
+      image,
     };
     nextStep(4, value);
   };
