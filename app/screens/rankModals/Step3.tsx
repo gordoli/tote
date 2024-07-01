@@ -39,8 +39,6 @@ export const Step3 = ({
     return regex.test(link);
   };
 
-  const checkIsRequired = () => !!link && !!image;
-
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -134,9 +132,8 @@ export const Step3 = ({
       </View>
       <TouchableOpacity
         className="items-center content-center p-2 mt-5 rounded-lg"
-        style={{ backgroundColor: !checkIsRequired() ? "#86b1f7" : "#0065FF" }}
+        style={{ backgroundColor: "#0065FF" }}
         onPress={onNextStep}
-        disabled={!checkIsRequired()}
       >
         <Text className="text-sm font-semibold text-white">Next</Text>
       </TouchableOpacity>

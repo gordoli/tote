@@ -2,7 +2,7 @@ import React from "react";
 import { Image } from "react-native";
 
 type AvatarProps = {
-  size?: "sm" | "md" | "lg" | "xl";
+  size?: "sm" | "md" | "lg" | "xl" | "xxl";
   src: string | null;
   className?: string;
   shape?: "circle" | "rounded";
@@ -19,6 +19,7 @@ const Avatar: React.FC<AvatarProps> = ({
     md: "h-10 w-10",
     lg: "h-16 w-16",
     xl: "h-20 w-20",
+    xxl: "h-24 w-24",
   };
 
   return src === null ? (

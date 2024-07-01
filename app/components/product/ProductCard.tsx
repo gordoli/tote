@@ -4,8 +4,10 @@ import { Product } from "../../lib/types";
 import RatingCircle from "../RatingCircle";
 import ProductView from "./ProductView";
 import Avatar from "../Avatar";
+import { useCurrentUser } from "@/app/hooks/useCurrentUser";
 
 const ProductCard = ({ product }: { product: Product }) => {
+  const { currUser } = useCurrentUser();
   return (
     <View className="p-6 border-b border-gray-200">
       <View className="flex-row items-center mb-4">
@@ -15,7 +17,15 @@ const ProductCard = ({ product }: { product: Product }) => {
           shape="rounded"
         />
         <View className="ml-2">
-          <Text className="font-semibold">{product.brand?.name || ""}</Text>
+          <View className="flex-row items-center">
+            <Text className="font-semibold">{product.brand?.name || ""}</Text>
+            {product.createdBy?.id !== currUser?.id && (
+              <Text className="font-semibold">
+                {" "}
+                · {product.createdBy?.username}
+              </Text>
+            )}
+          </View>
           <Text className="text-sm text-muted">
             {product.category?.name || ""}
           </Text>

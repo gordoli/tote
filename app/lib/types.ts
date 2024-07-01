@@ -50,6 +50,7 @@ export type User = {
   id: string;
   name: string;
   statistics: UserStats;
+  brands?: Brand[];
   products?: Product[];
   avatar: string | null;
   email: string;

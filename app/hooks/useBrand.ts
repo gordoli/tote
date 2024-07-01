@@ -29,7 +29,7 @@ export const useBrand = (brandId?: number, userId?: string) => {
       try {
         const resultBrand = await get(`/brands/${brandId}`);
         const resultFriendsRanked = await get(
-          `/rank-products?${brandId}&isOnlyFriend`
+          `/products?${brandId}&isOnlyFriend`
         );
         setBrandDetail(resultBrand.data);
         setFriendsRanked(resultFriendsRanked.data);
@@ -45,7 +45,7 @@ export const useBrand = (brandId?: number, userId?: string) => {
 
   const handleFetchAllRanked = useCallback(async () => {
     try {
-      const resultAllRanked = await get(`/rank-products?brandId=${brandId}`);
+      const resultAllRanked = await get(`/products?brandId=${brandId}`);
       setAllRanked(resultAllRanked.data);
       setLoadingTab(false);
     } catch (err: any) {
@@ -75,6 +75,15 @@ export const useBrand = (brandId?: number, userId?: string) => {
         setLoadingStep(true);
         const formData = new FormData();
 
+        if (!data.image) {
+          const res = await post(`/products`, data);
+          if (res.status === 201 && res.code === "ok") {
+            cb && cb();
+            Alert.alert("Rank product successfully");
+          }
+          return;
+        }
+
         let filename = data.image ? data.image.uri.split("/").pop() : "";
         let type = data.image ? data.image.mimeType : "image";
         const localUri = data.image
@@ -93,7 +102,7 @@ export const useBrand = (brandId?: number, userId?: string) => {
               ...data,
               image: result.data,
             };
-            const res = await post(`/rank-products`, body);
+            const res = await post(`/products`, body);
             if (res.status === 201 && res.code === "ok") {
               cb && cb();
               Alert.alert("Rank product successfully");

@@ -37,7 +37,7 @@ export const Step4 = ({
       >
         <TouchableOpacity
           style={[styles.likedSelection, styles.selectionItem]}
-          onPress={() => nextStep(5, 1)}
+          onPress={() => nextStep(5, 3)}
         >
           <SimpleLineIcons name="emotsmile" size={24} color="white" />
           <Text className="pt-1 text-sm text-white">I liked it!</Text>
@@ -52,7 +52,7 @@ export const Step4 = ({
         </TouchableOpacity>
         <TouchableOpacity
           style={[styles.dislikeSelection, styles.selectionItem]}
-          onPress={() => nextStep(5, 3)}
+          onPress={() => nextStep(5, 1)}
         >
           <Entypo name="emoji-sad" size={24} color="white" />
           <Text className="pt-1 text-sm text-white">I don't like it!</Text>

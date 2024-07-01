@@ -11,7 +11,7 @@ import { FontAwesome, Ionicons, Entypo } from "@expo/vector-icons";
 import Avatar from "../components/Avatar";
 import ToteTitle from "../components/ToteTitle";
 import { View, Text } from "@/app/components/Themed";
-import { UserStats, Brand, Product } from "@/app/lib/types";
+import { UserStats } from "@/app/lib/types";
 import Storage from "../lib/storage";
 import { AuthContext } from "../lib/globalContext";
 import LoadingScreen from "../components/LoadingScreen";
@@ -41,18 +41,14 @@ const renderTabBar = (props: any) => (
   />
 );
 
-const UserProfile = () => {
+const UserProfile = ({ userId }: { userId?: string }) => {
   const router = useRouter();
   const { logout } = useContext(AuthContext);
   const user: any = useLocalSearchParams();
-
   const { currUser } = useCurrentUser();
-  const isCurrentUser = !user.id || (currUser && currUser.id === user.id);
-  const currUserId = user ? user.id : currUser?.id;
-  const rootScreen = user.screen;
-  const { data, loading, error } = useProfile(user.id);
-  const { products } = useProductList(currUserId);
-  const { brands } = useBrandList(currUserId);
+  const isCurrentUser = userId || (currUser && currUser.id === user.id);
+  const { data, loading, error } = useProfile(user.id || userId);
+  console.log("User Data", data);
   const layout = useWindowDimensions();
   const [index, setIndex] = useState(0);
 
@@ -62,13 +58,20 @@ const UserProfile = () => {
   ]);
 
   const renderScene = SceneMap({
-    products: () => <ProductList products={products} />,
-    brands: () => <BrandList brands={brands} />,
+    products: () => <ProductList products={data?.products || []} />,
+    brands: () => <BrandList brands={data?.brands || []} />,
   });
 
   if (loading) {
     return <LoadingScreen />;
   }
+
+  const handleGoToEdit = () => {
+    router.navigate({
+      pathname: "/screens/editProfile",
+      params: data || {},
+    });
+  };
 
   if (data === null) {
     return (
@@ -125,10 +128,7 @@ const UserProfile = () => {
             <TouchableOpacity
               className="px-4 py-2 bg-white border border-gray-300 rounded-full"
               onPress={() => {
-                /* Handle edit profile */
-                // Test logout
-                Storage.removeItem("AUTH");
-                logout();
+                handleGoToEdit();
               }}
             >
               <Text className="text-sm">Edit profile</Text>

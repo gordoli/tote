@@ -2,9 +2,11 @@ import { FontAwesome, Feather } from "@expo/vector-icons";
 import ToteTitle from "../components/ToteTitle";
 import { View } from "@/app/components/Themed";
 import UserProfile from "../screens/userProfile";
+import { useCurrentUser } from "../hooks/useCurrentUser";
 
 const Profile = () => {
-  return <UserProfile />;
+  const { currUser } = useCurrentUser();
+  return currUser && <UserProfile userId={currUser.id} />;
 };
 
 export default Profile;

@@ -33,41 +33,22 @@ export default Feed;
 
 const FeedItemCard = ({ item }: { item: FeedActivity }) => {
   const router = useRouter();
-  const [wishlisted, setWishlisted] = useState(false);
-
   const contentMap: { [key: string]: string } = {
     rank_product: "ranked",
-  };
-
-  const { handleAddToWishlist } = useWishlist();
-
-  const showToast = () => {
-    Toast.show({
-      type: "success",
-      text1: `${item.rankProduct.name} added to your wishlist`,
-      position: "bottom",
-    });
-  };
-
-  const onBookmarkClick = () => {
-    handleAddToWishlist(item.rankProduct.id);
-    console.log("Here");
-    setWishlisted(!wishlisted);
-    showToast();
   };
 
   const onGoToBrandProfile = (brand: Brand | undefined) => {
     if (!brand) return;
     router.navigate({
       pathname: "/screens/brand",
-      params: {...brand, screen: "feed"},
+      params: { ...brand, screen: "feed" },
     });
   };
 
   const onUserClick = (user: User | undefined) => {
     router.navigate({
       pathname: "/screens/userProfile",
-      params: {...user, screen: "feed"},
+      params: { ...user, screen: "feed" },
     });
   };
 
@@ -108,17 +89,10 @@ const FeedItemCard = ({ item }: { item: FeedActivity }) => {
       <ProductView product={item.rankProduct} />
 
       {/* Don't need until phase 2 with social functions */}
-      <View className="flex-row items-center w-full space-x-2">
-        <TouchableOpacity onPress={onBookmarkClick}>
-          <FontAwesome
-            name={wishlisted ? "bookmark" : "bookmark-o"}
-            color={wishlisted ? "gold" : "black"}
-            size={20}
-          />
-        </TouchableOpacity>
-        {/* <FontAwesome name="heart-o" size={20} /> */}
-        {/* <FontAwesome name="comment-o" size={20} /> */}
-      </View>
+      {/* <View className="flex-row items-center w-full space-x-2">
+        <FontAwesome name="heart-o" size={20} />
+        <FontAwesome name="comment-o" size={20} />
+      </View> */}
     </View>
   );
 };

@@ -7,21 +7,7 @@ import { useState } from "react";
 import { useTote } from "../hooks/useTote";
 import ProductList from "../components/product/ProductList";
 import { useWishlist } from "../hooks/useWishlist";
-
-// Tote Tabs
-const MyProducts = () => {
-  const { data, loading, error } = useTote();
-
-  return <ProductList products={data} />;
-};
-
-const MyWishlist = () => {
-  const [text, onChangeText] = useState("");
-
-  const { wishlistProducts, loading, error } = useWishlist(true);
-
-  return <ProductList products={wishlistProducts} />;
-};
+import { useProductList } from "../hooks/useProductList";
 
 const renderTabBar = (props: any) => (
   <TabBar
@@ -48,8 +34,8 @@ const Tote = () => {
     { key: "myProducts", title: "My Products" },
     { key: "myWishlist", title: "Wishlist" },
   ]);
-  const { data, loading: toteLoading, error: toteError } = useTote();
-  console.log(data);
+  // const { data, loading: toteLoading, error: toteError } = useTote();
+  const { products, loading: toteLoading, error: toteError } = useProductList();
   const {
     wishlistProducts,
     loading: wishlistLoading,
@@ -57,7 +43,7 @@ const Tote = () => {
   } = useWishlist(true);
 
   const renderScene = SceneMap({
-    myProducts: () => <ProductList products={data} />,
+    myProducts: () => <ProductList products={products} />,
     myWishlist: () => <ProductList products={wishlistProducts} />,
   });
 
