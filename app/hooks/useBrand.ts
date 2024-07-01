@@ -28,10 +28,11 @@ export const useBrand = (brandId?: number, userId?: string) => {
     const fetchData = async () => {
       try {
         const resultBrand = await get(`/brands/${brandId}`);
+        setBrandDetail(resultBrand.data);
         const resultFriendsRanked = await get(
           `/rank-products?${brandId}&isOnlyFriend`
         );
-        setBrandDetail(resultBrand.data);
+        // setBrandDetail(resultBrand.data);
         setFriendsRanked(resultFriendsRanked.data);
         setLoading(false);
       } catch (err: any) {
@@ -83,8 +84,9 @@ export const useBrand = (brandId?: number, userId?: string) => {
             : data.image.uri.replace("file://", "")
           : "";
         const dataBody = { uri: localUri, name: filename, type };
-        const blob = new Blob([dataBody.uri], { type: dataBody.type });
-        formData.append("file", blob, dataBody.name);
+        // const blob = new Blob([dataBody.uri], { type: dataBody.type });
+        // formData.append("file", blob, dataBody.name);
+        formData.append("file", dataBody);
         const headers = { "Content-Type": "multipart/form-data" };
         const result = await post("/files/upload", formData, headers);
         if (result && result.code === "ok" && result.status === 201) {
