@@ -77,8 +77,6 @@ export const useBrand = (brandId?: number, userId?: string) => {
 
   const handleRankProduct = useCallback(
     async (data: RankingData, cb: () => void) => {
-      console.log("Ranking data", data);
-      return;
       try {
         setLoadingStep(true);
         const formData = new FormData();
