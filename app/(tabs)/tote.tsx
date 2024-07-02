@@ -8,6 +8,7 @@ import { useTote } from "../hooks/useTote";
 import ProductList from "../components/product/ProductList";
 import { useWishlist } from "../hooks/useWishlist";
 import { useProductList } from "../hooks/useProductList";
+import { useProfile } from "../hooks/useProfile";
 
 const renderTabBar = (props: any) => (
   <TabBar
@@ -35,7 +36,7 @@ const Tote = () => {
     { key: "myWishlist", title: "Wishlist" },
   ]);
   // const { data, loading: toteLoading, error: toteError } = useTote();
-  const { products, loading: toteLoading, error: toteError } = useProductList();
+  const { products } = useProfile();
   const {
     wishlistProducts,
     loading: wishlistLoading,

@@ -5,7 +5,6 @@ import { Step1 } from "./Step1";
 import { Step2 } from "./Step2";
 import { Step3 } from "./Step3";
 import { Step4 } from "./Step4";
-import { Step5 } from "./Step5";
 import styles from "./styles";
 import { View } from "@/app/components/Themed";
 import LoadingScreen from "../../components/LoadingScreen";
@@ -28,7 +27,7 @@ const RankModals = ({
   handleUpdateRankingData: (value: any) => void;
   handleRankProduct: () => void;
 }) => {
-  const [step, setStep] = useState(4);
+  const [step, setStep] = useState(1);
 
   const nextStepAction = (num: number, value: any) => {
     const newData = { ...data };
@@ -47,16 +46,15 @@ const RankModals = ({
       case 5:
         newData.rate = value;
         break;
-      case 6:
-        // newData.preferProductId = value;
-        break;
       default:
         break;
     }
     handleUpdateRankingData(newData);
     if (num === 5) {
       console.log("Final Ranking Data:", newData);
-      handleRankProduct();
+      setTimeout(() => {
+        handleRankProduct();
+      }, 1000);
     } else {
       console.log("Rank Data:", newData);
       setStep(num);
@@ -95,16 +93,6 @@ const RankModals = ({
         {step === 4 && (
           <Step4 cancelModal={handleCancelStep} nextStep={nextStepAction} />
         )}
-        {step === 5 &&
-          (loading ? (
-            <LoadingScreen customeStyles={styles.loadingStyle} />
-          ) : (
-            <Step5
-              cancelModal={handleCancelStep}
-              handlSelectItem={nextStepAction}
-              handlRanking={handleRankProduct}
-            />
-          ))}
       </View>
     </Modalize>
   );

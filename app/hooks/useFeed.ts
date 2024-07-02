@@ -11,7 +11,8 @@ export const useFeed = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await get("/feeds?isOnlyFriend=true&page=1&perPage=10");
+        const result = await get("/feeds?page=1&perPage=10");
+        console.log("Feed Data:", result.data);
         setData(result.data);
         setLoading(false);
       } catch (err: any) {
