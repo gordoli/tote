@@ -32,6 +32,10 @@ export const useBrand = (brandId?: number, userId?: string) => {
         const resultFriendsRanked = await get(
           `/products?${brandId}&isOnlyFriend`
         );
+        console.log(
+          `Friend's products for brand: ${brandId}`,
+          resultFriendsRanked.data
+        );
         // setBrandDetail(resultBrand.data);
         setFriendsRanked(resultFriendsRanked.data);
         setLoading(false);
@@ -47,6 +51,7 @@ export const useBrand = (brandId?: number, userId?: string) => {
   const handleFetchAllRanked = useCallback(async () => {
     try {
       const resultAllRanked = await get(`/products?brandId=${brandId}`);
+      console.log(`All products for brand: ${brandId}`, resultAllRanked.data);
       setAllRanked(resultAllRanked.data);
       setLoadingTab(false);
     } catch (err: any) {

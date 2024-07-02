@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useRouter, Stack } from "expo-router";
-import { AntDesign, FontAwesome } from "@expo/vector-icons";
+import { AntDesign, FontAwesome, Ionicons } from "@expo/vector-icons";
 import { View, Text } from "@/app/components/Themed";
 import {
   KeyboardAvoidingView,
@@ -61,10 +61,11 @@ const Login = () => {
               headerShadowVisible: false,
             }}
           />
-          {/* <View className="items-center">
-            <Text className="text-3xl font-semibold">Welcome to Tote1</Text>
-            <Text className="text-gray-500">Log in to your account</Text>
-          </View> */}
+          <View className="flex-col items-center justify-center bg-darkBlue h-2/5">
+            <Ionicons name="bag" size={64} color="white" />
+            <Text className="mt-2 text-3xl font-semibold text-white">tote</Text>
+          </View>
+
           <View className="p-8 bg-white h-3/5 rounded-t-[50px]">
             <View className="bg-white">
               <Text className="mb-2 text-secondary">Email Address</Text>
@@ -104,9 +105,13 @@ const Login = () => {
               {formErrors.password && (
                 <Text className="pb-4 text-red-600">{formErrors.password}</Text>
               )}
+
               <View className="items-end w-full">
-                <Text className="pt-1 pb-10">Forgot Password?</Text>
+                <Text className="pt-1 pb-10 text-gray-500">
+                  Forgot Password?
+                </Text>
               </View>
+
               <TouchableOpacity
                 className="flex-row items-center justify-center py-3 rounded-lg"
                 style={styles.loginButton}
@@ -114,11 +119,11 @@ const Login = () => {
               >
                 <Text className="text-sm font-semibold text-white">LOGIN</Text>
               </TouchableOpacity>
-              <Text className="py-5 text-center text-gray-500">
+              {/* <Text className="py-5 text-center text-gray-500">
                 Or login using
-              </Text>
+              </Text> */}
               <TouchableOpacity
-                className="flex-row items-center justify-center py-3 rounded-lg"
+                className="flex-row items-center justify-center py-3 mt-4 rounded-lg"
                 style={styles.loginGoogleButton}
                 onPress={() => {}}
               >
@@ -128,8 +133,8 @@ const Login = () => {
                 </Text>
               </TouchableOpacity>
             </View>
-            <View className="flex-row justify-center">
-              <Text className="text-center">Don't have an account?</Text>
+            <View className="flex-row items-end justify-center mt-8">
+              <Text className="mr-1 text-center">Don't have an account?</Text>
               <TouchableOpacity onPress={onGoToSignUp}>
                 <Text className="font-semibold" style={styles.signupButton}>
                   Sign Up
@@ -147,12 +152,12 @@ export default Login;
 
 const styles = {
   loginButton: {
-    width: "60%",
+    width: "100%",
     backgroundColor: "#0C66E4",
     alignSelf: "center",
   } as ViewStyle,
   loginGoogleButton: {
-    width: "60%",
+    width: "100%",
     backgroundColor: "red",
     alignSelf: "center",
   } as ViewStyle,

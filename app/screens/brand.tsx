@@ -152,13 +152,18 @@ const BrandProfile = () => {
         resizeMode="cover"
       /> */}
       <View className="flex-row items-center w-full px-4 space-y-4">
-        {brand.logo && (
-          <View className="h-full mt-4" style={styles.logoLeft}>
-            <View className="p-1" style={styles.logoPhotoContainer}>
-              <Avatar src={brandDetail.logo || brand.logo} />
-            </View>
-          </View>
-        )}
+        {/* {brand.logo && ( */}
+        {/* <View className="h-full mt-4" style={styles.logoLeft}> */}
+        {/* <View className="p-1" style={styles.logoPhotoContainer}> */}
+        <Avatar
+          src={brandDetail.logo || brand.logo || null}
+          size="lg"
+          shape="rounded"
+          placeholder={brandDetail.name[0]}
+        />
+        {/* </View> */}
+        {/* </View> */}
+        {/* )} */}
 
         <View
           className="flex-row items-center mb-4"

@@ -6,6 +6,7 @@ type AvatarProps = {
   src: string | null;
   className?: string;
   shape?: "circle" | "rounded";
+  placeholder?: string;
 };
 
 const Avatar: React.FC<AvatarProps> = ({
@@ -13,6 +14,7 @@ const Avatar: React.FC<AvatarProps> = ({
   src,
   className = "",
   shape = "circle",
+  placeholder,
 }) => {
   const sizeMap = {
     sm: "h-8 w-8",
@@ -25,7 +27,9 @@ const Avatar: React.FC<AvatarProps> = ({
   return src === null ? (
     <Image
       source={{
-        uri: "https://placehold.jp/3d4070/ffffff/150x150.png?text=TOTE",
+        uri: `https://placehold.jp/3d4070/ffffff/150x150.png?text=${
+          placeholder ? placeholder : "TOTE"
+        }`,
       }}
       className={`${className} ${sizeMap[size]} ${
         shape === "circle" ? "rounded-full" : "rounded"

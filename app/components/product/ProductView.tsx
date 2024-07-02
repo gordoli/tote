@@ -19,7 +19,7 @@ const ProductView = ({ product }: { product: Product }) => {
   };
 
   const onBookmarkClick = () => {
-    // handleAddToWishlist(item.rankProduct.id);
+    handleAddToWishlist(product.id);
     console.log("Here");
     setWishlisted(!wishlisted);
     showToast();

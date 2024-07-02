@@ -31,11 +31,47 @@ export const Step4 = ({
         </View>
         {/*  */}
       </View>
+
       <View
-        className="flex-row justify-between flex-swap"
-        style={styles.selectionContainer}
+        className="flex-row-reverse justify-around gap-1 mt-4"
+        // style={styles.selectionContainer}
       >
         <TouchableOpacity
+          className="items-center justify-center w-1/6 rounded-lg !bg-rateColor1 aspect-square"
+          onPress={() => nextStep(5, 1)}
+        >
+          <Text className="text-3xl">😠</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          className="items-center justify-center w-1/6 rounded-lg bg-rateColor2 aspect-square"
+          onPress={() => nextStep(5, 2)}
+        >
+          <Text className="text-3xl">🙁</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          className="items-center justify-center w-1/6 rounded-lg bg-rateColor3 aspect-square"
+          onPress={() => nextStep(5, 3)}
+        >
+          <Text className="text-3xl">😐</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          className="items-center justify-center w-1/6 rounded-lg bg-rateColor4 aspect-square"
+          onPress={() => nextStep(5, 4)}
+        >
+          <Text className="text-3xl">🙂</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          className="items-center justify-center w-1/6 rounded-lg bg-rateColor5 aspect-square"
+          onPress={() => nextStep(5, 5)}
+        >
+          <Text className="text-3xl">😍</Text>
+        </TouchableOpacity>
+
+        {/* <TouchableOpacity
           style={[styles.likedSelection, styles.selectionItem]}
           onPress={() => nextStep(5, 3)}
         >
@@ -56,7 +92,7 @@ export const Step4 = ({
         >
           <Entypo name="emoji-sad" size={24} color="white" />
           <Text className="pt-1 text-sm text-white">I don't like it!</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     </>
   );

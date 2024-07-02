@@ -1,12 +1,14 @@
 import { useState, useEffect } from "react";
 
-import { get, patch, put } from "../lib/api";
-import { User } from "../lib/types";
+import { get, patch, put, del } from "../lib/api";
+import { Brand, Product, User } from "../lib/types";
 import Toast from "react-native-toast-message";
 
 export const useProfile = (userId?: string) => {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<User | null>(null);
+  const [products, setProducts] = useState<Product[] | null>(null);
+  const [brands, setBrands] = useState<Brand[] | null>(null);
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -25,12 +27,36 @@ export const useProfile = (userId?: string) => {
     fetchData();
   }, []);
 
-  const handleFollowUser = (userId?: string) => {
+  const handleGetProducts = async () => {
     try {
-      put(`/follows/following/${userId}`, {});
+      const result = await get(`/users/${userId}/products`);
+      setProducts(result.data);
+    } catch (err: any) {
+      console.log(err);
+      setError(err.message);
+    }
+  };
+
+  const handleGetBrands = async () => {
+    try {
+      const result = await get(`/users/${userId}/brands`);
+      setBrands(result.data);
+    } catch (err: any) {
+      console.log(err);
+      setError(err.message);
+    }
+  };
+
+  const handleFollowUser = (userId: string, isFollowing: boolean) => {
+    try {
+      if (!isFollowing) {
+        put(`/follows/following/${userId}`, {});
+      } else {
+        del(`/follows/following/${userId}`, {});
+      }
       Toast.show({
         type: "success",
-        text1: "Followed user",
+        text1: `${!isFollowing ? "Followed" : "Unfollow"} user`,
         position: "bottom",
       });
       setLoading(false);
@@ -64,5 +90,9 @@ export const useProfile = (userId?: string) => {
     error,
     handleFollowUser,
     handleEditUser,
+    products,
+    brands,
+    handleGetProducts,
+    handleGetBrands,
   };
 };

@@ -14,6 +14,13 @@ module.exports = {
         slate: "#354160",
         skyBlue: "#1DA1F2",
         green: "#22A06B",
+        cream: "#FFFEEF",
+
+        rateColor1: "#D2DFFF",
+        rateColor2: "#879BCD",
+        rateColor3: "#505E94",
+        rateColor4: "#364064",
+        rateColor5: "#182547",
       },
     },
   },

@@ -47,7 +47,15 @@ const UserProfile = ({ userId }: { userId?: string }) => {
   const user: any = useLocalSearchParams();
   const { currUser } = useCurrentUser();
   const isCurrentUser = userId || (currUser && currUser.id === user.id);
-  const { data, loading, error } = useProfile(user.id || userId);
+  const {
+    data,
+    loading,
+    error,
+    products,
+    handleGetProducts,
+    brands,
+    handleGetBrands,
+  } = useProfile(user.id || userId);
   console.log("User Data", data);
   const layout = useWindowDimensions();
   const [index, setIndex] = useState(0);
@@ -58,8 +66,8 @@ const UserProfile = ({ userId }: { userId?: string }) => {
   ]);
 
   const renderScene = SceneMap({
-    products: () => <ProductList products={data?.products || []} />,
-    brands: () => <BrandList brands={data?.brands || []} />,
+    products: () => <ProductList products={products || []} />,
+    brands: () => <BrandList brands={brands || []} />,
   });
 
   if (loading) {
@@ -134,7 +142,7 @@ const UserProfile = ({ userId }: { userId?: string }) => {
               <Text className="text-sm">Edit profile</Text>
             </TouchableOpacity>
           ) : (
-            <FollowButton />
+            <FollowButton userId={userId || "-1"} isFollowing={true} />
           )}
 
           <TouchableOpacity

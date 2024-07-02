@@ -28,7 +28,7 @@ const RankModals = ({
   handleUpdateRankingData: (value: any) => void;
   handleRankProduct: () => void;
 }) => {
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(4);
 
   const nextStepAction = (num: number, value: any) => {
     const newData = { ...data };
