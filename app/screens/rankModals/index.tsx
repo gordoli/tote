@@ -25,7 +25,7 @@ const RankModals = ({
   categories: Category[];
   data: RankingData;
   handleUpdateRankingData: (value: any) => void;
-  handleRankProduct: () => void;
+  handleRankProduct: (data: RankingData) => void;
 }) => {
   const [step, setStep] = useState(1);
 
@@ -52,9 +52,10 @@ const RankModals = ({
     handleUpdateRankingData(newData);
     if (num === 5) {
       console.log("Final Ranking Data:", newData);
-      setTimeout(() => {
-        handleRankProduct();
-      }, 1000);
+      handleRankProduct(newData);
+      // setTimeout(() => {
+      //   handleRankProduct();
+      // }, 1000);
     } else {
       console.log("Rank Data:", newData);
       setStep(num);
