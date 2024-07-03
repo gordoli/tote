@@ -56,7 +56,6 @@ const UserProfile = ({ userId }: { userId?: string }) => {
     brands,
     handleGetBrands,
   } = useProfile(user.id || userId);
-  console.log("User Data", data);
   const layout = useWindowDimensions();
   const [index, setIndex] = useState(0);
 
@@ -170,16 +169,33 @@ const UserProfile = ({ userId }: { userId?: string }) => {
 export default UserProfile;
 
 const ProfileStats = ({ stats }: { stats: UserStats }) => {
+  const router = useRouter();
+
+  const handleGoToFollowers = (initialIndex: number) => {
+    router.navigate({
+      pathname: "/screens/followers",
+      params: { initialIndex },
+    });
+  };
+
   return (
     <View className="flex flex-row items-center w-4/5 px-4 py-2 mt-4 border border-gray-200 rounded-lg">
-      <View className="flex-col items-center w-1/3">
+      <TouchableOpacity
+        className="flex-col items-center w-1/3"
+        onPress={() => handleGoToFollowers(0)}
+      >
         <Text className="font-semibold">{stats.followerCount}</Text>
         <Text className="text-sm text-muted">followers</Text>
-      </View>
-      <View className="flex-col items-center w-1/3">
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        className="flex-col items-center w-1/3"
+        onPress={() => handleGoToFollowers(1)}
+      >
         <Text className="font-semibold">{stats.followingCount}</Text>
         <Text className="text-sm text-muted">following</Text>
-      </View>
+      </TouchableOpacity>
+
       <View className="flex-col items-center w-1/3">
         <Text className="font-semibold">{stats.rankedProductCount}</Text>
         <Text className="text-sm text-muted">products</Text>

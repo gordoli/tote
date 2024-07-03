@@ -92,7 +92,11 @@ const RankModals = ({
           <Step3 cancelModal={handleCancelStep} nextStep={nextStepAction} />
         )}
         {step === 4 && (
-          <Step4 cancelModal={handleCancelStep} nextStep={nextStepAction} />
+          <Step4
+            cancelModal={handleCancelStep}
+            nextStep={nextStepAction}
+            loading={loading}
+          />
         )}
       </View>
     </Modalize>

@@ -29,7 +29,7 @@ const FollowButton = ({
       }}
     >
       <Text className={following ? "text-white" : ""}>
-        {following ? "Following" : "Follow"} {userId}
+        {following ? "Following" : "Follow"}
       </Text>
     </TouchableOpacity>
   );

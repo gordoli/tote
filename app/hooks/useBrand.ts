@@ -3,6 +3,7 @@ import { useState, useEffect, useCallback } from "react";
 
 import { get, post } from "../lib/api";
 import { Brand, FeedItem, Category, RankingData, Product } from "../lib/types";
+import { router } from "expo-router";
 
 export const useBrand = (brandId?: number, userId?: string) => {
   const [loading, setLoading] = useState(true);
@@ -80,13 +81,15 @@ export const useBrand = (brandId?: number, userId?: string) => {
       try {
         setLoadingStep(true);
         const formData = new FormData();
+        return;
 
         if (!data.image) {
           const res = await post(`/products`, data);
-          if (res.status === 201 && res.code === "ok") {
-            cb && cb();
-            Alert.alert("Rank product successfully");
-          }
+          // if (res.status === 201 && res.code === "ok") {
+          //   cb && cb();
+          //   Alert.alert("Rank product successfully");
+          // }
+          router.back();
           return;
         }
 
@@ -110,11 +113,12 @@ export const useBrand = (brandId?: number, userId?: string) => {
               image: result.data,
             };
             const res = await post(`/products`, body);
-            if (res.status === 201 && res.code === "ok") {
-              cb && cb();
-              Alert.alert("Rank product successfully");
-            }
+            // if (res.status === 201 && res.code === "ok") {
+            //   cb && cb();
+            //   Alert.alert("Rank product successfully");
+            // }
             setLoadingStep(false);
+            router.back();
           } catch (e: any) {
             setError(e.message);
             setLoadingStep(false);
