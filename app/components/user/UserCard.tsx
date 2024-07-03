@@ -1,5 +1,5 @@
 import { Text, View } from "../Themed";
-import { Brand, User } from "../../lib/types";
+import { User } from "../../lib/types";
 import Avatar from "../Avatar";
 import { TouchableOpacity } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";

@@ -1,13 +1,13 @@
-import * as React from "react";
 import { TabView, SceneMap, TabBar } from "react-native-tab-view";
 import { useWindowDimensions } from "react-native";
 
-import { Text } from "@/app/components/Themed";
-import { useState } from "react";
+import { Text, TextInput, View } from "@/app/components/Themed";
+import { useEffect, useState } from "react";
 import BrandList from "../components/brand/BrandList";
 import UserList from "../components/user/UserList";
 import { useBrandList } from "../hooks/useBrandList";
 import { useUserList } from "../hooks/useUserList";
+import { useSearchTerm } from "../hooks/useSearch";
 
 const renderTabBar = (props: any) => (
   <TabBar
@@ -35,7 +35,15 @@ const Search = () => {
   ]);
 
   const { brands } = useBrandList();
-  const { users } = useUserList();
+  const { users, handleGetUsers, searchTerm, setSearchTerm } = useSearchTerm();
+
+  useEffect(() => {
+    handleGetUsers();
+  }, [searchTerm]);
+
+  useEffect(() => {
+    console.log(routes[index].key);
+  }, [index]);
 
   const renderScene = SceneMap({
     brands: () => <BrandList brands={brands} />,
@@ -43,13 +51,23 @@ const Search = () => {
   });
 
   return (
-    <TabView
-      navigationState={{ index, routes }}
-      renderScene={renderScene}
-      onIndexChange={setIndex}
-      initialLayout={{ width: layout.width }}
-      renderTabBar={renderTabBar}
-    />
+    <>
+      <View className="px-6">
+        <TextInput
+          value={searchTerm}
+          onChangeText={(text) => setSearchTerm(text)}
+          className="w-full h-12 p-2 bg-gray-200 rounded-lg"
+        />
+      </View>
+
+      <TabView
+        navigationState={{ index, routes }}
+        renderScene={renderScene}
+        onIndexChange={setIndex}
+        initialLayout={{ width: layout.width }}
+        renderTabBar={renderTabBar}
+      />
+    </>
   );
 };
 

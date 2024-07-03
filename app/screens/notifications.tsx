@@ -1,16 +1,26 @@
-import { ScrollView } from "react-native";
-import { Text, View } from "../components/Themed";
+import { ScrollView, Text, View } from "../components/Themed";
 import { Stack, useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import ToteTitle from "../components/ToteTitle";
 import { DUMMY_NOTIFICATIONS, Notification } from "../lib/types";
 import Avatar from "../components/Avatar";
+import { useNotifications } from "../hooks/useNotifications";
+import EmptyState from "../components/EmptyState";
 
 const NotificationsScreen = () => {
   const router = useRouter();
+  const { notis } = useNotifications();
+
+  if (!notis) {
+    return (
+      <View className="flex-row items-center justify-center flex-1 h-full">
+        <Text>Loading...</Text>
+      </View>
+    );
+  }
 
   return (
-    <ScrollView className="bg-white">
+    <>
       <Stack.Screen
         options={{
           title: "Tote",
@@ -26,10 +36,20 @@ const NotificationsScreen = () => {
           headerBackVisible: false,
         }}
       />
-      {DUMMY_NOTIFICATIONS.map((notification: Notification) => (
-        <NotificationCard key={notification.id} notification={notification} />
-      ))}
-    </ScrollView>
+      {!notis || notis.length === 0 ? (
+        <EmptyState label="No notifications" />
+      ) : (
+        <ScrollView className="bg-white">
+          {notis &&
+            notis.map((notification: Notification) => (
+              <NotificationCard
+                key={notification.id}
+                notification={notification}
+              />
+            ))}
+        </ScrollView>
+      )}
+    </>
   );
 };
 

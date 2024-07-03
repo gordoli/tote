@@ -1,9 +1,7 @@
 import React, { useState } from "react";
-import { TouchableOpacity, TextInput, ScrollView } from "react-native";
-
-import { useDebounce } from "../../hooks/useDebounce";
+import { TouchableOpacity } from "react-native";
 import { Category } from "@/app/lib/types";
-import { View, Text } from "@/app/components/Themed";
+import { View, Text, ScrollView } from "@/app/components/Themed";
 import styles from "./styles";
 import { CATEGORIES } from "@/constants/Categories";
 

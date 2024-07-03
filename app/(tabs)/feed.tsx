@@ -1,18 +1,14 @@
-import { useEffect, useState } from "react";
-import { View, Text } from "@/app/components/Themed";
+import { View, Text, ScrollView } from "@/app/components/Themed";
 import Avatar from "@/app/components/Avatar";
 import { Brand, FeedActivity, User } from "@/app/lib/types";
-import { ScrollView } from "react-native";
-import { FontAwesome } from "@expo/vector-icons";
 import ProductView from "@/app/components/product/ProductView";
 import RatingCircle from "../components/RatingCircle";
 import { getFirstName, formatRelativeDate } from "../lib/helpers";
-import Toast from "react-native-toast-message";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useRouter } from "expo-router";
 import { useFeed } from "../hooks/useFeed";
 import LoadingScreen from "../components/LoadingScreen";
-import { useWishlist } from "../hooks/useWishlist";
+import EmptyState from "../components/EmptyState";
 
 const Feed = () => {
   const { data, loading, error } = useFeed();
@@ -22,10 +18,15 @@ const Feed = () => {
   }
 
   return (
-    <ScrollView className="h-screen">
-      {data &&
-        data.map((item, i: number) => <FeedItemCard key={i} item={item} />)}
-    </ScrollView>
+    !data ||
+    (data.length === 0 ? (
+      <EmptyState label="No feed activities found" />
+    ) : (
+      <ScrollView className="h-screen">
+        {data &&
+          data.map((item, i: number) => <FeedItemCard key={i} item={item} />)}
+      </ScrollView>
+    ))
   );
 };
 

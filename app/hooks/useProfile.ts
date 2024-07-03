@@ -49,6 +49,7 @@ export const useProfile = (userId?: string) => {
 
   const handleFollowUser = (userId: string, isFollowing: boolean) => {
     try {
+      console.log(`${!isFollowing ? "Followed" : "Unfollow"}`, userId);
       if (!isFollowing) {
         put(`/follows/following/${userId}`, {});
       } else {

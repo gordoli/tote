@@ -142,17 +142,17 @@ const UserProfile = ({ userId }: { userId?: string }) => {
               <Text className="text-sm">Edit profile</Text>
             </TouchableOpacity>
           ) : (
-            <FollowButton userId={userId || "-1"} isFollowing={true} />
+            <FollowButton
+              userId={data.id || "-1"}
+              isFollowing={data.isFollowed}
+            />
           )}
 
-          <TouchableOpacity
+          {/* <TouchableOpacity
             className="px-4 py-2 bg-white border border-gray-300 rounded-full"
-            onPress={() => {
-              /* Handle share profile */
-            }}
           >
             <Text className="text-sm">Share profile</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </View>
 

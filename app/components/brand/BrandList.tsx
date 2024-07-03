@@ -1,8 +1,13 @@
-import { ScrollView } from "react-native";
 import { Brand } from "../../lib/types";
+import LoadingScreen from "../LoadingScreen";
+import { ScrollView } from "../Themed";
 import BrandCard from "./BrandCard";
 
 const BrandList = ({ brands }: { brands: Brand[] | null }) => {
+  if (!brands) {
+    return <LoadingScreen />;
+  }
+
   return (
     <ScrollView>
       {brands &&

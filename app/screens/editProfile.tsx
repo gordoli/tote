@@ -1,5 +1,4 @@
-import { ScrollView } from "react-native";
-import { Text, TextInput, View } from "../components/Themed";
+import { ScrollView, Text, TextInput, View } from "../components/Themed";
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import Avatar from "../components/Avatar";

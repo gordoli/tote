@@ -1,5 +1,4 @@
-import { ScrollView } from "react-native";
-import { Text, View } from "../components/Themed";
+import { ScrollView, Text, View } from "../components/Themed";
 import { Stack, useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 

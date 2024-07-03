@@ -57,6 +57,7 @@ export type User = {
   firstName?: string;
   lastName?: string;
   username: string;
+  isFollowed: boolean;
 };
 
 export const CURRENT_USER: User = {
@@ -70,6 +71,7 @@ export const CURRENT_USER: User = {
     followingCount: 456,
     rankedProductCount: 10,
   },
+  isFollowed: false,
 };
 
 export type FeedItem = {

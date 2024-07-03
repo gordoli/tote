@@ -4,18 +4,39 @@ import ProgressCircle from "react-native-progress-circle";
 import { Text } from "./Themed";
 
 const getColorForRating = (rating: number) => {
-  if (rating > 8) {
-    return "#4CAF50"; // Green for ratings over 8
-  } else if (rating >= 6) {
-    return "#FFA500"; // Orange for ratings between 6 and 8
-  } else if (rating >= 3) {
-    return "#FFD700"; // Yellow for ratings between 3 and 6
-  } else {
-    return "#FF0000"; // Red for ratings below 3
+  switch (rating) {
+    case 1:
+      return "#D2DFFF";
+    case 2:
+      return "#879BCD";
+    case 3:
+      return "#505E94";
+    case 4:
+      return "#364064";
+    case 5:
+      return "#182547";
   }
+
+  // if (rating > 8) {
+  //   return "#4CAF50"; // Green for ratings over 8
+  // } else if (rating >= 6) {
+  //   return "#FFA500"; // Orange for ratings between 6 and 8
+  // } else if (rating >= 3) {
+  //   return "#FFD700"; // Yellow for ratings between 3 and 6
+  // } else {
+  //   return "#FF0000"; // Red for ratings below 3
+  // }
 };
 
-const RatingCircle = ({ rating, numberStyles = {}, radius = 20 } : { rating: number, numberStyles?: ViewStyle, radius?: number }) => {
+const RatingCircle = ({
+  rating,
+  numberStyles = {},
+  radius = 20,
+}: {
+  rating: number;
+  numberStyles?: ViewStyle;
+  radius?: number;
+}) => {
   const percentage = (rating / 10) * 100;
   const strokeColor = getColorForRating(rating);
 
@@ -28,7 +49,10 @@ const RatingCircle = ({ rating, numberStyles = {}, radius = 20 } : { rating: num
       shadowColor="#d3d3d3"
       bgColor="#fff"
     >
-      <Text className="text-sm font-semibold" style={[{ color: strokeColor }, numberStyles]}>
+      <Text
+        className="text-sm font-semibold"
+        style={[{ color: strokeColor }, numberStyles]}
+      >
         {rating}
       </Text>
     </ProgressCircle>

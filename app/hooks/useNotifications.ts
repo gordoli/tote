@@ -1,24 +1,21 @@
 import { useState, useEffect } from "react";
 
 import { get } from "../lib/api";
-import { FeedActivity } from "../lib/types";
+import { Notification } from "../lib/types";
 
-export const useFeed = () => {
+export const useNotifications = () => {
   const [loading, setLoading] = useState(true);
-  const [data, setData] = useState<FeedActivity[] | null>(null);
+  const [notis, setNotifications] = useState<Notification[] | null>(null);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // const result = await get("/feeds?isOnlyFriend=true&page=1&perPage=10");
-        const result = await get("/feeds?&page=1&perPage=10");
-
-        console.log("Feed Data:", result.data);
-        setData(result.data);
+        const result = await get("/notifications");
+        setNotifications(result.data);
         setLoading(false);
       } catch (err: any) {
-        console.error("Error on /feeds", err);
+        console.log(err);
         setError(err.message);
         setLoading(false);
       }
@@ -29,7 +26,7 @@ export const useFeed = () => {
 
   return {
     loading,
-    data,
+    notis,
     error,
   };
 };

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Text } from "./Themed";
 import { useProfile } from "../hooks/useProfile";
+import { set } from "date-fns";
 
 const FollowButton = ({
   userId,
@@ -11,9 +12,9 @@ const FollowButton = ({
   isFollowing: boolean;
 }) => {
   const [following, setFollowing] = useState<boolean>(isFollowing);
-  const baseStyle = "px-4 py-1 rounded";
-  const followingStyle = "bg-blue-500 text-white";
-  const notFollowingStyle = "bg-gray-500 text-white";
+  const baseStyle = "px-8 py-2 bg-white border border-gray-300 rounded-full";
+  const followingStyle = "bg-purple text-white border-purple";
+  const notFollowingStyle = "";
 
   const { handleFollowUser } = useProfile();
 
@@ -22,9 +23,14 @@ const FollowButton = ({
       className={`${baseStyle} ${
         following ? followingStyle : notFollowingStyle
       }`}
-      onPress={() => handleFollowUser(userId, following)}
+      onPress={() => {
+        handleFollowUser(userId, following);
+        setFollowing(!following);
+      }}
     >
-      <Text className="text-white">{following ? "Following" : "Follow"}</Text>
+      <Text className={following ? "text-white" : ""}>
+        {following ? "Following" : "Follow"} {userId}
+      </Text>
     </TouchableOpacity>
   );
 };

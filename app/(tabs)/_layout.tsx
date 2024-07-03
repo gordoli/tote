@@ -63,6 +63,7 @@ export default function TabLayout(props: any) {
         name="search"
         options={{
           title: "Search",
+          // headerShown: false,
           headerLeft: () => <BaseScreenHeader side="left" />,
           headerTitle: () => <BaseScreenHeader side="center" />,
           headerRight: () => <BaseScreenHeader side="right" />,
