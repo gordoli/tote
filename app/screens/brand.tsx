@@ -12,6 +12,7 @@ import { View, Text } from "@/app/components/Themed";
 import ToteTitle from "@/app/components/ToteTitle";
 import LoadingScreen from "../components/LoadingScreen";
 import ProductList from "../components/product/ProductList";
+import { RankingData } from "../lib/types";
 
 const renderTabBar = (props: any) => (
   <TabBar
@@ -96,8 +97,11 @@ const BrandProfile = () => {
     modalizeModal.current?.close();
   };
 
-  const onRankProduct = () => {
-    handleRankProduct(rankingData, () => {
+  const onRankProduct = (data: RankingData) => {
+    // handleRankProduct(rankingData, () => {
+    //   cancelModal();
+    // });
+    handleRankProduct(data, () => {
       cancelModal();
     });
   };
