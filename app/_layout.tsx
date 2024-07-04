@@ -10,6 +10,7 @@ import * as SplashScreen from "expo-splash-screen";
 import { useEffect, useState } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import Toast, { ErrorToast } from "react-native-toast-message";
+import { ActionSheetProvider } from '@expo/react-native-action-sheet';
 
 import Storage from "../app/lib/storage";
 import { APP_CONST } from "../app/lib/const";
@@ -146,14 +147,15 @@ function RootLayoutNav() {
         value={colorScheme === "dark" ? DefaultTheme : DefaultTheme}
       >
         {/* <ThemeProvider value={DefaultTheme}> */}
-
-        <GestureHandlerRootView style={{ flex: 1 }}>
-          {/* <Stack>
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-            <Stack.Screen name="modal" options={{ presentation: "modal" }} />
-          </Stack> */}
-          <Slot />
-        </GestureHandlerRootView>
+        <ActionSheetProvider>
+          <GestureHandlerRootView style={{ flex: 1 }}>
+            {/* <Stack>
+              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+              <Stack.Screen name="modal" options={{ presentation: "modal" }} />
+            </Stack> */}
+            <Slot />
+          </GestureHandlerRootView>
+        </ActionSheetProvider>
       </ThemeProvider>
 
       <Toast config={toastConfig} />

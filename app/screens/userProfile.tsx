@@ -80,6 +80,15 @@ const UserProfile = ({ userId }: { userId?: string }) => {
     });
   };
 
+  const handleGoToChangePassword = () => {
+    router.navigate({
+      pathname: "/screens/changePassword",
+      params: {
+        screen: "profile"
+      },
+    });
+  };
+
   if (data === null) {
     return (
       <View className="items-center justify-center flex-1 bg-white">
@@ -152,6 +161,16 @@ const UserProfile = ({ userId }: { userId?: string }) => {
           >
             <Text className="text-sm">Share profile</Text>
           </TouchableOpacity> */}
+          {isCurrentUser && (
+            <TouchableOpacity
+              className="px-4 py-2 bg-white border border-gray-300 rounded-full"
+              onPress={() => {
+                handleGoToChangePassword();
+              }}
+            >
+              <Text className="text-sm">Change Password</Text>
+            </TouchableOpacity>
+          )}
         </View>
       </View>
 
