@@ -1,10 +1,9 @@
-import { ScrollView, Text, View } from "../components/Themed";
+import { Text, View } from "../components/Themed";
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { useCurrentUser } from "../hooks/useCurrentUser";
 import { useEffect, useState } from "react";
 import { SceneMap, TabBar, TabView } from "react-native-tab-view";
-import { useProfile } from "../hooks/useProfile";
 import UserList from "../components/user/UserList";
 import { useWindowDimensions } from "react-native";
 import { User } from "../lib/types";

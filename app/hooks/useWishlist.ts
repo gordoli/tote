@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 
-import { get, post } from "../lib/api";
+import { del, get, post } from "../lib/api";
 import { Product } from "../lib/types";
 import { useCurrentUser } from "./useCurrentUser";
 
@@ -33,8 +33,17 @@ export const useWishlist = (getWishlist?: boolean) => {
   const handleAddToWishlist = useCallback(async (productId: number) => {
     console.log("Adding product to wishlist", productId);
     try {
-      await post(`/wishlist/add/${productId}`, {});
-      console.log("Added product to wishlist");
+      await post(`/wishlist/${productId}`, {});
+    } catch (err: any) {
+      console.log(err);
+      setError(err.message);
+    }
+  }, []);
+
+  const handleRemoveFromWishlist = useCallback(async (productId: number) => {
+    console.log("Removing product to wishlist", productId);
+    try {
+      await del(`/wishlist/${productId}`, {});
     } catch (err: any) {
       console.log(err);
       setError(err.message);
@@ -46,5 +55,6 @@ export const useWishlist = (getWishlist?: boolean) => {
     wishlistProducts,
     error,
     handleAddToWishlist,
+    handleRemoveFromWishlist,
   };
 };

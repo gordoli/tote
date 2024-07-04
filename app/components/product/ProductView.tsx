@@ -7,22 +7,27 @@ import Toast from "react-native-toast-message";
 import { FontAwesome } from "@expo/vector-icons";
 
 const ProductView = ({ product }: { product: Product }) => {
-  const [wishlisted, setWishlisted] = useState(false);
-  const { handleAddToWishlist } = useWishlist();
+  const [wishlisted, setWishlisted] = useState(product.wishlisted);
+  const { handleAddToWishlist, handleRemoveFromWishlist } = useWishlist();
 
   const showToast = () => {
     Toast.show({
       type: "success",
-      text1: `${product.name} added to your wishlist`,
+      text1: `${product.name} ${
+        wishlisted ? "removed from" : "added to"
+      } your wishlist`,
       position: "bottom",
     });
   };
 
   const onBookmarkClick = () => {
-    handleAddToWishlist(product.id);
-    console.log("Here");
-    setWishlisted(!wishlisted);
+    if (wishlisted) {
+      handleRemoveFromWishlist(product.id);
+    } else {
+      handleAddToWishlist(product.id);
+    }
     showToast();
+    setWishlisted(!wishlisted);
   };
 
   return (

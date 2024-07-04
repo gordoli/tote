@@ -198,6 +198,7 @@ export type Product = {
   createdBy: User;
   category?: Category;
   brand?: Brand;
+  wishlisted?: boolean;
 };
 
 export type Brand2 = {

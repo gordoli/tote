@@ -33,11 +33,6 @@ export const useBrand = (brandId?: number, userId?: string) => {
         const resultFriendsRanked = await get(
           `/products?${brandId}&isOnlyFriend`
         );
-        console.log(
-          `Friend's products for brand: ${brandId}`,
-          resultFriendsRanked.data
-        );
-        // setBrandDetail(resultBrand.data);
         setFriendsRanked(resultFriendsRanked.data);
         setLoading(false);
       } catch (err: any) {
@@ -52,7 +47,6 @@ export const useBrand = (brandId?: number, userId?: string) => {
   const handleFetchAllRanked = useCallback(async () => {
     try {
       const resultAllRanked = await get(`/products?brandId=${brandId}`);
-      console.log(`All products for brand: ${brandId}`, resultAllRanked.data);
       setAllRanked(resultAllRanked.data);
       setLoadingTab(false);
     } catch (err: any) {
@@ -81,8 +75,6 @@ export const useBrand = (brandId?: number, userId?: string) => {
       try {
         setLoadingStep(true);
         const formData = new FormData();
-        return;
-
         if (!data.image) {
           const res = await post(`/products`, data);
           // if (res.status === 201 && res.code === "ok") {

@@ -11,14 +11,6 @@ const NotificationsScreen = () => {
   const router = useRouter();
   const { notis } = useNotifications();
 
-  if (!notis) {
-    return (
-      <View className="flex-row items-center justify-center flex-1 h-full">
-        <Text>Loading...</Text>
-      </View>
-    );
-  }
-
   return (
     <>
       <Stack.Screen
@@ -36,7 +28,14 @@ const NotificationsScreen = () => {
           headerBackVisible: false,
         }}
       />
-      {!notis || notis.length === 0 ? (
+
+      {!notis && (
+        <View className="flex-row items-center justify-center flex-1 h-full">
+          <Text>Loading...</Text>
+        </View>
+      )}
+
+      {notis && notis.length === 0 ? (
         <EmptyState label="No notifications" />
       ) : (
         <ScrollView className="bg-white">
