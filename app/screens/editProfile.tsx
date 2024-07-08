@@ -7,10 +7,14 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { useProfile } from "../hooks/useProfile";
 import Storage from "../lib/storage";
 import { AuthContext } from "../lib/globalContext";
+import { TouchableOpacity as Touch } from "react-native";
+import * as ImagePicker from "expo-image-picker";
+import LoadingScreen from "../components/LoadingScreen";
+import { useActionSheet } from '@expo/react-native-action-sheet';
 
 const EditUserScreen = () => {
   const router = useRouter();
-  const { handleEditUser } = useProfile();
+  const { handleUploadAvatar, loading } = useProfile();
   const currUser: any = useLocalSearchParams();
   const { logout } = useContext(AuthContext);
 
@@ -25,6 +29,65 @@ const EditUserScreen = () => {
     email: currUser?.email || "",
     username: currUser?.username,
   });
+  const [avatarImage, setAvatarImage] = useState<ImagePicker.ImagePickerAsset | null>(null);
+  const { showActionSheetWithOptions } = useActionSheet();
+
+  const onPress = () => {
+    const options = ['Select image', 'Take a photo', 'Cancel'];
+    const cancelButtonIndex = 2;
+
+    showActionSheetWithOptions({
+      options,
+      cancelButtonIndex,
+    }, (selectedIndex: number) => {
+      console.log('selectedIndex: ', selectedIndex);
+      switch (selectedIndex) {
+        case 0:
+          pickImage();
+          break;
+
+        case 1:
+          openCamera();
+          break;
+
+        case cancelButtonIndex:
+          // Canceled
+      }
+    });
+  };
+
+  const openCamera = async () => {
+    const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
+    
+    if (permissionResult.granted === false) {
+      alert("You've refused to allow this appp to access your camera!");
+      return;
+    }
+    
+    const result = await ImagePicker.launchCameraAsync();
+    
+    if (!result.cancelled) {
+      setAvatarImage(result.assets[0]);
+    }
+  };
+
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      console.log('xxx1result: ', result);
+      setAvatarImage(result.assets[0]);
+    }
+  };
+
+  if (loading) {
+    return <LoadingScreen />;
+  }
 
   return (
     <ScrollView className="gap-4 p-6 text-center bg-white">
@@ -42,11 +105,14 @@ const EditUserScreen = () => {
       />
       <View className="flex items-center justify-center">
         <View className="relative">
-          <View className="absolute z-10 p-1 bg-white rounded-full -top-1 -right-2">
+          <Touch
+            className="absolute z-10 p-1 bg-white rounded-full -top-1 -right-2"
+            onPress={onPress}
+          >
             <Ionicons name="camera" size={24} color="gray" />
-          </View>
+          </Touch>
 
-          <Avatar src={currUser?.avatar || null} size="xxl" />
+          <Avatar src={avatarImage?.uri || currUser?.avatar || null} size="xxl" />
         </View>
       </View>
 
@@ -87,7 +153,7 @@ const EditUserScreen = () => {
       </View>
 
       <TouchableOpacity
-        onPress={() => handleEditUser(editData)}
+        onPress={() => handleUploadAvatar(editData, avatarImage)}
         className="items-center justify-center h-12 rounded-lg bg-darkBlue"
       >
         <Text className="text-white">Save</Text>
