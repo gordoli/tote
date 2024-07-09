@@ -18,8 +18,10 @@ const RankModals = ({
   data,
   handleUpdateRankingData,
   handleRankProduct,
+  onCloseModal,
 }: {
   cancelModal: () => void;
+  onCloseModal: () => void;
   modalizeRef: any;
   loading: boolean;
   categories: Category[];
@@ -67,12 +69,22 @@ const RankModals = ({
     cancelModal && cancelModal();
   };
 
+  const handleBackPreviousStep = (num: number) => {
+    setStep(num);
+  };
+
+  const onClosed = () => {
+    setStep(1);
+    onCloseModal();
+  };
+
   return (
     <Modalize
       ref={modalizeRef}
       handlePosition="inside"
       adjustToContentHeight
       closeOnOverlayTap={false}
+      onClosed={onClosed}
     >
       <View className="justify-between w-full p-4 pb-10 bg-white flex-column rounded-2xl">
         {step === 1 &&
@@ -83,19 +95,28 @@ const RankModals = ({
               cancelModal={handleCancelStep}
               nextStep={nextStepAction}
               data={categories}
+              dataRanking={data}
             />
           ))}
         {step === 2 && (
-          <Step2 cancelModal={handleCancelStep} nextStep={nextStepAction} />
+          <Step2
+            nextStep={nextStepAction}
+            backPreviousStep={handleBackPreviousStep}
+            data={data}
+          />
         )}
         {step === 3 && (
-          <Step3 cancelModal={handleCancelStep} nextStep={nextStepAction} />
+          <Step3
+            nextStep={nextStepAction}
+            backPreviousStep={handleBackPreviousStep}
+            data={data}
+          />
         )}
         {step === 4 && (
           <Step4
-            cancelModal={handleCancelStep}
             nextStep={nextStepAction}
             loading={loading}
+            backPreviousStep={handleBackPreviousStep}
           />
         )}
       </View>

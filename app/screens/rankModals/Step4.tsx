@@ -1,6 +1,6 @@
 import React from "react";
 import { TouchableOpacity, Image } from "react-native";
-import { SimpleLineIcons, Entypo, FontAwesome6 } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
 
 import styles from "./styles";
 import { View, Text } from "@/app/components/Themed";
@@ -8,13 +8,13 @@ import { Product, RankingData } from "@/app/lib/types";
 import LoadingScreen from "@/app/components/LoadingScreen";
 
 export const Step4 = ({
-  cancelModal,
   nextStep,
   loading,
+  backPreviousStep,
 }: {
-  cancelModal: () => void;
   nextStep: (step: number, value: any) => void;
   loading?: boolean;
+  backPreviousStep: (step: number) => void;
 }) => {
   return (
     <>
@@ -28,8 +28,8 @@ export const Step4 = ({
               How do you feel about this?
             </Text>
           </View>
-          <TouchableOpacity onPress={cancelModal}>
-            <Text className="text-sm font-semibold text-gray-700">Cancel</Text>
+          <TouchableOpacity onPress={() => backPreviousStep(3)}>
+            <Text className="text-sm font-semibold text-gray-700">Back</Text>
           </TouchableOpacity>
         </View>
       </View>

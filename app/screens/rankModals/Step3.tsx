@@ -4,19 +4,22 @@ import { FontAwesome } from "@expo/vector-icons";
 import * as Clipboard from "expo-clipboard";
 import * as ImagePicker from "expo-image-picker";
 
+import { RankingData } from "@/app/lib/types";
 import { View, Text } from "@/app/components/Themed";
 import styles from "./styles";
 
 export const Step3 = ({
-  cancelModal,
+  data,
   nextStep,
+  backPreviousStep,
 }: {
-  cancelModal: () => void;
+  data: RankingData;
   nextStep: (step: number, value: any) => void;
+  backPreviousStep: (step: number) => void;
 }) => {
-  const [link, setLink] = React.useState("");
+  const [link, setLink] = React.useState(data ? data.link : "");
   const [image, setImage] = React.useState<ImagePicker.ImagePickerAsset | null>(
-    null
+    data ? data.image : null
   );
   const [error, setError] = React.useState("");
 
@@ -74,8 +77,8 @@ export const Step3 = ({
               Additional Information
             </Text>
           </View>
-          <TouchableOpacity onPress={cancelModal}>
-            <Text className="text-sm font-semibold text-gray-700">Cancel</Text>
+          <TouchableOpacity onPress={() => backPreviousStep(2)}>
+            <Text className="text-sm font-semibold text-gray-700">Back</Text>
           </TouchableOpacity>
         </View>
         <Text className="mt-4 text-sm text-gray-700">Product link</Text>

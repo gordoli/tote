@@ -1,17 +1,21 @@
 import React from "react";
 import { TouchableOpacity, TextInput } from "react-native";
 
+import { RankingData } from "@/app/lib/types";
 import { View, Text } from "@/app/components/Themed";
+import styles from "./styles";
 
 export const Step2 = ({
-  cancelModal,
+  data,
   nextStep,
+  backPreviousStep,
 }: {
-  cancelModal: () => void;
+  data: RankingData;
   nextStep: (step: number, value: any) => void;
+  backPreviousStep: (step: number) => void;
 }) => {
-  const [name, onChangeName] = React.useState("");
-  const [description, onChangeDes] = React.useState("");
+  const [name, onChangeName] = React.useState(data ? data.name : "");
+  const [description, onChangeDes] = React.useState(data ? data.description : "");
 
   const onNextStep = () => {
     const value = {
@@ -33,8 +37,8 @@ export const Step2 = ({
             </Text>
             <Text className="text-lg font-semibold">Product Details</Text>
           </View>
-          <TouchableOpacity onPress={cancelModal}>
-            <Text className="text-sm font-semibold text-gray-700">Cancel</Text>
+          <TouchableOpacity onPress={() => backPreviousStep(1)}>
+            <Text className="text-sm font-semibold text-gray-700">Back</Text>
           </TouchableOpacity>
         </View>
         <Text className="mt-4 text-sm text-gray-700">Name</Text>

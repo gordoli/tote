@@ -31,7 +31,7 @@ export const useBrand = (brandId?: number, userId?: string) => {
         const resultBrand = await get(`/brands/${brandId}`);
         setBrandDetail(resultBrand.data);
         const resultFriendsRanked = await get(
-          `/products?${brandId}&isOnlyFriend`
+          `/products?brandId=${brandId}&isOnlyFriend=true`
         );
         setFriendsRanked(resultFriendsRanked.data);
         setLoading(false);

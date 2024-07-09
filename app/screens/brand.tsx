@@ -85,6 +85,11 @@ const BrandProfile = () => {
   };
 
   const cancelModal = () => {
+    resetFormData();
+    modalizeModal.current?.close();
+  };
+
+  const resetFormData = () => {
     handleUpdateRankingData({
       rate: 0,
       brandId: brand.id,
@@ -94,7 +99,6 @@ const BrandProfile = () => {
       name: "",
       description: "",
     });
-    modalizeModal.current?.close();
   };
 
   const onRankProduct = (data: RankingData) => {
@@ -231,6 +235,7 @@ const BrandProfile = () => {
         data={rankingData}
         handleUpdateRankingData={handleUpdateRankingData}
         handleRankProduct={onRankProduct}
+        onCloseModal={resetFormData}
       />
     </View>
   );
