@@ -5,14 +5,13 @@ import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { StyleSheet, TouchableOpacity } from "react-native";
 import { Ionicons, Entypo, AntDesign } from "@expo/vector-icons";
 
-import RankModals from "../screens/rankModals";
+import RankModals from "./rankModals";
 import { useBrand } from "../hooks/useBrand";
 import Avatar from "@/app/components/Avatar";
 import { View, Text } from "@/app/components/Themed";
 import ToteTitle from "@/app/components/ToteTitle";
 import LoadingScreen from "../components/LoadingScreen";
 import ProductList from "../components/product/ProductList";
-import { RankingData } from "../lib/types";
 
 const renderTabBar = (props: any) => (
   <TabBar
@@ -43,14 +42,7 @@ const BrandProfile = () => {
     friendsRanked,
     allRanked,
     loading,
-    loadingTab,
-    loadingStep,
-    categories,
-    rankingData,
     handleFetchAllRanked,
-    handleGetCategories,
-    handleUpdateRankingData,
-    handleRankProduct,
   } = useBrand(brand.id);
 
   const [index, setIndex] = React.useState(0);
@@ -80,34 +72,7 @@ const BrandProfile = () => {
   );
 
   const openModal = () => {
-    handleGetCategories();
     modalizeModal.current?.open();
-  };
-
-  const cancelModal = () => {
-    resetFormData();
-    modalizeModal.current?.close();
-  };
-
-  const resetFormData = () => {
-    handleUpdateRankingData({
-      rate: 0,
-      brandId: brand.id,
-      categoryId: 0,
-      link: "",
-      image: null,
-      name: "",
-      description: "",
-    });
-  };
-
-  const onRankProduct = (data: RankingData) => {
-    // handleRankProduct(rankingData, () => {
-    //   cancelModal();
-    // });
-    handleRankProduct(data, () => {
-      cancelModal();
-    });
   };
 
   const onOpenWebsite = (linkUrl: string | undefined) => {
@@ -228,14 +193,8 @@ const BrandProfile = () => {
       />
       {/* </ScrollView> */}
       <RankModals
-        cancelModal={cancelModal}
         modalizeRef={modalizeModal}
-        loading={loadingStep}
-        categories={categories}
-        data={rankingData}
-        handleUpdateRankingData={handleUpdateRankingData}
-        handleRankProduct={onRankProduct}
-        onCloseModal={resetFormData}
+        brandId={brand.id}
       />
     </View>
   );

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Modalize } from "react-native-modalize";
 
 import { Step1 } from "./Step1";
@@ -8,31 +8,64 @@ import { Step4 } from "./Step4";
 import styles from "./styles";
 import { View } from "@/app/components/Themed";
 import LoadingScreen from "../../components/LoadingScreen";
-import { Category, RankingData } from "@/app/lib/types";
+import { useBrand } from "../../hooks/useBrand";
 
 const RankModals = ({
-  cancelModal,
   modalizeRef,
-  loading,
-  categories,
-  data,
-  handleUpdateRankingData,
-  handleRankProduct,
-  onCloseModal,
+  brandId,
+  rankProduct = null,
 }: {
-  cancelModal: () => void;
-  onCloseModal: () => void;
   modalizeRef: any;
-  loading: boolean;
-  categories: Category[];
-  data: RankingData;
-  handleUpdateRankingData: (value: any) => void;
-  handleRankProduct: (data: RankingData) => void;
+  brandId: number;
+  rankProduct?: any,
 }) => {
   const [step, setStep] = useState(1);
+  const {
+    loadingStep,
+    categories,
+    rankingData,
+    handleGetCategories,
+    handleUpdateRankingData,
+    handleRankProduct,
+  } = useBrand(brandId);
+
+  useEffect(() => {
+    handleGetCategories();
+  }, []);
+
+  useEffect(() => {
+    if (rankProduct) {
+      handleUpdateRankingData({
+        rate: rankProduct.rate,
+        brandId: rankProduct.brand.id,
+        categoryId: rankProduct.category.id,
+        link: rankProduct.link,
+        image: rankProduct.image,
+        name: rankProduct.name,
+        description: rankProduct.description,
+      });
+    }
+  }, [rankProduct]);
+
+  const cancelModal = () => {
+    resetFormData();
+    modalizeRef.current?.close();
+  };
+
+  const resetFormData = () => {
+    handleUpdateRankingData({
+      rate: 0,
+      brandId: brandId,
+      categoryId: 0,
+      link: "",
+      image: null,
+      name: "",
+      description: "",
+    });
+  };
 
   const nextStepAction = (num: number, value: any) => {
-    const newData = { ...data };
+    const newData = { ...rankingData };
     switch (num) {
       case 2:
         newData.categoryId = value;
@@ -54,7 +87,10 @@ const RankModals = ({
     handleUpdateRankingData(newData);
     if (num === 5) {
       console.log("Final Ranking Data:", newData);
-      handleRankProduct(newData);
+      const productId = rankProduct ? rankProduct.id : 0;
+      handleRankProduct(newData, () => {
+        cancelModal();
+      }, productId);
       // setTimeout(() => {
       //   handleRankProduct();
       // }, 1000);
@@ -75,7 +111,7 @@ const RankModals = ({
 
   const onClosed = () => {
     setStep(1);
-    onCloseModal();
+    resetFormData();
   };
 
   return (
@@ -88,34 +124,34 @@ const RankModals = ({
     >
       <View className="justify-between w-full p-4 pb-10 bg-white flex-column rounded-2xl">
         {step === 1 &&
-          (loading ? (
+          (loadingStep ? (
             <LoadingScreen customeStyles={styles.loadingStyle} />
           ) : (
             <Step1
               cancelModal={handleCancelStep}
               nextStep={nextStepAction}
               data={categories}
-              dataRanking={data}
+              dataRanking={rankingData}
             />
           ))}
         {step === 2 && (
           <Step2
             nextStep={nextStepAction}
             backPreviousStep={handleBackPreviousStep}
-            data={data}
+            data={rankingData}
           />
         )}
         {step === 3 && (
           <Step3
             nextStep={nextStepAction}
             backPreviousStep={handleBackPreviousStep}
-            data={data}
+            data={rankingData}
           />
         )}
         {step === 4 && (
           <Step4
             nextStep={nextStepAction}
-            loading={loading}
+            loading={loadingStep}
             backPreviousStep={handleBackPreviousStep}
           />
         )}

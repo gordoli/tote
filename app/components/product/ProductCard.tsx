@@ -36,7 +36,10 @@ const ProductCard = ({ product }: { product: Product }) => {
         </View>
       </View>
 
-      <ProductView product={product} />
+      <ProductView
+        product={product}
+        isCurrUser={product.createdBy?.id === currUser?.id}
+      />
     </View>
   );
 };

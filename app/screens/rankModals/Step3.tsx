@@ -36,6 +36,16 @@ export const Step3 = ({
     nextStep(4, value);
   };
 
+  const displayImage = (value: any) => {
+    if (value !== null) {
+      if (typeof value === "string" && !!value) {
+        return value;
+      }
+      return value.uri.split("/").pop();
+    }
+    return "Upload product's image";
+  };
+
   const validateLink = () => {
     const regex =
       /[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/;
@@ -116,7 +126,7 @@ export const Step3 = ({
             </View>
             <View>
               <Text className="text-sm">
-                {image ? image.uri.split("/").pop() : "Upload product's image"}
+                {displayImage(image)}
               </Text>
               <Text className="text-xs text-gray-400">
                 {image && image.fileSize

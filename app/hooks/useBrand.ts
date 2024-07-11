@@ -1,7 +1,7 @@
 import { Alert, Platform } from "react-native";
 import { useState, useEffect, useCallback } from "react";
 
-import { get, post } from "../lib/api";
+import { get, post, put } from "../lib/api";
 import { Brand, FeedItem, Category, RankingData, Product } from "../lib/types";
 import { router } from "expo-router";
 
@@ -71,44 +71,22 @@ export const useBrand = (brandId?: number, userId?: string) => {
   }, []);
 
   const handleRankProduct = useCallback(
-    async (data: RankingData, cb: () => void) => {
+    async (data: RankingData, cb: () => void, productId = 0) => {
       try {
         setLoadingStep(true);
         const formData = new FormData();
         if (!data.image) {
-          const res = await post(`/products`, data);
-          // if (res.status === 201 && res.code === "ok") {
-          //   cb && cb();
-          //   Alert.alert("Rank product successfully");
-          // }
+          productId === 0 ? await post(`/products`, data) : await put(`/products/${productId}`, data);
           router.back();
           return;
         }
-
-        let filename = data.image ? data.image.uri.split("/").pop() : "";
-        let type = data.image ? data.image.mimeType : "image";
-        const localUri = data.image
-          ? Platform.OS === "android"
-            ? data.image.uri
-            : data.image.uri.replace("file://", "")
-          : "";
-        const dataBody = { uri: localUri, name: filename, type };
-        // const blob = new Blob([dataBody.uri], { type: dataBody.type });
-        // formData.append("file", blob, dataBody.name);
-        formData.append("file", dataBody);
-        const headers = { "Content-Type": "multipart/form-data" };
-        const result = await post("/files/upload", formData, headers);
-        if (result && result.code === "ok" && result.status === 201) {
+        if (typeof data.image === "string" && !!data.image) {
+          const body = {
+            ...data,
+            image: data.image,
+          };
           try {
-            const body = {
-              ...data,
-              image: result.data,
-            };
-            const res = await post(`/products`, body);
-            // if (res.status === 201 && res.code === "ok") {
-            //   cb && cb();
-            //   Alert.alert("Rank product successfully");
-            // }
+            productId === 0 ? await post(`/products`, body) : await put(`/products/${productId}`, body);
             setLoadingStep(false);
             router.back();
           } catch (e: any) {
@@ -116,24 +94,50 @@ export const useBrand = (brandId?: number, userId?: string) => {
             setLoadingStep(false);
           }
         } else {
-          setLoadingStep(false);
-          Alert.alert(
-            "Failure",
-            `Upload product's image fail. Please try again`,
-            [
-              {
-                text: "Cancel",
-                onPress: () => {},
-                style: "cancel",
-              },
-              {
-                text: "OK",
-                onPress: () => {
-                  handleRankProduct(data, cb);
+          let filename = data.image ? data.image.uri.split("/").pop() : "";
+          let type = data.image ? data.image.mimeType : "image";
+          const localUri = data.image
+            ? Platform.OS === "android"
+              ? data.image.uri
+              : data.image.uri.replace("file://", "")
+            : "";
+          const dataBody = { uri: localUri, name: filename, type };
+          formData.append("file", dataBody);
+          const headers = { "Content-Type": "multipart/form-data" };
+          const result = await post("/files/upload", formData, headers);
+          if (result && result.code === "ok" && result.status === 201) {
+            try {
+              const body = {
+                ...data,
+                image: result.data,
+              };
+              productId === 0 ? await post(`/products`, body) : await put(`/products/${productId}`, body);
+              setLoadingStep(false);
+              router.back();
+            } catch (e: any) {
+              setError(e.message);
+              setLoadingStep(false);
+            }
+          } else {
+            setLoadingStep(false);
+            Alert.alert(
+              "Failure",
+              `Upload product's image fail. Please try again`,
+              [
+                {
+                  text: "Cancel",
+                  onPress: () => {},
+                  style: "cancel",
                 },
-              },
-            ]
-          );
+                {
+                  text: "OK",
+                  onPress: () => {
+                    handleRankProduct(data, cb);
+                  },
+                },
+              ]
+            );
+          }
         }
       } catch (err: any) {
         Alert.alert(

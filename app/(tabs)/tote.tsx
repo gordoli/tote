@@ -1,3 +1,4 @@
+import React from "react";
 import { View, Text } from "@/app/components/Themed";
 import { useWindowDimensions } from "react-native";
 import ToteTitle from "../components/ToteTitle";
@@ -9,6 +10,9 @@ import ProductList from "../components/product/ProductList";
 import { useWishlist } from "../hooks/useWishlist";
 import { useProductList } from "../hooks/useProductList";
 import { useProfile } from "../hooks/useProfile";
+import { Stack } from "expo-router";
+import BaseScreenHeader from "../components/BaseScreenHeader";
+import { useCurrentUser } from "../hooks/useCurrentUser";
 
 const renderTabBar = (props: any) => (
   <TabBar
@@ -29,6 +33,7 @@ const renderTabBar = (props: any) => (
 );
 
 const Tote = () => {
+  const { currUser } = useCurrentUser();
   const layout = useWindowDimensions();
   const [index, setIndex] = useState(0);
   const [routes] = useState([
@@ -36,7 +41,7 @@ const Tote = () => {
     { key: "myWishlist", title: "Wishlist" },
   ]);
   // const { data, loading: toteLoading, error: toteError } = useTote();
-  const { products } = useProfile();
+  const { products } = useProfile(currUser?.id);
   const {
     wishlistProducts,
     loading: wishlistLoading,
@@ -49,13 +54,20 @@ const Tote = () => {
   });
 
   return (
-    <TabView
-      navigationState={{ index, routes }}
-      renderScene={renderScene}
-      onIndexChange={setIndex}
-      initialLayout={{ width: layout.width }}
-      renderTabBar={renderTabBar}
-    />
+    <>
+      <Stack.Screen
+        options={{
+          headerLeft: () => <BaseScreenHeader side="left" />
+        }}
+      />
+      <TabView
+        navigationState={{ index, routes }}
+        renderScene={renderScene}
+        onIndexChange={setIndex}
+        initialLayout={{ width: layout.width }}
+        renderTabBar={renderTabBar}
+      />
+    </>
   );
 };
 
