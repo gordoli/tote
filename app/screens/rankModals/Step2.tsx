@@ -21,7 +21,7 @@ export const Step2 = ({
     nextStep(3, value);
   };
 
-  const checkIsRequired = () => !!name && !!description;
+  const checkIsRequired = () => !!name;
 
   return (
     <>
@@ -37,17 +37,19 @@ export const Step2 = ({
             <Text className="text-sm font-semibold text-gray-700">Cancel</Text>
           </TouchableOpacity>
         </View>
-        <Text className="mt-4 text-sm text-gray-700">Name</Text>
+        <Text className="mt-4 text-sm text-gray-700 mb-0.5">Product name*</Text>
         <TextInput
           onChangeText={onChangeName}
-          placeholder="Enter name here"
+          placeholder="What's the product name?"
           value={name}
           className="w-full h-10 p-2 bg-gray-200 rounded-lg"
         />
-        <Text className="mt-4 text-sm text-gray-700">Notes</Text>
+        <Text className="mt-4 text-sm text-gray-700 mb-0.5">
+          Share your thoughts (optional)
+        </Text>
         <TextInput
           onChangeText={onChangeDes}
-          placeholder="Type here..."
+          placeholder="How did you feel about fit, quality, experience, etc."
           numberOfLines={4}
           multiline
           maxLength={40}

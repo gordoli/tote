@@ -56,7 +56,7 @@ const BrandProfile = () => {
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
     { key: "friends", title: "Friends" },
-    { key: "trending", title: "Trending" },
+    { key: "all", title: "All" },
   ]);
 
   const renderHeader = () => (
@@ -98,9 +98,6 @@ const BrandProfile = () => {
   };
 
   const onRankProduct = (data: RankingData) => {
-    // handleRankProduct(rankingData, () => {
-    //   cancelModal();
-    // });
     handleRankProduct(data, () => {
       cancelModal();
     });
@@ -114,7 +111,7 @@ const BrandProfile = () => {
 
   const renderScene = SceneMap({
     friends: () => <ProductList products={friendsRanked} />,
-    trending: () => <ProductList products={allRanked} />,
+    all: () => <ProductList products={allRanked} />,
   });
 
   if (loading) {
@@ -149,25 +146,13 @@ const BrandProfile = () => {
   return (
     <View className="flex-1 bg-white">
       {renderHeader()}
-      {/* <ScrollView className="h-screen"> */}
-      {/* <Image
-        src={brandDetail.cover || brand.cover}
-        className="w-full h-1/5"
-        resizeMode="cover"
-      /> */}
       <View className="flex-row items-center w-full px-4 space-y-4">
-        {/* {brand.logo && ( */}
-        {/* <View className="h-full mt-4" style={styles.logoLeft}> */}
-        {/* <View className="p-1" style={styles.logoPhotoContainer}> */}
         <Avatar
           src={brandDetail.logo || brand.logo || null}
           size="lg"
           shape="rounded"
           placeholder={brandDetail.name[0]}
         />
-        {/* </View> */}
-        {/* </View> */}
-        {/* )} */}
 
         <View
           className="flex-row items-center mb-4"
@@ -185,7 +170,6 @@ const BrandProfile = () => {
       </View>
 
       <View className="w-full px-4 space-y-4">
-        {/* <RatingElements ranks={brandDetail.rankProducts} /> */}
         <View className="flex flex-row items-center justify-between my-3">
           <TouchableOpacity
             className="flex-row items-center justify-center py-2 bg-gray-200 rounded-lg"
@@ -212,11 +196,7 @@ const BrandProfile = () => {
         onIndexChange={(index) => {
           if (index === 1) {
             handleFetchAllRanked();
-            // setFocused(true);/
           }
-          // else {
-          //   setFocused(false);
-          // }
           setIndex(index);
         }}
         initialLayout={{ width: layout.width }}

@@ -9,6 +9,7 @@ import Avatar from "@/app/components/Avatar";
 import { CURRENT_USER } from "../lib/types";
 import BaseScreenHeader from "../components/BaseScreenHeader";
 import { AuthContext } from "../lib/globalContext";
+import { useCurrentUser } from "../hooks/useCurrentUser";
 
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 function TabBarIcon(props: {
@@ -22,6 +23,7 @@ export default function TabLayout(props: any) {
   // const colorScheme = useColorScheme();
   const colorScheme = "light";
   const { session } = React.useContext(AuthContext);
+  const { currUser } = useCurrentUser();
 
   return (
     <Tabs
@@ -101,7 +103,7 @@ export default function TabLayout(props: any) {
           headerLeft: () => <BaseScreenHeader side="left" />,
           headerTitle: () => <BaseScreenHeader side="center" />,
           headerRight: () => <BaseScreenHeader side="right" />,
-          tabBarIcon: () => <Avatar src={CURRENT_USER.avatar} size="sm" />,
+          tabBarIcon: () => <Avatar src={currUser?.avatar || ""} size="sm" />,
           tabBarShowLabel: false,
         }}
       />

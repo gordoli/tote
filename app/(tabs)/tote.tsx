@@ -1,14 +1,16 @@
 import { View, Text } from "@/app/components/Themed";
-import { useWindowDimensions } from "react-native";
+import { TouchableOpacity, useWindowDimensions } from "react-native";
 import ToteTitle from "../components/ToteTitle";
 import { FontAwesome } from "@expo/vector-icons";
 import { SceneMap, TabBar, TabView } from "react-native-tab-view";
-import { useState } from "react";
-import { useTote } from "../hooks/useTote";
+import { useEffect, useState } from "react";
 import ProductList from "../components/product/ProductList";
 import { useWishlist } from "../hooks/useWishlist";
-import { useProductList } from "../hooks/useProductList";
-import { useProfile } from "../hooks/useProfile";
+import { useCurrentUser } from "../hooks/useCurrentUser";
+import { Product } from "../lib/types";
+import { get } from "../lib/api";
+import { CATEGORIES } from "@/constants/Categories";
+import FilterPill from "../components/FilterPill";
 
 const renderTabBar = (props: any) => (
   <TabBar
@@ -35,27 +37,89 @@ const Tote = () => {
     { key: "myProducts", title: "My Products" },
     { key: "myWishlist", title: "Wishlist" },
   ]);
-  // const { data, loading: toteLoading, error: toteError } = useTote();
-  const { products } = useProfile();
-  const {
-    wishlistProducts,
-    loading: wishlistLoading,
-    error: wishlistError,
-  } = useWishlist(true);
+  const { currUser } = useCurrentUser();
+  const [products, setProducts] = useState<Product[]>([]);
+  const [categoriesSelected, setCategoriesSelected] = useState<number[]>([]);
+
+  useEffect(() => {
+    if (currUser) {
+      const fetchData = async () => {
+        try {
+          const result = await get(`/products/?createdBy=${currUser.id}`);
+          setProducts(result.data);
+        } catch (err: any) {
+          console.log(err);
+        }
+      };
+
+      fetchData();
+    }
+  }, [currUser]);
+
+  const { wishlistProducts } = useWishlist(true);
+  const [wishlist, setWishlist] = useState<Product[] | null>(wishlistProducts);
+
+  useEffect(() => {
+    setWishlist(wishlistProducts);
+  }, [wishlistProducts]);
+
+  const toggleCategory = (categoryId: number) => {
+    setCategoriesSelected((prev) =>
+      prev.includes(categoryId)
+        ? prev.filter((id) => id !== categoryId)
+        : [...prev, categoryId]
+    );
+  };
+
+  const filterProductsByCategory = (products: Product[]) => {
+    if (categoriesSelected.length === 0) return products;
+    return products.filter((product) =>
+      categoriesSelected.includes(product.category?.id || 0)
+    );
+  };
 
   const renderScene = SceneMap({
-    myProducts: () => <ProductList products={products} />,
-    myWishlist: () => <ProductList products={wishlistProducts} />,
+    myProducts: () => (
+      <ProductList products={filterProductsByCategory(products)} />
+    ),
+    myWishlist: () => (
+      <ProductList products={filterProductsByCategory(wishlist || [])} />
+    ),
   });
 
   return (
-    <TabView
-      navigationState={{ index, routes }}
-      renderScene={renderScene}
-      onIndexChange={setIndex}
-      initialLayout={{ width: layout.width }}
-      renderTabBar={renderTabBar}
-    />
+    <>
+      <View className="flex-row flex-wrap justify-start gap-2 px-6">
+        <Text className="self-center pt-2">Filter by:</Text>
+        {CATEGORIES.map((category) => (
+          <TouchableOpacity
+            onPress={() => toggleCategory(category.id)}
+            className={`cursor-pointer px-4 py-2 bg-gray/20 rounded-full ${
+              categoriesSelected.includes(category.id)
+                ? "bg-blue/10 !text-blue !border-none"
+                : "text-gray-800"
+            }`}
+          >
+            <Text
+              className={
+                categoriesSelected.includes(category.id)
+                  ? "text-blue"
+                  : "text-gray-800"
+              }
+            >
+              {category.name}
+            </Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+      <TabView
+        navigationState={{ index, routes }}
+        renderScene={renderScene}
+        onIndexChange={setIndex}
+        initialLayout={{ width: layout.width }}
+        renderTabBar={renderTabBar}
+      />
+    </>
   );
 };
 

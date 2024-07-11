@@ -1,29 +1,32 @@
-import { FontAwesome } from "@expo/vector-icons";
-import { Text, View } from "./Themed";
 import _default from "@expo/vector-icons/build/FontAwesome";
 import { ReactNode } from "react";
-import { Pressable } from "react-native";
+import { Pressable, TouchableOpacity } from "react-native";
+import { Text } from "./Themed";
 
 const FilterPill = ({
   children,
   isActive,
-  onClick,
+  onPress,
+  className,
+  label,
 }: {
-  children: ReactNode;
+  children?: ReactNode;
   isActive: boolean;
-  onClick: () => void;
+  onPress?: () => void;
+  className?: string;
+  label?: string;
 }) => {
   return (
-    <Pressable
-      onPress={onClick}
-      className={`cursor-pointer text-sm py-2 px-4 flex-row items-center justify-center space-x-1 rounded-full ${
+    <TouchableOpacity
+      onPress={onPress}
+      className={`cursor-pointer px-8 py-2 bg-gray/20 rounded-full ${
         isActive
-          ? "bg-skyBlue/20 text-skyBlue border border-skyBlue"
-          : "bg-gray-200/20 text-gray-800 border border-gray-200"
-      }`}
+          ? "bg-blue/10 !text-blue !border-none"
+          : "text-gray-800 bg-blue/10"
+      }, ${className}`}
     >
-      {children}
-    </Pressable>
+      <Text className={isActive ? "text-blue" : "text-gray-800"}>{label}</Text>
+    </TouchableOpacity>
   );
 };
 

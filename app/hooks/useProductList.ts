@@ -13,7 +13,7 @@ export const useProductList = (userId?: string, brandId?: string) => {
       try {
         // Only add userId and brandId if they exist
         const result = await get(
-          `/products/${userId ? `?userId=${userId}` : ""}${
+          `/products/${userId ? `?createdBy=${userId}` : ""}${
             brandId ? `&brandId=${brandId}` : ""
           }`
         );

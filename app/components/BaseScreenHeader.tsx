@@ -11,11 +11,11 @@ const BaseScreenHeader = ({ side }: { side: string }) => {
         </View>
       )}
 
-      {side === "right" && (
+      {/* {side === "right" && (
         <View className="flex-row items-center px-4 space-x-2">
           <NotificationBell />
         </View>
-      )}
+      )} */}
     </>
   );
 };

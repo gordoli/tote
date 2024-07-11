@@ -78,7 +78,9 @@ export const Step3 = ({
             <Text className="text-sm font-semibold text-gray-700">Cancel</Text>
           </TouchableOpacity>
         </View>
-        <Text className="mt-4 text-sm text-gray-700">Product link</Text>
+        <Text className="mt-4 text-sm text-gray-700 mb-0.5">
+          Product link (optional)
+        </Text>
         <View className="w-full">
           <TextInput
             onChangeText={setLink}
@@ -105,7 +107,9 @@ export const Step3 = ({
           )}
         </View>
         {error && <Text className="pb-3 text-red-600">{error}</Text>}
-        <Text className="mt-4 text-sm text-gray-700">Upload image</Text>
+        <Text className="mt-4 text-sm text-gray-700 mb-0.5">
+          Upload image (optional)
+        </Text>
         <View className="flex-row items-center justify-between p-3 border border-gray-300 rounded-lg">
           <View className="flex-row" style={{ width: "75%" }}>
             <View className="p-2 mr-2 bg-gray-300 rounded">

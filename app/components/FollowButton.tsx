@@ -13,7 +13,7 @@ const FollowButton = ({
 }) => {
   const [following, setFollowing] = useState<boolean>(isFollowing);
   const baseStyle = "px-8 py-2 bg-white border border-gray-300 rounded-full";
-  const followingStyle = "bg-purple text-white border-purple";
+  const followingStyle = "bg-darkBlue text-white border-darkBlue";
   const notFollowingStyle = "";
 
   const { handleFollowUser } = useProfile();

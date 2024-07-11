@@ -44,9 +44,10 @@ export const useProfile = (userId?: string) => {
     }
   };
 
-  const handleGetBrands = async () => {
+  const handleGetBrands = async (userId: string) => {
     try {
       const result = await get(`/users/${userId}/brands`);
+      console.log("User brands", result.data);
       setBrands(result.data);
     } catch (err: any) {
       console.log(err);
@@ -62,11 +63,6 @@ export const useProfile = (userId?: string) => {
       } else {
         del(`/follows/following/${userId}`, {});
       }
-      Toast.show({
-        type: "success",
-        text1: `${!isFollowing ? "Followed" : "Unfollow"} user`,
-        position: "bottom",
-      });
       setLoading(false);
     } catch (err: any) {
       console.log(err);
@@ -75,7 +71,10 @@ export const useProfile = (userId?: string) => {
     }
   };
 
-  const handleUploadAvatar = async (editData: any, avatar: ImagePickerAsset | null) => {
+  const handleUploadAvatar = async (
+    editData: any,
+    avatar: ImagePickerAsset | null
+  ) => {
     setLoading(true);
     if (avatar === null) {
       handleEditUser(editData);
@@ -131,7 +130,7 @@ export const useProfile = (userId?: string) => {
       const body = {
         currentPassword: data.currentPassword,
         newPassword: data.newPassword,
-      }
+      };
       try {
         const result = await post("/auth/change-password", body);
         if (result && result.code === "ok" && result.status === 201) {
@@ -155,11 +154,17 @@ export const useProfile = (userId?: string) => {
 
   const validateChangePasswordForm = (data: any) => {
     const { currentPassword, newPassword, confirmNewPassword } = data;
-    const newFormChangePasswordErrors = {...formChangePasswordErrors};
-    newFormChangePasswordErrors.currentPassword = !currentPassword.trim() ? "Current password is required" : "";
-    newFormChangePasswordErrors.newPassword = !newPassword.trim() ? "New password is required" : "";
+    const newFormChangePasswordErrors = { ...formChangePasswordErrors };
+    newFormChangePasswordErrors.currentPassword = !currentPassword.trim()
+      ? "Current password is required"
+      : "";
+    newFormChangePasswordErrors.newPassword = !newPassword.trim()
+      ? "New password is required"
+      : "";
     newFormChangePasswordErrors.confirmNewPassword =
-      confirmNewPassword.trim() === newPassword.trim() ? "" : "New passwords does not match";
+      confirmNewPassword.trim() === newPassword.trim()
+        ? ""
+        : "New passwords does not match";
     setFormChangePasswordErrors(newFormChangePasswordErrors);
     if (
       !newFormChangePasswordErrors.currentPassword &&

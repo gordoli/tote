@@ -1,4 +1,5 @@
 import { Brand } from "../../lib/types";
+import EmptyState from "../EmptyState";
 import LoadingScreen from "../LoadingScreen";
 import { ScrollView } from "../Themed";
 import BrandCard from "./BrandCard";
@@ -8,7 +9,9 @@ const BrandList = ({ brands }: { brands: Brand[] | null }) => {
     return <LoadingScreen />;
   }
 
-  return (
+  return !brands || brands.length === 0 ? (
+    <EmptyState label="No brands found" />
+  ) : (
     <ScrollView>
       {brands &&
         brands.map((brand: Brand, i: number) => (

@@ -74,20 +74,6 @@ export const CURRENT_USER: User = {
   isFollowed: false,
 };
 
-export type FeedItem = {
-  id: number;
-  user: User;
-  content: string;
-  brand: Brand;
-  product: Product;
-  createdTime: Date;
-  image?: string;
-  rate?: number;
-  name?: string;
-  category?: Product;
-  createdBy?: User;
-};
-
 export type Request = {
   user: User;
   brand: Brand | null;

@@ -22,6 +22,8 @@ import { useProductList } from "../hooks/useProductList";
 import ProductList from "../components/product/ProductList";
 import { useBrandList } from "../hooks/useBrandList";
 import BrandList from "../components/brand/BrandList";
+import { useFeed } from "../hooks/useFeed";
+import ActivityList from "../components/activity/ActivityList";
 
 const renderTabBar = (props: any) => (
   <TabBar
@@ -47,25 +49,26 @@ const UserProfile = ({ userId }: { userId?: string }) => {
   const user: any = useLocalSearchParams();
   const { currUser } = useCurrentUser();
   const isCurrentUser = userId || (currUser && currUser.id === user.id);
-  const {
-    data,
-    loading,
-    error,
-    products,
-    handleGetProducts,
-    brands,
-    handleGetBrands,
-  } = useProfile(user.id || userId);
+  const { data, loading, brands, handleGetBrands } = useProfile(
+    user.id || userId
+  );
+
+  const { userFeed, handleGetUserFeed } = useFeed();
+  useEffect(() => {
+    handleGetBrands(user.id || userId);
+    handleGetUserFeed(user.id || userId);
+  }, []);
+
   const layout = useWindowDimensions();
   const [index, setIndex] = useState(0);
 
   const [routes] = useState([
-    { key: "products", title: "Products" },
+    { key: "activity", title: "Activity" },
     { key: "brands", title: "Brands" },
   ]);
 
   const renderScene = SceneMap({
-    products: () => <ProductList products={products || []} />,
+    activity: () => <ActivityList activities={userFeed || []} />,
     brands: () => <BrandList brands={brands || []} />,
   });
 
@@ -84,7 +87,7 @@ const UserProfile = ({ userId }: { userId?: string }) => {
     router.navigate({
       pathname: "/screens/changePassword",
       params: {
-        screen: "profile"
+        screen: "profile",
       },
     });
   };
@@ -243,11 +246,11 @@ const UserProfileScreenHeader = ({
           <ToteTitle customStyles={styles.titleHeader} />
         </View>
       )}
-      {side === "right" && (
+      {/* {side === "right" && (
         <View className="flex-row items-center px-4 space-x-2">
           <Entypo name="dots-three-horizontal" size={20} color="gray" />
         </View>
-      )}
+      )} */}
     </>
   );
 };

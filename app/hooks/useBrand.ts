@@ -2,7 +2,7 @@ import { Alert, Platform } from "react-native";
 import { useState, useEffect, useCallback } from "react";
 
 import { get, post } from "../lib/api";
-import { Brand, FeedItem, Category, RankingData, Product } from "../lib/types";
+import { Brand, Category, RankingData, Product } from "../lib/types";
 import { router } from "expo-router";
 
 export const useBrand = (brandId?: number, userId?: string) => {
