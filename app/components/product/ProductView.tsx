@@ -7,7 +7,15 @@ import Toast from "react-native-toast-message";
 import { FontAwesome } from "@expo/vector-icons";
 import { useCurrentUser } from "@/app/hooks/useCurrentUser";
 
-const ProductView = ({ product }: { product: Product }) => {
+const ProductView = ({
+  product,
+  isCurrUser,
+  onEditRankProduct,
+}: {
+  product: Product;
+  isCurrUser: boolean;
+  onEditRankProduct: () => void;
+}) => {
   const [wishlisted, setWishlisted] = useState(product.wishlisted);
   const { handleAddToWishlist, handleRemoveFromWishlist } = useWishlist();
   const { currUser } = useCurrentUser();
@@ -44,7 +52,7 @@ const ProductView = ({ product }: { product: Product }) => {
           <View className="absolute bottom-0 left-0 flex-row justify-between w-full p-4 rounded-b-lg bg-black/60">
             <Text className="font-semibold text-white">{product.name}</Text>
 
-            {product.createdBy?.id !== currUser?.id ? (
+            {!isCurrUser ? (
               <TouchableOpacity onPress={onBookmarkClick}>
                 <FontAwesome
                   name={wishlisted ? "bookmark" : "bookmark-o"}
@@ -53,20 +61,20 @@ const ProductView = ({ product }: { product: Product }) => {
                 />
               </TouchableOpacity>
             ) : (
-              <TouchableOpacity>
-                <FontAwesome name="pencil" color="white" size={20} />
+              <TouchableOpacity onPress={onEditRankProduct}>
+                <FontAwesome name="edit" color="white" size={20} />
               </TouchableOpacity>
             )}
           </View>
         </>
       ) : (
-        <View className="flex-row items-center justify-between px-4 py-2 rounded-lg bg-darkBlue">
-          <Text className="font-semibold text-white">{product.name}</Text>
+        <View className="flex-row items-center justify-between mt-2">
+          <Text className="font-semibold">{product.name}</Text>
 
           <TouchableOpacity onPress={onBookmarkClick} className="mr-2">
             <FontAwesome
               name={wishlisted ? "bookmark" : "bookmark-o"}
-              color={wishlisted ? "gold" : "white"}
+              color={wishlisted ? "gold" : "black"}
               size={20}
             />
           </TouchableOpacity>

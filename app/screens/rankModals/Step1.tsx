@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { TouchableOpacity } from "react-native";
-import { Category } from "@/app/lib/types";
+import { Category, RankingData } from "@/app/lib/types";
 import { View, Text, ScrollView } from "@/app/components/Themed";
 import styles from "./styles";
 import { CATEGORIES } from "@/constants/Categories";
@@ -8,13 +8,15 @@ import { CATEGORIES } from "@/constants/Categories";
 export const Step1 = ({
   cancelModal,
   nextStep,
+  dataRanking,
 }: {
   cancelModal: () => void;
   nextStep: (step: number, value: any) => void;
   data: Category[];
+  dataRanking: RankingData;
 }) => {
   const [text, onChangeText] = useState("");
-  const [itemSelected, setItemSelected] = useState<number>(0);
+  const [itemSelected, setItemSelected] = useState<number>(dataRanking ? dataRanking.categoryId : 0);
 
   const handleSelectCategory = (id: number) => {
     setItemSelected(id);

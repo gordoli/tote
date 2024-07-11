@@ -5,7 +5,7 @@ import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { StyleSheet, TouchableOpacity } from "react-native";
 import { Ionicons, Entypo, AntDesign } from "@expo/vector-icons";
 
-import RankModals from "../screens/rankModals";
+import RankModals from "./rankModals";
 import { useBrand } from "../hooks/useBrand";
 import Avatar from "@/app/components/Avatar";
 import { View, Text } from "@/app/components/Themed";
@@ -43,14 +43,9 @@ const BrandProfile = () => {
     friendsRanked,
     allRanked,
     loading,
-    loadingTab,
-    loadingStep,
-    categories,
-    rankingData,
     handleFetchAllRanked,
-    handleGetCategories,
-    handleUpdateRankingData,
     handleRankProduct,
+    handleUpdateRankingData,
   } = useBrand(brand.id);
 
   const [index, setIndex] = React.useState(0);
@@ -80,7 +75,6 @@ const BrandProfile = () => {
   );
 
   const openModal = () => {
-    handleGetCategories();
     modalizeModal.current?.open();
   };
 
@@ -203,15 +197,7 @@ const BrandProfile = () => {
         renderTabBar={renderTabBar}
       />
       {/* </ScrollView> */}
-      <RankModals
-        cancelModal={cancelModal}
-        modalizeRef={modalizeModal}
-        loading={loadingStep}
-        categories={categories}
-        data={rankingData}
-        handleUpdateRankingData={handleUpdateRankingData}
-        handleRankProduct={onRankProduct}
-      />
+      <RankModals modalizeRef={modalizeModal} brandId={brand.id} />
     </View>
   );
 };

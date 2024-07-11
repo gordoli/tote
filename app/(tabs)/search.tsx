@@ -8,6 +8,8 @@ import UserList from "../components/user/UserList";
 import { useBrandList } from "../hooks/useBrandList";
 import { useUserList } from "../hooks/useUserList";
 import { useSearchTerm } from "../hooks/useSearch";
+import { Stack } from "expo-router";
+import BaseScreenHeader from "../components/BaseScreenHeader";
 
 const renderTabBar = (props: any) => (
   <TabBar
@@ -52,6 +54,11 @@ const Search = () => {
 
   return (
     <>
+      <Stack.Screen
+        options={{
+          headerLeft: () => <BaseScreenHeader side="left" />
+        }}
+      />
       <View className="px-6">
         <TextInput
           value={searchTerm}

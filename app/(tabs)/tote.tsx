@@ -1,3 +1,4 @@
+import React from "react";
 import { View, Text } from "@/app/components/Themed";
 import { TouchableOpacity, useWindowDimensions } from "react-native";
 import ToteTitle from "../components/ToteTitle";
@@ -6,11 +7,13 @@ import { SceneMap, TabBar, TabView } from "react-native-tab-view";
 import { useEffect, useState } from "react";
 import ProductList from "../components/product/ProductList";
 import { useWishlist } from "../hooks/useWishlist";
-import { useCurrentUser } from "../hooks/useCurrentUser";
 import { Product } from "../lib/types";
 import { get } from "../lib/api";
 import { CATEGORIES } from "@/constants/Categories";
 import FilterPill from "../components/FilterPill";
+import { Stack } from "expo-router";
+import BaseScreenHeader from "../components/BaseScreenHeader";
+import { useCurrentUser } from "../hooks/useCurrentUser";
 
 const renderTabBar = (props: any) => (
   <TabBar
@@ -31,13 +34,13 @@ const renderTabBar = (props: any) => (
 );
 
 const Tote = () => {
+  const { currUser } = useCurrentUser();
   const layout = useWindowDimensions();
   const [index, setIndex] = useState(0);
   const [routes] = useState([
     { key: "myProducts", title: "My Products" },
     { key: "myWishlist", title: "Wishlist" },
   ]);
-  const { currUser } = useCurrentUser();
   const [products, setProducts] = useState<Product[]>([]);
   const [categoriesSelected, setCategoriesSelected] = useState<number[]>([]);
 
@@ -89,6 +92,11 @@ const Tote = () => {
 
   return (
     <>
+      <Stack.Screen
+        options={{
+          headerLeft: () => <BaseScreenHeader side="left" />,
+        }}
+      />
       <View className="flex-row flex-wrap justify-start gap-2 px-6">
         <Text className="self-center pt-2">Filter by:</Text>
         {CATEGORIES.map((category) => (

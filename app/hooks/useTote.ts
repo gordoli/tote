@@ -11,7 +11,7 @@ export const useTote = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await get("/tote");
+        const result = await get("/products");
         setData(result.data);
         setLoading(false);
       } catch (err: any) {

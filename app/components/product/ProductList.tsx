@@ -6,9 +6,9 @@ import EmptyState from "../EmptyState";
 import { ScrollView } from "../Themed";
 
 const ProductList = ({ products }: { products: Product[] | null }) => {
-  if (!products) {
-    return <LoadingScreen />;
-  }
+  // if (!products) {
+  //   return <LoadingScreen />;
+  // }
 
   return !products || products.length === 0 ? (
     <EmptyState label="No products found" />

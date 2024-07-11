@@ -4,19 +4,22 @@ import { FontAwesome } from "@expo/vector-icons";
 import * as Clipboard from "expo-clipboard";
 import * as ImagePicker from "expo-image-picker";
 
+import { RankingData } from "@/app/lib/types";
 import { View, Text } from "@/app/components/Themed";
 import styles from "./styles";
 
 export const Step3 = ({
-  cancelModal,
+  data,
   nextStep,
+  backPreviousStep,
 }: {
-  cancelModal: () => void;
+  data: RankingData;
   nextStep: (step: number, value: any) => void;
+  backPreviousStep: (step: number) => void;
 }) => {
-  const [link, setLink] = React.useState("");
+  const [link, setLink] = React.useState(data ? data.link : "");
   const [image, setImage] = React.useState<ImagePicker.ImagePickerAsset | null>(
-    null
+    data ? data.image : null
   );
   const [error, setError] = React.useState("");
 
@@ -31,6 +34,16 @@ export const Step3 = ({
       image,
     };
     nextStep(4, value);
+  };
+
+  const displayImage = (value: any) => {
+    if (value !== null) {
+      if (typeof value === "string" && !!value) {
+        return value;
+      }
+      return value.uri.split("/").pop();
+    }
+    return "Upload product's image";
   };
 
   const validateLink = () => {
@@ -74,8 +87,8 @@ export const Step3 = ({
               Additional Information
             </Text>
           </View>
-          <TouchableOpacity onPress={cancelModal}>
-            <Text className="text-sm font-semibold text-gray-700">Cancel</Text>
+          <TouchableOpacity onPress={() => backPreviousStep(2)}>
+            <Text className="text-sm font-semibold text-gray-700">Back</Text>
           </TouchableOpacity>
         </View>
         <Text className="mt-4 text-sm text-gray-700 mb-0.5">
@@ -117,7 +130,7 @@ export const Step3 = ({
             </View>
             <View>
               <Text className="text-sm">
-                {image ? image.uri.split("/").pop() : "Upload product's image"}
+                {displayImage(image)}
               </Text>
               <Text className="text-xs text-gray-400">
                 {image && image.fileSize

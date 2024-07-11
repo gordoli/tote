@@ -98,7 +98,7 @@ export default function TabLayout(props: any) {
       <Tabs.Screen
         name="profile"
         options={{
-          title: "Profile",
+          title: "",
           headerShadowVisible: false,
           headerLeft: () => <BaseScreenHeader side="left" />,
           headerTitle: () => <BaseScreenHeader side="center" />,
