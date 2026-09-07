@@ -3,7 +3,9 @@ import Storage from "./storage";
 import { APP_CONST } from "./const";
 import { reloadAsync } from 'expo-updates';
 
-const API_BASE_URL = "http://52.52.111.138:8080/api";
+// Backend base URL. Set EXPO_PUBLIC_API_BASE_URL in .env (see docs/TECHNICAL_OVERVIEW.md).
+const API_BASE_URL =
+  process.env.EXPO_PUBLIC_API_BASE_URL ?? "http://52.52.111.138:8080/api";
 
 const defaultHeaders = {
   "Content-Type": "application/json",
@@ -20,12 +22,8 @@ export const fetchWrapper = async (
   const url = `${API_BASE_URL}${endpoint}`;
   const headers: any = { ...defaultHeaders, ...customHeaders };
 
-  const postmanToken =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsInVzZXJuYW1lIjoiVGVzdCIsImVtYWlsIjoiVGVzdEBnb3Jkb24uY29tIiwiZGVsZXRlZEF0IjpudWxsLCJpc1ZlcmlmaWVkIjpmYWxzZSwiY3JlYXRlZEF0IjoiMjAyNC0wNi0xOFQxNzo0NTowNC41NTBaIiwidXBkYXRlZEF0IjoiMjAyNC0wNi0xOFQyMDo0MzoxNC45NzBaIiwic3RhdHVzIjoiYWN0aXZlIiwicHJvdmlkZXIiOiJlbWFpbCIsInNvY2lhbElkIjpudWxsLCJmaXJzdE5hbWUiOiJHb3Jkb24iLCJsYXN0TmFtZSI6IkxpIiwiYXZhdGFyIjpudWxsLCJpYXQiOjE3MTg3NDM4MTYsImV4cCI6MTcxODc0NDExNn0.seyXK4XBkRWsZPEWZg64H_AD53a3mpNs5bmVE0QzF8A";
-
-  if (userItem !== null && userItem) {
-    // headers.Authorization = `Bearer ${userItem.accessToken.token}`;
-    headers.Authorization = `Bearer ${postmanToken}`;
+  if (userItem?.accessToken?.token) {
+    headers.Authorization = `Bearer ${userItem.accessToken.token}`;
   }
 
   const options = {
